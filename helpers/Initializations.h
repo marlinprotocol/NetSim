@@ -2,20 +2,10 @@
 #define INITIALIZATIONS_H_
 
 #include <memory>
-#include <random>
-#include <string>
-#include <vector>
 
-#include "../../helpers/Center.h"
-#include "../../helpers/Logger/easylogging.h"
-#include "../../config/Config.h"
-#include "../../core/Blockchain/Cache/BlockCache.h"
-#include "../../core/Network/Network.h"
-#include "../../core/Network/Node/Miner.h"
-#include "../../core/Network/Node/Node.h"
-#include "../../core/Network/Node/NodeType.h"
-#include "../../core/Networking/RoutingTable.h"
-#include "../../models/BlockchainManagementModels/BitcoinModel.h"
+#include "./Logger/easylogging.h"
+#include "../core/Network/Network.h"
+#include "../models/BlockchainManagementModels/BitcoinModel.h"
 
 void sendGenesisBlockToAllNodes(const Network& network, int _genesisBlockId, EventManager& eventManager) {
 	for(auto nodePtr: network.getNodes()) {

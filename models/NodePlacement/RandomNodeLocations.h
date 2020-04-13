@@ -9,13 +9,11 @@
 #include "../../helpers/Center.h"
 #include "../../helpers/Logger/easylogging.h"
 #include "../../config/Config.h"
-#include "../../core/Blockchain/Cache/BlockCache.h"
 #include "../../core/Network/Network.h"
 #include "../../core/Network/Node/Miner.h"
 #include "../../core/Network/Node/Node.h"
 #include "../../core/Network/Node/NodeType.h"
 #include "../../core/Networking/RoutingTable.h"
-#include "../../models/BlockchainManagementModels/BitcoinModel.h"
 
 bool generateNodes(Network& network, std::shared_ptr<BlockCache> blockCache, NodeType nodeType,
 				   std::shared_ptr<BlockchainManagementModel> _blockchainManagementModel) {
