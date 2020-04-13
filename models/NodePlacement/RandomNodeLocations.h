@@ -91,19 +91,19 @@ bool printGeneratedNetwork(const Network& network) {
 	return true;
 }
 
-bool initializeRoutingTable(const Network& network) {
-	LOG(INFO) << "[INITIALIZE_ROUTING_TABLE_START]";
-
-	const std::vector<std::shared_ptr<Node>> nodes = network.getNodes();
-
-	for(auto node: nodes) {
-
-	}
-
-	LOG(INFO) << "[INITIALIZE_ROUTING_TABLE_END]";
-
-	return true;
-}
+//bool initializeRoutingTable(const Network& network) {
+//	LOG(INFO) << "[INITIALIZE_ROUTING_TABLE_START]";
+//
+//	const std::vector<std::shared_ptr<Node>> nodes = network.getNodes();
+//
+//	for(auto node: nodes) {
+//
+//	}
+//
+//	LOG(INFO) << "[INITIALIZE_ROUTING_TABLE_END]";
+//
+//	return true;
+//}
 
 Network getRandomNetwork(std::shared_ptr<BlockCache> _blockCache,
 						 std::shared_ptr<BlockchainManagementModel> _blockchainManagementModel) {
@@ -112,7 +112,7 @@ Network getRandomNetwork(std::shared_ptr<BlockCache> _blockCache,
 	generateNodes(network, _blockCache, NodeType::Miner, _blockchainManagementModel);
 	printGeneratedNetwork(network);
 
-	initializeRoutingTable(network);
+//	initializeRoutingTable(network);
 
 	return network;
 }

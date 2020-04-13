@@ -21,7 +21,7 @@ void sendGenesisBlockToAllNodes(const Network& network, int _genesisBlockId, Eve
 	LOG(INFO) << "[GenesisBlockEvent added to all nodes]";
 }
 
-void scheduleNextBlock(EventManager& eventManager, uint64_t _firstBlockInterval,
+void scheduleFirstBlock(EventManager& eventManager, uint64_t _firstBlockInterval,
 					   std::shared_ptr<Node> _firstBlockProducer, int _genesisBlockId) {
 	int nodeId = _firstBlockProducer->getNodeId();
 
@@ -46,7 +46,7 @@ void scheduleBlockProduction(std::shared_ptr<BlockchainManagementModel> _blockch
 	uint64_t firstBlockInterval = _blockchainManagementModel->getNextBlockTime();
 	std::shared_ptr<Node> firstBlockProducer = _blockchainManagementModel->getNextBlockProducer();
 
-	scheduleNextBlock(eventManager, firstBlockInterval, firstBlockProducer, genesisBlock->getBlockId());
+	scheduleFirstBlock(eventManager, firstBlockInterval, firstBlockProducer, genesisBlock->getBlockId());
 }
 
 #endif /*INITIALIZATIONS_H_*/
