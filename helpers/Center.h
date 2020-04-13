@@ -1,3 +1,6 @@
+#ifndef CENTER_H_
+#define CENTER_H_
+
 // Source: https://stackoverflow.com/questions/14861018/center-text-in-fixed-width-field-with-stream-manipulators-in-c
 
 #include <string>
@@ -37,3 +40,5 @@ std::basic_ostream<charT, traits>& operator<<(std::basic_ostream<charT, traits>&
     }
     return s;
 }
+
+#endif /*CENTER_H_*/

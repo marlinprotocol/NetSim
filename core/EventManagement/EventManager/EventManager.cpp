@@ -6,7 +6,7 @@ EventManager::EventManager(Network& _network, std::shared_ptr<BlockCache> _block
 
 int EventManager::addEvent(std::shared_ptr<Event> _event) {
 	LOG(DEBUG) << "[" << std::setw(35) << std::left << "EventManager::addEvent]" 
-			   << "[CurrentTick: " << currentTick << ", EventDuration: "  << _event->getDurationInTicks() << "]";
+			   << "[CurrentTick: " << currentTick << ", TicksToEvent: "  << _event->getDurationInTicks() << "]";
 	return eventQueue.addEvent(AsyncEvent(_event, currentTick + _event->getDurationInTicks()));
 }
 

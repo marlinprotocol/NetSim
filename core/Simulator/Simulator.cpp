@@ -9,7 +9,8 @@
 #include "../Network/Messages/NewBlockIdMessage.h"
 #include "../Network/Node/Miner.h"
 #include "../../config/Config.h"
-#include "../../helpers/Initializations.h"
+#include "../../models/NodePlacement/Initializations.h"
+#include "../../models/NodePlacement/RandomNodeLocations.h"
 
 Simulator::Simulator() : blockCache(std::make_shared<BlockCache>()), eventManager(network, blockCache) {
 	blockchainManagementModel = std::shared_ptr<BlockchainManagementModel>(new BitcoinModel(network));
