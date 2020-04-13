@@ -21,18 +21,28 @@ void sendGenesisBlockToAllNodes(const Network& network, int _genesisBlockId, Eve
 	LOG(INFO) << "[GenesisBlockEvent added to all nodes]";
 }
 
-void scheduleFirstBlock(EventManager& eventManager, uint64_t _firstBlockInterval,
-					   std::shared_ptr<Node> _firstBlockProducer, int _genesisBlockId) {
-	int nodeId = _firstBlockProducer->getNodeId();
+void scheduleNextBlock(EventManager& eventManager,
+					   const std::shared_ptr<BlockchainManagementModel> &_blockchainManagementModel,
+					   int _genesisBlockId) {
+	uint64_t blockInterval = _blockchainManagementModel->getNextBlockTime();
+	std::shared_ptr<Node> blockProducer = _blockchainManagementModel->getNextBlockProducer();
+
+	int nodeId = blockProducer->getNodeId();
 
 	eventManager.addEvent(std::shared_ptr<Event>(
 								new MessageToNodeEvent(
 									std::shared_ptr<Message>(new NewBlockMinedMessage()),
-									nodeId, nodeId, _firstBlockInterval
+									nodeId, nodeId, blockInterval
 								)
 						  ));
 
-	LOG(INFO) << "[Block 1 added to Node: " << nodeId << " at tickstamp: " << _firstBlockInterval << "]";
+	LOG(INFO) << "[Block 1 added to Node: " << nodeId << " at tickstamp: " << blockInterval << "]";
+}
+
+void scheduleFirstBlock(const std::shared_ptr<BlockchainManagementModel> &_blockchainManagementModel,
+						const std::shared_ptr<Block> &genesisBlock,
+						EventManager &eventManager) {
+	scheduleNextBlock(eventManager, _blockchainManagementModel, genesisBlock->getBlockId());
 }
 
 void scheduleBlockProduction(std::shared_ptr<BlockchainManagementModel> _blockchainManagementModel,
@@ -43,10 +53,7 @@ void scheduleBlockProduction(std::shared_ptr<BlockchainManagementModel> _blockch
 
 	sendGenesisBlockToAllNodes(_network, genesisBlock->getBlockId(), eventManager);
 
-	uint64_t firstBlockInterval = _blockchainManagementModel->getNextBlockTime();
-	std::shared_ptr<Node> firstBlockProducer = _blockchainManagementModel->getNextBlockProducer();
-
-	scheduleFirstBlock(eventManager, firstBlockInterval, firstBlockProducer, genesisBlock->getBlockId());
+	scheduleFirstBlock(_blockchainManagementModel, genesisBlock, eventManager);
 }
 
 #endif /*INITIALIZATIONS_H_*/
