@@ -4,6 +4,7 @@
 #include "../Messages/NewBlockMinedMessage.h"
 #include "../../Blockchain/Block/PoWBlock.h"
 #include "../../EventManagement/Event/EventTypes/MessageToNodeEvent.h"
+#include "../../../helpers/Initializations.h"
 
 Miner::Miner(int _nodeId, bool _isAlive, int _region, 
 			 std::shared_ptr<BlockchainManagementModel> _blockchainManagementModel,

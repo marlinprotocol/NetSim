@@ -21,7 +21,8 @@ add_executable(simulation
         core/Network/Node/Miner.cpp
         core/Network/Node/Node.cpp   
         core/Networking/RoutingTable.cpp        
-        helpers/Logger/easylogging.cpp       
+        helpers/Logger/easylogging.cpp  
+        helpers/Initializations.cpp     
         models/BlockchainManagementModels/BitcoinModel.cpp
         models/Networking/BitcoinRoutingTable.cpp        
 )
