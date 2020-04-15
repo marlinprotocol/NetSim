@@ -8,12 +8,26 @@
 
 Miner::Miner(int _nodeId, bool _isAlive, int _region, 
 			 std::shared_ptr<BlockchainManagementModel> _blockchainManagementModel,
-			 std::shared_ptr<BlockCache> _blockCache, long long _hashpower) 
-	  : Node(_nodeId, _isAlive, _region, _blockchainManagementModel, _blockCache), miningEventId(-1), hashpower(_hashpower) {
+			 std::shared_ptr<BlockCache> _blockCache, long long _hashpower, double _difficulty)
+	  : Node(_nodeId, _isAlive, _region, _blockchainManagementModel, _blockCache),
+		miningEventId(-1), hashpower(_hashpower), difficulty (_difficulty) {
 }
 
 long long Miner::getHashPower() {
 	return hashpower;
+}
+
+bool Miner::setDifficulty(double _difficulty) {
+	difficulty = _difficulty;
+	return true;
+}
+
+double Miner::getDifficulty() {
+	return difficulty;
+}
+
+double Miner::getLambda() {
+	return (double) hashpower/difficulty;
 }
 
 void Miner::onNewBlockIdMessage(std::shared_ptr<NewBlockIdMessage> _message, EventManager* _eventManager) {

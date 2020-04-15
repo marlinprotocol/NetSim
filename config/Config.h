@@ -22,4 +22,6 @@ const int NUM_NODES = 15;
 
 const std::string CONSENSUS_TYPE = "PoW";
 
+const int BLOCK_TIME = 600;
+
 #endif /*CONFIG_H_*/

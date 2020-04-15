@@ -2,6 +2,7 @@
 #define NETWORK_H_
 
 #include <memory>
+#include <random>
 #include <vector>
 
 #include "./Node/Node.h"
@@ -9,11 +10,20 @@
 
 class Network {
 private:
+	std::mt19937_64 rng;
+	std::uniform_real_distribution<double> unif;
 	std::vector<std::shared_ptr<Node>> nodes;
+	double totalLambda;
+	std::vector<double> cumulativeLambdaVector;
 
 public:
+	Network();
 	bool addNode(std::shared_ptr<Node> node);
 	std::vector<std::shared_ptr<Node>> getNodes() const;
+	double getTotalLambda();
+	double recaculateTotalLambda();
+	std::vector<double> recaculateCumulativeLambdaVector();
+	std::shared_ptr<Node> pickLambdaWeightedNode();
 };
 
 #endif /*NETWORK_H_*/

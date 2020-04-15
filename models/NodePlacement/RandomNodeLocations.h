@@ -51,12 +51,15 @@ bool generateNodes(Network& network, std::shared_ptr<BlockCache> blockCache, Nod
 					network.addNode( std::shared_ptr<Node>(
 										new Miner(i, true, j,
 											      _blockchainManagementModel,
-												  blockCache, 1)
+												  blockCache, 1, NUM_NODES*BLOCK_TIME)
 												          ) );
 				break;
 			}
 		}
 	}
+
+	network.recaculateTotalLambda();
+	network.recaculateCumulativeLambdaVector();
 
 	return true;
 }

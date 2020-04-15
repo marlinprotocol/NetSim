@@ -15,7 +15,10 @@ void BitcoinModel::OnOutOfRangeNewBlockArrival() {
 }
 
 uint64_t BitcoinModel::getNextBlockTime() {
-	return (uint64_t) exp(rng);
+	LOG(INFO) << "[BitcoinModel::getNextBlockTime start; network.getTotalLambda(): "
+			  << network.getTotalLambda() << "]";
+	std::exponential_distribution<double> exp2(network.getTotalLambda());
+	return (uint64_t) exp2(rng);
 }
 
 std::shared_ptr<Node> BitcoinModel::getNextBlockProducer() {
