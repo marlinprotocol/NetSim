@@ -14,6 +14,7 @@
 #include "../../core/Network/Node/Node.h"
 #include "../../core/Network/Node/NodeType.h"
 #include "../../core/Networking/RoutingTable.h"
+#include "../BlockchainManagementModels/BitcoinModel.h"
 
 bool generateNodes(Network& network, std::shared_ptr<BlockCache> blockCache, NodeType nodeType,
 				   std::shared_ptr<BlockchainManagementModel> _blockchainManagementModel) {
@@ -51,7 +52,8 @@ bool generateNodes(Network& network, std::shared_ptr<BlockCache> blockCache, Nod
 					network.addNode( std::shared_ptr<Node>(
 										new Miner(i, true, j,
 											      _blockchainManagementModel,
-												  blockCache, 1, NUM_NODES*BLOCK_TIME)
+												  blockCache, i%2==0?1:2,
+												  (NUM_NODES/2*2 + (NUM_NODES-NUM_NODES/2)) * BLOCK_TIME)
 												          ) );
 				break;
 			}

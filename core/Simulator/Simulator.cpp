@@ -34,3 +34,7 @@ void Simulator::start() {
 
 	LOG(INFO) << "[Simulator stopped]"; 
 }
+
+std::shared_ptr<BlockchainManagementModel> Simulator::getBlockchainManagementModel() {
+	return blockchainManagementModel;
+}

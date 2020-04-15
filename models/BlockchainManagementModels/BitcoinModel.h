@@ -19,6 +19,7 @@ public:
 	void OnOutOfRangeNewBlockArrival();
 	uint64_t getNextBlockTime();
 	std::shared_ptr<Node> getNextBlockProducer();
+	int getNextBlockProducerId();
 	std::shared_ptr<Block> createGenesisBlock();
 };
 

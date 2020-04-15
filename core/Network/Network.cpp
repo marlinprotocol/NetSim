@@ -65,8 +65,10 @@ std::vector<double> Network::recaculateCumulativeLambdaVector() {
 std::shared_ptr<Node> Network::pickLambdaWeightedNode() {
 	std::shared_ptr<Node> node;
 
+	double randomNumber = unif(rng) * totalLambda;
+
 	auto it = std::upper_bound(cumulativeLambdaVector.begin(),
-							   cumulativeLambdaVector.end(), totalLambda);
+							   cumulativeLambdaVector.end(), randomNumber);
 
 	int index = it - cumulativeLambdaVector.begin();
 

@@ -23,6 +23,7 @@ public:
 	Simulator();
 	bool setup();
 	void start();
+	std::shared_ptr<BlockchainManagementModel> getBlockchainManagementModel();
 };
 
 #endif /*SIMULATOR_H_*/
