@@ -9,17 +9,17 @@
 #include "../Network/Messages/NewBlockIdMessage.h"
 #include "../Network/Node/Miner.h"
 #include "../../config/Config.h"
-#include "../../helpers/Initializations.h"
+#include "../../models/BlockchainManagement/GlobalOrchestration/Bitcoin.h"
 #include "../../models/NodePlacement/RandomNodeLocations.h"
 
 Simulator::Simulator() : blockCache(std::make_shared<BlockCache>()), eventManager(network, blockCache) {
-	blockchainManagementModel = std::shared_ptr<BlockchainManagementModel>(new BitcoinModel(network));
+	globalOrchestration = std::shared_ptr<GlobalOrchestration>(new BitcoinModel(network));
 }
 
 bool Simulator::setup() {
-	network = getRandomNetwork(blockCache, blockchainManagementModel);
+	network = getRandomNetwork(blockCache, globalOrchestration);
 
-	scheduleBlockProduction(blockchainManagementModel, network, blockCache, eventManager);
+	globalOrchestration->scheduleBlockProduction(network, blockCache, eventManager);
 
 	return true;
 }
@@ -28,13 +28,13 @@ void Simulator::start() {
 	LOG(INFO) << "[Simulator started]"; 
 
 	while(eventManager.hasNextEvent()) {
-		bool toContinue = eventManager.executeNextEvent();
+		bool toContinue = eventManager.executeNextEvent(globalOrchestration);
 		if(!toContinue) break;
 	}
 
 	LOG(INFO) << "[Simulator stopped]"; 
 }
 
-std::shared_ptr<BlockchainManagementModel> Simulator::getBlockchainManagementModel() {
-	return blockchainManagementModel;
+std::shared_ptr<GlobalOrchestration> Simulator::getBlockchainManagementModel() {
+	return globalOrchestration;
 }

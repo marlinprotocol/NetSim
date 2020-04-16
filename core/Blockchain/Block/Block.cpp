@@ -7,6 +7,7 @@ Block::Block(int _parentBlockId, int _blockProducerId, int _blockHeight) {
 	blockProducerId = _blockProducerId;
 	blockHeight = _blockHeight;
 	id = count++;
+	tickStamp = 0;
 }
 
 Block::Block(int _parentBlockId, int _blockProducerId, int _blockHeight, long _tickStamp) {

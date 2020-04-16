@@ -4,7 +4,6 @@
 #include <memory>
 
 #include "./Event.h"
-#include "../../Network/Network.h"
 #include "../../../helpers/Logger/easylogging.h"
 
 class EventManager;
@@ -22,8 +21,13 @@ public:
 	bool operator<(const AsyncEvent& e) const;
 	bool operator==(const AsyncEvent& e) const;
 	long getTickToExecOn() const;
-	bool execute(Network& _network, EventManager* _eventManager, uint64_t _currentTick);	
+	bool execute(Network& _network, std::shared_ptr<BlockCache> _blockCache,
+				 std::vector<std::shared_ptr<Event>>& _newEvents, uint64_t _currentTick);
 	int getEventId() const;
+
+	std::shared_ptr<Event>& getEvent() {
+		return event;
+	}
 };
 
 #endif /*ASYNCEVENT_H_*/

@@ -20,7 +20,7 @@ public:
 	Network();
 	bool addNode(std::shared_ptr<Node> node);
 	std::vector<std::shared_ptr<Node>> getNodes() const;
-	double getTotalLambda();
+	double getTotalLambda() const;
 	double recaculateTotalLambda();
 	std::vector<double> recaculateCumulativeLambdaVector();
 	std::shared_ptr<Node> pickLambdaWeightedNode();

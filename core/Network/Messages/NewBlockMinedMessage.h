@@ -7,8 +7,11 @@
 #include "../../Blockchain/Cache/BlockCache.h"
 
 class NewBlockMinedMessage : public Message {
+private:
+	double difficulty;
+
 public:
-	NewBlockMinedMessage();
+	NewBlockMinedMessage(double _difficulty);
 	std::string getType();
 };
 

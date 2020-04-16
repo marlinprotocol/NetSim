@@ -11,7 +11,7 @@
 #include "../../Networking/RoutingTable.h"
 #include "../../../helpers/Logger/easylogging.h"
 
-class EventManager;
+class Event;
 
 class Node {
 private:
@@ -23,16 +23,19 @@ private:
 protected:	
 	Blockchain blockchain;
 	std::shared_ptr<BlockCache> blockCache;
-	std::shared_ptr<BlockchainManagementModel> blockchainManagementModel;
 
 public:
 	Node(int _nodeId, bool _isAlive, int _region, 
-		 std::shared_ptr<BlockchainManagementModel> _blockchainManagementModel,
 		 std::shared_ptr<BlockCache> _blockCache);
+	virtual ~Node() {}
 	int getRegion() const;
 	int getNodeId() const;
-	virtual void onNewBlockIdMessage(std::shared_ptr<NewBlockIdMessage> _message, EventManager* _eventManager) = 0;
-	virtual void onNewBlockMinedMessage(std::shared_ptr<NewBlockMinedMessage> _message, EventManager* _eventManager, uint64_t _currentTick) = 0;
+	virtual void onNewBlockIdMessage(std::shared_ptr<NewBlockIdMessage> _message,
+									 std::shared_ptr<BlockCache> _blockCache,
+									 std::vector<std::shared_ptr<Event>>& _newEvents) = 0;
+	virtual void onNewBlockMinedMessage(std::shared_ptr<NewBlockMinedMessage> _message,
+										std::shared_ptr<BlockCache> _blockCache,
+										std::vector<std::shared_ptr<Event>>& _newEvents, uint64_t _currentTick) = 0;
 };
 
 #endif /*NODE_H_*/

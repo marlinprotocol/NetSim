@@ -3,11 +3,12 @@
 
 #include <random>
 
-#include "./BlockchainManagementModel.h"
-#include "../../core/Network/Network.h"
-#include "../../helpers/Logger/easylogging.h"
+#include "../../../core/Network/Network.h"
+#include "../../../core/Network/Node/Miner.h"
+#include "../../../helpers/Logger/easylogging.h"
+#include "GlobalOrchestration.h"
 
-class BitcoinModel : public BlockchainManagementModel {
+class BitcoinModel : public GlobalOrchestration {
 	std::mt19937_64 rng;
 	std::exponential_distribution<double> exp;
 	std::uniform_real_distribution<double> unif;
@@ -16,11 +17,11 @@ class BitcoinModel : public BlockchainManagementModel {
 
 public:
 	BitcoinModel(Network &network);
-	void OnOutOfRangeNewBlockArrival();
 	uint64_t getNextBlockTime();
 	std::shared_ptr<Node> getNextBlockProducer();
 	int getNextBlockProducerId();
 	std::shared_ptr<Block> createGenesisBlock();
+	void scheduleNextBlock(EventManager* eventManager);
 };
 
 #endif /*BTCMODEL_H_*/

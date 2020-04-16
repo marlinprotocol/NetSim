@@ -12,7 +12,8 @@ private:
 
 public:
 	PoWBlock(int _parentBlockId, int _blockProducerId, int _blockHeight); 
-	PoWBlock(int _parentBlockId, int _blockProducerId, int _blockHeight, long _tickStamp); 
+	PoWBlock(int _parentBlockId, int _blockProducerId, int _blockHeight, long long _tickStamp);
+	PoWBlock(int _parentBlockId, int _blockProducerId, int _blockHeight, long long _tickStamp, double difficulty);
 };
 
 inline std::shared_ptr<Block> getGenesisPoWBlock() {

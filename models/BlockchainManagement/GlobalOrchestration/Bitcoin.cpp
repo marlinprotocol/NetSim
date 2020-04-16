@@ -1,6 +1,10 @@
-#include "./BitcoinModel.h"
-#include "../../core/Blockchain/Block/PoWBlock.h"
-#include "../../core/Network/Node/Miner.h"
+#include "Bitcoin.h"
+
+#include <memory>
+
+#include "../../../core/Blockchain/Block/PoWBlock.h"
+#include "../../../core/EventManagement/Event/Event.h"
+#include "../../../core/EventManagement/Event/EventTypes/MessageToNodeEvent.h"
 
 BitcoinModel::BitcoinModel(Network &_network): exp(1.0/600), unif(0, 1), network(_network) {
 	// initiaze random number generator, seed fixed to 22 to make it deterministic across runs
@@ -8,10 +12,6 @@ BitcoinModel::BitcoinModel(Network &_network): exp(1.0/600), unif(0, 1), network
 	uint64_t seed = 22;
 	std::seed_seq ss{uint32_t(seed & 0xffffffff), uint32_t(seed>>32)};
     rng.seed(ss);
-}
-
-void BitcoinModel::OnOutOfRangeNewBlockArrival() {
-
 }
 
 uint64_t BitcoinModel::getNextBlockTime() {
@@ -49,4 +49,23 @@ std::shared_ptr<Block> BitcoinModel::createGenesisBlock() {
 	LOG(INFO) << "[GenesisBlock Bitcoin with id " << genesisBlock->getBlockId() << " created]";
 
 	return genesisBlock;
+}
+
+void BitcoinModel::scheduleNextBlock(EventManager* eventManager) {
+	uint64_t blockInterval = getNextBlockTime();
+	std::shared_ptr<Node> blockProducer = getNextBlockProducer();
+
+	int nodeId = blockProducer->getNodeId();
+
+	std::shared_ptr<Miner> miner = std::static_pointer_cast<Miner>(blockProducer);
+
+	eventManager->addEvent(std::shared_ptr<Event>(
+								new MessageToNodeEvent(
+									std::shared_ptr<Message>(
+											new NewBlockMinedMessage(miner->getDifficulty())),
+									nodeId, nodeId, blockInterval
+								)
+						  ));
+
+	LOG(INFO) << "[Block 1 added to Node: " << nodeId << " at tickstamp: " << blockInterval << "]";
 }

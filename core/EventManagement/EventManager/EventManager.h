@@ -10,6 +10,8 @@
 #include "../../Network/Network.h"
 #include "../../../helpers/Logger/easylogging.h"
 
+class GlobalOrchestration;
+
 class EventManager {
 private:
 	static uint64_t currentTick;
@@ -23,7 +25,7 @@ public:
 	// AsyncEvent getNextEvent() const;
 	bool removeEvent(int _id);
 	bool hasNextEvent();
-	bool executeNextEvent();
+	bool executeNextEvent(std::shared_ptr<GlobalOrchestration> _globalOrchestration);
 	std::shared_ptr<BlockCache> getBlockCachePtr();
 };
 

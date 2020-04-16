@@ -21,7 +21,7 @@ std::vector<std::shared_ptr<Node>> Network::getNodes() const {
 	return nodes;
 }
 
-double Network::getTotalLambda() {
+double Network::getTotalLambda() const {
 	return totalLambda;
 }
 

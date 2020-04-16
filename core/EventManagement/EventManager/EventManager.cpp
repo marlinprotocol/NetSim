@@ -1,4 +1,8 @@
+#include <memory>
+#include <vector>
+
 #include "./EventManager.h"
+#include "../../../models/BlockchainManagement/GlobalOrchestration/GlobalOrchestration.h"
 
 uint64_t EventManager::currentTick = 0;
 
@@ -18,8 +22,8 @@ bool EventManager::hasNextEvent() {
 	return !eventQueue.isEmpty();
 }
 
-bool EventManager::executeNextEvent() {
-	LOG(DEBUG) << "[" << std::setw(35) << std::left << "EventManager::executeNextEvent]";
+bool EventManager::executeNextEvent(std::shared_ptr<GlobalOrchestration> _globalOrchestration) {
+	LOG(DEBUG) << "[" << std::setw(35) << std::left << "EventManager::executeNextEvent][TICK_LIMIT_EXCEEDED]";
 
 	if(currentTick>10000) {
 		LOG(DEBUG) << "[" << std::setw(35) << std::left << "EventManager::executeNextEvent exiting]"
@@ -39,7 +43,18 @@ bool EventManager::executeNextEvent() {
 
 	LOG(DEBUG) << "[Tickstamp: " << std::setw(10) << std::right << currentTick << "]";
 
-	asyncEvent.execute(network, this, currentTick);
+	if(asyncEvent.getEvent()->getEventType() == EventType::SCHEDULE_NEXT_BLOCK) {
+		_globalOrchestration->scheduleNextBlock(this);
+	}
+	else {
+		std::vector<std::shared_ptr<Event>> newEvents;
+
+		asyncEvent.execute(network, blockCache, newEvents, currentTick);
+
+		for(auto event: newEvents) {
+			addEvent(event);
+		}
+	}
 
 	return true;
 }
