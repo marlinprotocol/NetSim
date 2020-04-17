@@ -6,11 +6,11 @@
 #include <string>
 #include <vector>
 
+#include "../LocalProtocols/BitcoinMiner.h"
 #include "../../helpers/Center.h"
 #include "../../helpers/Logger/easylogging.h"
 #include "../../config/Config.h"
 #include "../../core/Network/Network.h"
-#include "../../core/Network/Node/Miner.h"
 #include "../../core/Network/Node/Node.h"
 #include "../../core/Network/Node/NodeType.h"
 #include "../../core/Networking/RoutingTable.h"
@@ -47,12 +47,12 @@ bool generateNodes(Network& network, std::shared_ptr<BlockCache> blockCache, Nod
 		double randomNumber = unif(rng);
 		for(int j=0; j<NUM_REGIONS; j++) {
 			if(randomNumber < cumulativeProbabilities[j]) {
-				if(nodeType == NodeType::Miner)
-					network.addNode( std::shared_ptr<Node>(
-										new Miner(i, true, j,
-												  blockCache, i%2==0?1:2,
-												  (NUM_NODES/2*2 + (NUM_NODES-NUM_NODES/2)) * BLOCK_TIME)
-												          ) );
+				if(nodeType == NodeType::Miner) {
+					std::shared_ptr<Node> node(new Node(i, true, j, blockCache));
+					std::shared_ptr<BitcoinMiner> bitcoinMinerProtocol(new BitcoinMiner(node, i%2==0?1:2, (NUM_NODES/2*2 + (NUM_NODES-NUM_NODES/2)) * BLOCK_TIME));
+					node->addProtocol(std::static_pointer_cast<Protocol>(bitcoinMinerProtocol));
+					network.addNode(node);
+				}
 				break;
 			}
 		}

@@ -7,7 +7,6 @@
 #include "../EventManagement/Event/EventTypes/MessageToNodeEvent.h"
 #include "../Network/Messages/Message.h"
 #include "../Network/Messages/NewBlockIdMessage.h"
-#include "../Network/Node/Miner.h"
 #include "../../config/Config.h"
 #include "../../models/BlockchainManagement/GlobalOrchestration/Bitcoin.h"
 #include "../../models/NodePlacement/RandomNodeLocations.h"

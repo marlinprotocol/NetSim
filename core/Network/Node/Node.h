@@ -12,6 +12,7 @@
 #include "../../../helpers/Logger/easylogging.h"
 
 class Event;
+class Protocol;
 
 class Node {
 private:
@@ -19,23 +20,19 @@ private:
 	bool isAlive;
 	int region;
 	std::shared_ptr<RoutingTable> routingTable;
-
-protected:	
-	Blockchain blockchain;
+	std::vector<std::shared_ptr<Protocol>> protocols;
+	std::shared_ptr<Blockchain> blockchain;
 	std::shared_ptr<BlockCache> blockCache;
 
 public:
 	Node(int _nodeId, bool _isAlive, int _region, 
 		 std::shared_ptr<BlockCache> _blockCache);
-	virtual ~Node() {}
 	int getRegion() const;
 	int getNodeId() const;
-	virtual void onNewBlockIdMessage(std::shared_ptr<NewBlockIdMessage> _message,
-									 std::shared_ptr<BlockCache> _blockCache,
-									 std::vector<std::shared_ptr<Event>>& _newEvents) = 0;
-	virtual void onNewBlockMinedMessage(std::shared_ptr<NewBlockMinedMessage> _message,
-										std::shared_ptr<BlockCache> _blockCache,
-										std::vector<std::shared_ptr<Event>>& _newEvents, uint64_t _currentTick) = 0;
+	std::shared_ptr<Blockchain> getBlockchain();
+	std::shared_ptr<BlockCache> getBlockCache();
+	bool addProtocol(std::shared_ptr<Protocol> protocol);
+	std::vector<std::shared_ptr<Protocol>> getProtocols();
 };
 
 #endif /*NODE_H_*/

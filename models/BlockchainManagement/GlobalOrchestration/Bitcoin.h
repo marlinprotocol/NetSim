@@ -4,7 +4,6 @@
 #include <random>
 
 #include "../../../core/Network/Network.h"
-#include "../../../core/Network/Node/Miner.h"
 #include "../../../helpers/Logger/easylogging.h"
 #include "GlobalOrchestration.h"
 

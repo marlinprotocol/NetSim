@@ -2,9 +2,11 @@
 
 #include <memory>
 
+#include "../../LocalProtocols/BitcoinMiner.h"
 #include "../../../core/Blockchain/Block/PoWBlock.h"
 #include "../../../core/EventManagement/Event/Event.h"
 #include "../../../core/EventManagement/Event/EventTypes/MessageToNodeEvent.h"
+#include "../../../core/Network/Messages/NewBlockMinedMessage.h"
 
 BitcoinModel::BitcoinModel(Network &_network): exp(1.0/600), unif(0, 1), network(_network) {
 	// initiaze random number generator, seed fixed to 22 to make it deterministic across runs
@@ -57,12 +59,9 @@ void BitcoinModel::scheduleNextBlock(EventManager* eventManager) {
 
 	int nodeId = blockProducer->getNodeId();
 
-	std::shared_ptr<Miner> miner = std::static_pointer_cast<Miner>(blockProducer);
-
 	eventManager->addEvent(std::shared_ptr<Event>(
 								new MessageToNodeEvent(
-									std::shared_ptr<Message>(
-											new NewBlockMinedMessage(miner->getDifficulty())),
+									std::shared_ptr<Message>(new NewBlockMinedMessage(std::static_pointer_cast<BitcoinMiner>(blockProducer->getProtocols()[0])->getDifficulty())),
 									nodeId, nodeId, blockInterval
 								)
 						  ));

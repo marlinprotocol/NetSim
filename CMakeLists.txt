@@ -18,12 +18,13 @@ add_executable(simulation
         core/Network/Messages/Message.cpp
         core/Network/Messages/NewBlockIdMessage.cpp
         core/Network/Messages/NewBlockMinedMessage.cpp
-        core/Network/Node/Miner.cpp
         core/Network/Node/Node.cpp   
         core/Networking/RoutingTable.cpp        
         helpers/Logger/easylogging.cpp    
         models/BlockchainManagement/GlobalOrchestration/Bitcoin.cpp
         models/BlockchainManagement/GlobalOrchestration/GlobalOrchestration.cpp
+        models/LocalProtocols/BitcoinMiner.cpp
+        models/LocalProtocols/Protocol.cpp
         models/Networking/BitcoinRoutingTable.cpp       
 )
 
@@ -44,12 +45,13 @@ add_executable(test
         core/Network/Messages/Message.cpp
         core/Network/Messages/NewBlockIdMessage.cpp
         core/Network/Messages/NewBlockMinedMessage.cpp
-        core/Network/Node/Miner.cpp
         core/Network/Node/Node.cpp   
         core/Networking/RoutingTable.cpp        
         helpers/Logger/easylogging.cpp      
         models/BlockchainManagement/GlobalOrchestration/Bitcoin.cpp
         models/BlockchainManagement/GlobalOrchestration/GlobalOrchestration.cpp
+        models/LocalProtocols/BitcoinMiner.cpp
+        models/LocalProtocols/Protocol.cpp
         models/Networking/BitcoinRoutingTable.cpp                       
 )
 

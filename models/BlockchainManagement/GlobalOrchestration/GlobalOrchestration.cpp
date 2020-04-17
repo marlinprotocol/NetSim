@@ -2,7 +2,6 @@
 
 #include "GlobalOrchestration.h"
 #include "../../../core/EventManagement/Event/EventTypes/MessageToNodeEvent.h"
-#include "../../../core/Network/Node/Miner.h"
 
 void GlobalOrchestration::sendBlockToAllNodes(Network& network, int _blockId, EventManager& eventManager) {
 	for(auto nodePtr: network.getNodes()) {
