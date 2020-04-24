@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 
+#include "NodeId.h"
 #include "../Messages/Message.h"
 #include "../Messages/NewBlockIdMessage.h"
 #include "../Messages/NewBlockMinedMessage.h"
@@ -16,7 +17,7 @@ class Protocol;
 
 class Node {
 private:
-	int nodeId;
+	NodeId nodeId;
 	bool isAlive;
 	int region;
 	std::shared_ptr<RoutingTable> routingTable;
