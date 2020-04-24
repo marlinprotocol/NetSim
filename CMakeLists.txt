@@ -19,6 +19,8 @@ add_executable(simulation
         core/Network/Messages/NewBlockIdMessage.cpp
         core/Network/Messages/NewBlockMinedMessage.cpp
         core/Network/Node/Node.cpp   
+        core/Networking/IPv4Address.cpp
+        core/Networking/IPv4Message.cpp
         core/Networking/RoutingTable.cpp        
         helpers/Logger/easylogging.cpp    
         models/BlockchainManagement/GlobalOrchestration/Bitcoin.cpp
@@ -46,6 +48,8 @@ add_executable(test
         core/Network/Messages/NewBlockIdMessage.cpp
         core/Network/Messages/NewBlockMinedMessage.cpp
         core/Network/Node/Node.cpp   
+        core/Networking/IPv4Address.cpp
+        core/Networking/IPv4Message.cpp
         core/Networking/RoutingTable.cpp        
         helpers/Logger/easylogging.cpp      
         models/BlockchainManagement/GlobalOrchestration/Bitcoin.cpp

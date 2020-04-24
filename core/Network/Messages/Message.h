@@ -13,6 +13,7 @@ public:
 	virtual std::string getType() = 0;
 	virtual ~Message() {};
 	MessageType getMessageType();
+	long long getSize(); // TODO: make virtual
 };
 
 #endif /*MESSAGE_H_*/
