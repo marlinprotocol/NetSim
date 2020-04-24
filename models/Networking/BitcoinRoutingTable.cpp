@@ -1,5 +1,5 @@
 #include "./BitcoinRoutingTable.h"
 
-BitcoinRoutingTable::BitcoinRoutingTable() : RoutingTable() {
+BitcoinRoutingTable::BitcoinRoutingTable(int _nodeOwnerId) : RoutingTable(_nodeOwnerId) {
 
 }

@@ -6,7 +6,7 @@
 
 class BitcoinRoutingTable : public RoutingTable {
 public:
-	BitcoinRoutingTable();
+	BitcoinRoutingTable(int _nodeOwnerId);
 };
 
 #endif /*BITCOINROUTINGTABLE_H_*/

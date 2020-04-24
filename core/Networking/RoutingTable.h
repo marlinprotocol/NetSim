@@ -14,7 +14,7 @@ private:
 	std::set<int> inConnections;
 
 public:
-	RoutingTable();
+	RoutingTable(int _nodeOwnerId);
 	bool setup();
 	int getOutConnections();
 	int getInConnections();

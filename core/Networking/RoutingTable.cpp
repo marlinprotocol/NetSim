@@ -1,6 +1,7 @@
 #include "RoutingTable.h"
 
-RoutingTable::RoutingTable() {
+RoutingTable::RoutingTable(int _nodeOwnerId) {
+	nodeOwnerId = _nodeOwnerId;
 	maxOutConnections = 8;   // random default
 	maxInConnections = 128;	 // random default
 }
