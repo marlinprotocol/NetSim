@@ -1,8 +1,9 @@
+#include "./IPv4Address.h"
+
 #include <sstream>
 #include <string>
 #include <vector>
 
-#include "IPv4Address.h"
 
 IPv4Address::IPv4Address(std::string _id) : id(IPv4StringToLong(_id)) {}
 

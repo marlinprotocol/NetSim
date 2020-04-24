@@ -19,10 +19,11 @@ add_executable(simulation
         core/Network/Messages/NewBlockIdMessage.cpp
         core/Network/Messages/NewBlockMinedMessage.cpp
         core/Network/Node/Node.cpp   
-        core/Networking/IPv4Address.cpp
-        core/Networking/IPv4Message.cpp
-        core/Networking/NetworkMessage.cpp
-        core/Networking/RoutingTable.cpp        
+        core/Networking/NetworkLayer/IPv4Address.cpp
+        core/Networking/NetworkLayer/IPv4Message.cpp
+        core/Networking/NetworkLayer/NetworkMessage.cpp
+        core/Networking/RoutingTable.cpp  
+        core/Networking/Subnet.cpp        
         helpers/Logger/easylogging.cpp    
         models/BlockchainManagement/GlobalOrchestration/Bitcoin.cpp
         models/BlockchainManagement/GlobalOrchestration/GlobalOrchestration.cpp
@@ -49,10 +50,11 @@ add_executable(test
         core/Network/Messages/NewBlockIdMessage.cpp
         core/Network/Messages/NewBlockMinedMessage.cpp
         core/Network/Node/Node.cpp   
-        core/Networking/IPv4Address.cpp
-        core/Networking/IPv4Message.cpp
-        core/Networking/NetworkMessage.cpp
-        core/Networking/RoutingTable.cpp        
+        core/Networking/NetworkLayer/IPv4Address.cpp
+        core/Networking/NetworkLayer/IPv4Message.cpp
+        core/Networking/NetworkLayer/NetworkMessage.cpp
+        core/Networking/RoutingTable.cpp  
+        core/Networking/Subnet.cpp      
         helpers/Logger/easylogging.cpp      
         models/BlockchainManagement/GlobalOrchestration/Bitcoin.cpp
         models/BlockchainManagement/GlobalOrchestration/GlobalOrchestration.cpp

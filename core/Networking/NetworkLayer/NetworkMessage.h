@@ -1,10 +1,10 @@
-#ifndef CORE_NETWORKING_NETWORKMESSAGE_H_
-#define CORE_NETWORKING_NETWORKMESSAGE_H_
+#ifndef CORE_NETWORKING_NETWORKLAYER_NETWORKMESSAGE_H_
+#define CORE_NETWORKING_NETWORKLAYER_NETWORKMESSAGE_H_
 
 #include <memory>
 
-#include "NetworkProtocol.h"
-#include "../Network/Node/NodeId.h"
+#include "./NetworkProtocol.h"
+#include "../../Network/Node/NodeId.h"
 
 class Message;
 
@@ -23,4 +23,4 @@ public:
 	NodeId getSender();
 };
 
-#endif /* CORE_NETWORKING_NETWORKMESSAGE_H_ */
+#endif /* CORE_NETWORKING_NETWORKLAYER_NETWORKMESSAGE_H_ */

@@ -1,4 +1,4 @@
-#include "NetworkMessage.h"
+#include "./NetworkMessage.h"
 
 NetworkMessage::NetworkMessage(NodeId _sender, NodeId _receiver, std::shared_ptr<Message> _payload, NetworkProtocol _networkProtocol) :
 		sender(_sender), receiver(_receiver), payload(_payload), networkProtocol(_networkProtocol) {}

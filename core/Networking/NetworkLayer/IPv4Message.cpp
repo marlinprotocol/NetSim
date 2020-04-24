@@ -1,8 +1,9 @@
+#include "./IPv4Message.h"
+
 #include <cmath>
 
-#include "./IPv4Message.h"
 #include "./NetworkProtocol.h"
-#include "../Network/Messages/Message.h"
+#include "../../Network/Messages/Message.h"
 
 IPv4Message::IPv4Message(NodeId _receiver, NodeId _sender, std::shared_ptr<Message> _payload) :
 	NetworkMessage(_receiver, _sender, _payload, NetworkProtocol::IPv4) {

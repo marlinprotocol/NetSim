@@ -1,5 +1,5 @@
-#ifndef CORE_NETWORKING_IPV4ADDRESS_H_
-#define CORE_NETWORKING_IPV4ADDRESS_H_
+#ifndef CORE_NETWORKING_NETWORKLAYER_IPV4ADDRESS_H_
+#define CORE_NETWORKING_NETWORKLAYER_IPV4ADDRESS_H_
 
 //#include <iostream>
 #include <string>
@@ -17,7 +17,7 @@ public:
 	std::string getIPv4AddressString();
 };
 
-#endif /* CORE_NETWORKING_IPV4ADDRESS_H_ */
+#endif /* CORE_NETWORKING_NETWORKLAYER_IPV4ADDRESS_H_ */
 
 //int main() {
 //	IPv4Address ip1("255.0.1.44");
