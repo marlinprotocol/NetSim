@@ -16,8 +16,8 @@ private:
 public:
 	RoutingTable(int _nodeOwnerId);
 	bool setup();
-	int getOutConnections();
-	int getInConnections();
+	int getNumOutConnections();
+	int getNumInConnections();
 	bool setMaxOutConnections(int _maxOutConnections);
 	int getMaxOutConnections();
 	bool setMaxInConnections(int _maxInConnections);
@@ -26,6 +26,8 @@ public:
 	bool removeOutConnection(int nodeId);
 	bool addInConnection(int nodeId);
 	bool removeInConnection(int nodeId);
+	std::set<int> getOutConnections();
+	std::set<int> getInConnections();
 };
 
 #endif /*ROUTINGTABLE_H_*/

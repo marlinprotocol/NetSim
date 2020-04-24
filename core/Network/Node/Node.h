@@ -33,6 +33,7 @@ public:
 	std::shared_ptr<BlockCache> getBlockCache();
 	bool addProtocol(std::shared_ptr<Protocol> protocol);
 	std::vector<std::shared_ptr<Protocol>> getProtocols();
+	std::shared_ptr<RoutingTable> getRoutingTable();
 };
 
 #endif /*NODE_H_*/

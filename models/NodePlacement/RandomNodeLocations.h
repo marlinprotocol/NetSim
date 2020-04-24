@@ -51,6 +51,10 @@ bool generateNodes(Network& network, std::shared_ptr<BlockCache> blockCache, Nod
 					std::shared_ptr<Node> node(new Node(i, true, j, blockCache));
 					std::shared_ptr<BitcoinMiner> bitcoinMinerProtocol(new BitcoinMiner(node, i%2==0?1:2, (NUM_NODES/2*2 + (NUM_NODES-NUM_NODES/2)) * BLOCK_TIME));
 					node->addProtocol(std::static_pointer_cast<Protocol>(bitcoinMinerProtocol));
+					for(int k=0; k<NUM_NODES; k++) {
+						if(k!=i)
+							node->getRoutingTable()->addOutConnection(k);
+					}
 					network.addNode(node);
 				}
 				break;

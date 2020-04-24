@@ -76,7 +76,8 @@ void BitcoinMiner::onNewBlockMinedMessage(std::shared_ptr<NewBlockMinedMessage> 
 
 	_newEvents.push_back(std::make_shared<ScheduleNextBlockEvent>(ScheduleNextBlockEvent()));
 
-	for(int i=0; i<15; i++) {
-		_newEvents.push_back(std::make_shared<MessageToNodeEvent>( MessageToNodeEvent(std::shared_ptr<Message>(new NewBlockIdMessage(newBlock->getBlockId())), i, parentNode->getNodeId(), 0) ));
+
+	for(auto nodeId: parentNode->getRoutingTable()->getOutConnections()) {
+		_newEvents.push_back(std::make_shared<MessageToNodeEvent>( MessageToNodeEvent(std::shared_ptr<Message>(new NewBlockIdMessage(newBlock->getBlockId())), nodeId, parentNode->getNodeId(), 0) ));
 	}
 }

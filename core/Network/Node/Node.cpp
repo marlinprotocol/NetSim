@@ -1,9 +1,10 @@
 #include "./Node.h"
+#include "../../../models/Networking/BitcoinRoutingTable.h"
 
-Node::Node(int _nodeId, bool _isAlive, int _region, 
-		   std::shared_ptr<BlockCache> _blockCache) 
+Node::Node(int _nodeId, bool _isAlive, int _region, std::shared_ptr<BlockCache> _blockCache)
 	 : nodeId(_nodeId), isAlive(_isAlive), region(_region), blockCache(_blockCache),
-	 		  blockchain(std::make_shared<Blockchain>(Blockchain(std::const_pointer_cast<const BlockCache>(_blockCache)))) {}
+	 		  blockchain(std::make_shared<Blockchain>(Blockchain(std::const_pointer_cast<const BlockCache>(_blockCache)))),
+			  routingTable(std::make_shared<BitcoinRoutingTable>(BitcoinRoutingTable(_nodeId))){}
 
 int Node::getRegion() const {
 	return region;
@@ -28,4 +29,8 @@ bool Node::addProtocol(std::shared_ptr<Protocol> protocol) {
 
 std::vector<std::shared_ptr<Protocol>> Node::getProtocols() {
 	return protocols;
+}
+
+std::shared_ptr<RoutingTable> Node::getRoutingTable() {
+	return routingTable;
 }
