@@ -1,8 +1,11 @@
 #include "./Node.h"
+#include "../../Networking/Bandwidth.h"
 #include "../../../models/Networking/BitcoinRoutingTable.h"
 
 Node::Node(int _nodeId, bool _isAlive, int _region, std::shared_ptr<BlockCache> _blockCache)
 	 : nodeId(_nodeId), isAlive(_isAlive), region(_region), blockCache(_blockCache),
+	          currentBandwidth(std::make_shared<Bandwidth>(Bandwidth(5000, 5000))),
+			  maxBandwidth(std::make_shared<Bandwidth>(Bandwidth(5000, 5000))),
 	 		  blockchain(std::make_shared<Blockchain>(Blockchain(std::const_pointer_cast<const BlockCache>(_blockCache)))),
 			  routingTable(std::make_shared<BitcoinRoutingTable>(BitcoinRoutingTable(_nodeId))){}
 

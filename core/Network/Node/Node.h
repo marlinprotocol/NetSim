@@ -12,6 +12,7 @@
 #include "../../Networking/RoutingTable.h"
 #include "../../../helpers/Logger/easylogging.h"
 
+class Bandwidth;
 class Event;
 class Protocol;
 
@@ -20,6 +21,8 @@ private:
 	NodeId nodeId;
 	bool isAlive;
 	int region;
+	std::shared_ptr<Bandwidth> maxBandwidth;
+	std::shared_ptr<Bandwidth> currentBandwidth;
 	std::shared_ptr<RoutingTable> routingTable;
 	std::vector<std::shared_ptr<Protocol>> protocols;
 	std::shared_ptr<Blockchain> blockchain;
