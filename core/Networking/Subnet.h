@@ -3,15 +3,20 @@
 
 #include <memory>
 
+class Network;
 class NetworkMessage;
+class AbstractGnpNetBandwidthManager;
 
 class Subnet {
 private:
-	Subnet();
+	Network& network;
+	std::shared_ptr<AbstractGnpNetBandwidthManager> bandwidthManager;
 
 public:
-	static Subnet& getSubnetInstance();
-	// Latency Model
+	Subnet(Network& _network);
+//	static Subnet& getSubnetInstance();
+//	void initializeNetwork(Network& _network);
+	std::shared_ptr<AbstractGnpNetBandwidthManager> getBandwidthManager();
 	void send(std::shared_ptr<NetworkMessage> msg);
 };
 
