@@ -20,6 +20,9 @@ add_executable(simulation
         core/Network/Messages/NewBlockMinedMessage.cpp
         core/Network/Node/Node.cpp   
         core/Networking/Bandwidth.cpp
+        core/Networking/BandwidthModels/gnp/AbstractGnpNetBandwidthManager.cpp
+        core/Networking/BandwidthModels/gnp/GnpNetBandwidthAllocation.cpp
+        core/Networking/BandwidthModels/gnp/GnpNetBandwidthManager.cpp
         core/Networking/NetworkLayer/IPv4Address.cpp
         core/Networking/NetworkLayer/IPv4Message.cpp
         core/Networking/NetworkLayer/NetworkMessage.cpp
@@ -35,6 +38,7 @@ add_executable(simulation
 
 add_executable(test
         tests/main.cpp
+        tests/SubnetTest.cpp
         core/Blockchain/Blockchain.cpp
         core/Blockchain/Block/PoSBlock.cpp
         core/Blockchain/Block/PoWBlock.cpp
@@ -52,6 +56,9 @@ add_executable(test
         core/Network/Messages/NewBlockMinedMessage.cpp
         core/Network/Node/Node.cpp   
         core/Networking/Bandwidth.cpp
+        core/Networking/BandwidthModels/gnp/AbstractGnpNetBandwidthManager.cpp
+        core/Networking/BandwidthModels/gnp/GnpNetBandwidthAllocation.cpp
+        core/Networking/BandwidthModels/gnp/GnpNetBandwidthManager.cpp
         core/Networking/NetworkLayer/IPv4Address.cpp
         core/Networking/NetworkLayer/IPv4Message.cpp
         core/Networking/NetworkLayer/NetworkMessage.cpp
