@@ -2,6 +2,11 @@
 
 Bandwidth::Bandwidth(double _downBW, double _upBW): downBW(_downBW), upBW(_upBW) {}
 
+void Bandwidth::resetBandwidth(double _downBW, double _upBW) {
+	downBW = _downBW;
+	upBW = _upBW;
+}
+
 double Bandwidth::getDownBW() {
 	return downBW;
 }

@@ -8,6 +8,7 @@ private:
 
 public:
 	Bandwidth(double downBW, double upBW);
+	void resetBandwidth(double downBW, double upBW);
 	double getDownBW();
 	double getUpBW();
 };
