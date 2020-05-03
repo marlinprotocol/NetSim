@@ -9,6 +9,13 @@ Node::Node(int _nodeId, bool _isAlive, int _region, std::shared_ptr<BlockCache> 
 	 		  blockchain(std::make_shared<Blockchain>(Blockchain(std::const_pointer_cast<const BlockCache>(_blockCache)))),
 			  routingTable(std::make_shared<BitcoinRoutingTable>(BitcoinRoutingTable(_nodeId))){}
 
+Node::Node(int _nodeId, double _maxDownBandwidth, double _upDownBandwidth)
+	 : nodeId(_nodeId), isAlive(true), region(0), blockCache(nullptr),
+	          currentBandwidth(std::make_shared<Bandwidth>(Bandwidth(_maxDownBandwidth, _upDownBandwidth))),
+			  maxBandwidth(std::make_shared<Bandwidth>(Bandwidth(_maxDownBandwidth, _upDownBandwidth))),
+	 		  blockchain(std::make_shared<Blockchain>(nullptr)),
+			  routingTable(std::make_shared<BitcoinRoutingTable>(BitcoinRoutingTable(_nodeId))){}
+
 int Node::getRegion() const {
 	return region;
 }
@@ -32,6 +39,14 @@ bool Node::addProtocol(std::shared_ptr<Protocol> protocol) {
 
 std::vector<std::shared_ptr<Protocol>> Node::getProtocols() {
 	return protocols;
+}
+
+std::shared_ptr<Bandwidth> Node::getCurrentBandwidth() {
+	return currentBandwidth;
+}
+
+std::shared_ptr<Bandwidth> Node::getMaxBandwidth() {
+	return maxBandwidth;
 }
 
 std::shared_ptr<RoutingTable> Node::getRoutingTable() {

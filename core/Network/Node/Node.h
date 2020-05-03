@@ -31,6 +31,7 @@ private:
 public:
 	Node(int _nodeId, bool _isAlive, int _region, 
 		 std::shared_ptr<BlockCache> _blockCache);
+	Node(int _nodeId, double _maxDownBandwidth, double _upDownBandwidth);
 	int getRegion() const;
 	int getNodeId() const;
 	std::shared_ptr<Blockchain> getBlockchain();
@@ -38,6 +39,8 @@ public:
 	bool addProtocol(std::shared_ptr<Protocol> protocol);
 	std::vector<std::shared_ptr<Protocol>> getProtocols();
 	std::shared_ptr<RoutingTable> getRoutingTable();
+	std::shared_ptr<Bandwidth> getCurrentBandwidth();
+	std::shared_ptr<Bandwidth> getMaxBandwidth();
 };
 
 #endif /*NODE_H_*/
