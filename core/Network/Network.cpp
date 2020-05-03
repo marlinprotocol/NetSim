@@ -15,7 +15,12 @@ Network::Network(): unif(0, 1), totalLambda(0) {
 
 bool Network::addNode(std::shared_ptr<Node> node) {
 	nodes.push_back(node);
+	nodeIdToNodePtr.insert(make_pair(node->getNodeId(), node));
 	return true;
+}
+
+std::shared_ptr<Node> Network::getNode(NodeId nodeId) {
+	return nodeIdToNodePtr[nodeId];
 }
 
 std::vector<std::shared_ptr<Node>> Network::getNodes() const {
