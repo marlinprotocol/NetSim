@@ -1,0 +1,10 @@
+#ifndef CORE_NETWORKING_NETWORKLAYER_L3ADDRESS_H_
+#define CORE_NETWORKING_NETWORKLAYER_L3ADDRESS_H_
+
+class L3Address {
+public:
+	L3Address();
+	int getSize();
+};
+
+#endif /* CORE_NETWORKING_NETWORKLAYER_L3ADDRESS_H_ */
