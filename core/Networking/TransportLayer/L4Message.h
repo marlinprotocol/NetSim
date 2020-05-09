@@ -29,7 +29,7 @@ public:
 	void setMessageId(int messageId);
 	L4Address getSrc() const;
 	void setSrc(L4Address src);
-	long long getSize() = 0;
+	virtual long long getSize() = 0;
 };
 
 #endif /* CORE_NETWORKING_TRANSPORTLAYER_L4MESSAGE_H_ */
