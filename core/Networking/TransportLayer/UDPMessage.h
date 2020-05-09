@@ -8,7 +8,7 @@ private:
 	int HEADER_SIZE = 8;
 
 public:
-	UDPMessage(int _messageId, std::shared_ptr<Message> _payload, bool _isReply, L4Protocol _l4Protocol, L4Address _src, L4Address _dest);
+	UDPMessage(int _messageId, std::shared_ptr<Message> _payload, bool _isReply, L4Address _src, L4Address _dest);
 	long long getSize();
 };
 
