@@ -10,8 +10,9 @@ private:
 	long long numSegments;
 
 public:
-	TCPMessage(int _messageId, std::shared_ptr<Message> _payload, bool _isReply, L4Protocol _l4Protocol, L4Address _src, L4Address _dest, long long _seqNum);
+	TCPMessage(int _messageId, std::shared_ptr<Message> _payload, bool _isReply, L4Address _src, L4Address _dest, long long _seqNum);
 	long long getSize();
+	long long getSeqNum();
 };
 
 #endif /* CORE_NETWORKING_TRANSPORTLAYER_TCPMESSAGE_H_ */
