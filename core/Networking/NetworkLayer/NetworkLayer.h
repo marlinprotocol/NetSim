@@ -4,6 +4,7 @@
 #include <memory>
 
 class Subnet;
+class L3Address;
 
 class NetworkLayer {
 private:
@@ -14,6 +15,7 @@ private:
 
 public:
 	NetworkLayer(double _uploadBandwidth, double _downloadBandwidth);
+	L3Address getL3Address();
 };
 
 #endif /* CORE_NETWORKING_NETWORKLAYER_NETWORKLAYER_H_ */
