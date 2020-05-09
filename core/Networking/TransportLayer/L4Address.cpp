@@ -1,5 +1,10 @@
+#include <functional>
+#include <string>
+
 #include "L4Address.h"
 #include "../NetworkLayer/L3Address.h"
+
+L4Address::L4Address(short _port) : l3Address(L3Address()), port(_port) {}
 
 L4Address::L4Address(L3Address _l3Address, short _port) : l3Address(_l3Address), port(_port) {}
 
@@ -22,3 +27,9 @@ inline void L4Address::setPort(short _port) {
 int L4Address::getSize() {
 	return l3Address.getSize() + sizeof(short);
 }
+
+template<> struct std::hash<L4Address> {
+	std::size_t operator()(L4Address const& l) const noexcept {
+		return std::hash<string>{}(std::to_string((long long) hash<L3Address>{}(l)) + "P" + std::to_string(l.getPort()));
+	}
+};
