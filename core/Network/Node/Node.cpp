@@ -2,19 +2,17 @@
 #include "../../Networking/Bandwidth.h"
 #include "../../../models/Networking/BitcoinRoutingTable.h"
 
-Node::Node(int _nodeId, bool _isAlive, int _region, std::shared_ptr<BlockCache> _blockCache)
+Node::Node(int _nodeId, bool _isAlive, int _region, std::shared_ptr<BlockCache> _blockCache, std::shared_ptr<Subnet> _subnet)
 	 : nodeId(_nodeId), isAlive(_isAlive), region(_region), blockCache(_blockCache),
-	          currentBandwidth(std::make_shared<Bandwidth>(Bandwidth(5000, 5000))),
-			  maxBandwidth(std::make_shared<Bandwidth>(Bandwidth(5000, 5000))),
-	 		  blockchain(std::make_shared<Blockchain>(Blockchain(std::const_pointer_cast<const BlockCache>(_blockCache)))),
-			  routingTable(std::make_shared<BitcoinRoutingTable>(BitcoinRoutingTable(_nodeId))){}
+	   networkLayer(std::make_shared<NetworkLayer>(NetworkLayer(5000, 5000, _subnet))),
+	   blockchain(std::make_shared<Blockchain>(Blockchain(std::const_pointer_cast<const BlockCache>(_blockCache)))),
+	   routingTable(std::make_shared<BitcoinRoutingTable>(BitcoinRoutingTable(_nodeId))){}
 
-Node::Node(int _nodeId, double _maxDownBandwidth, double _upDownBandwidth)
+Node::Node(int _nodeId, double _downloadBandwidth, double _uploadBandwidth, std::shared_ptr<Subnet> _subnet)
 	 : nodeId(_nodeId), isAlive(true), region(0), blockCache(nullptr),
-	          currentBandwidth(std::make_shared<Bandwidth>(Bandwidth(_maxDownBandwidth, _upDownBandwidth))),
-			  maxBandwidth(std::make_shared<Bandwidth>(Bandwidth(_maxDownBandwidth, _upDownBandwidth))),
-	 		  blockchain(std::make_shared<Blockchain>(nullptr)),
-			  routingTable(std::make_shared<BitcoinRoutingTable>(BitcoinRoutingTable(_nodeId))){}
+	   networkLayer(std::make_shared<NetworkLayer>(NetworkLayer(_downloadBandwidth, _uploadBandwidth, _subnet))),
+	   blockchain(std::make_shared<Blockchain>(nullptr)),
+   	   routingTable(std::make_shared<BitcoinRoutingTable>(BitcoinRoutingTable(_nodeId))){}
 
 int Node::getRegion() const {
 	return region;
@@ -51,4 +49,8 @@ std::shared_ptr<Bandwidth> Node::getMaxBandwidth() {
 
 std::shared_ptr<RoutingTable> Node::getRoutingTable() {
 	return routingTable;
+}
+
+std::shared_ptr<NetworkLayer> Node::getNetworkLayer() {
+	return networkLayer;
 }

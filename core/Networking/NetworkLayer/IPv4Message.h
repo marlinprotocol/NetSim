@@ -9,8 +9,8 @@ private:
 	long long size = 0;
 
 public:
-	int HEADER_SIZE = 20;
-	int MTU_SIZE = 1500;
+	static int HEADER_SIZE = 20;
+	static int MTU_SIZE = 1500;
 
 	IPv4Message(NodeId receiver, NodeId sender, std::shared_ptr<Message> payload);
 	long long getSize();

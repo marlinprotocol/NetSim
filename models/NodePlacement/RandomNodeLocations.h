@@ -16,7 +16,8 @@
 #include "../../core/Networking/RoutingTable.h"
 
 bool generateNodes(Network& network, std::shared_ptr<BlockCache> blockCache, NodeType nodeType,
-				   std::shared_ptr<GlobalOrchestration> _blockchainManagementModel) {
+				   std::shared_ptr<GlobalOrchestration> _blockchainManagementModel,
+				   std::shared_ptr<Subnet> _subnet) {
 	std::vector<double> cumulativeProbabilities;
 
 	// compute cumulative probability vector of node distribution in regions to randomly assign a node's region
@@ -48,7 +49,7 @@ bool generateNodes(Network& network, std::shared_ptr<BlockCache> blockCache, Nod
 		for(int j=0; j<NUM_REGIONS; j++) {
 			if(randomNumber < cumulativeProbabilities[j]) {
 				if(nodeType == NodeType::Miner) {
-					std::shared_ptr<Node> node(new Node(i, true, j, blockCache));
+					std::shared_ptr<Node> node(new Node(i, true, j, blockCache, _subnet));
 					std::shared_ptr<BitcoinMiner> bitcoinMinerProtocol(new BitcoinMiner(node, i%2==0?1:2, (NUM_NODES/2*2 + (NUM_NODES-NUM_NODES/2)) * BLOCK_TIME));
 					node->addProtocol(std::static_pointer_cast<Protocol>(bitcoinMinerProtocol));
 					for(int k=0; k<NUM_NODES; k++) {
@@ -113,10 +114,11 @@ bool printGeneratedNetwork(const Network& network) {
 //}
 
 Network getRandomNetwork(std::shared_ptr<BlockCache> _blockCache,
-						 std::shared_ptr<GlobalOrchestration> _blockchainManagementModel) {
+						 std::shared_ptr<GlobalOrchestration> _blockchainManagementModel,
+						 std::shared_ptr<Subnet> _subnet) {
 	Network network;
 
-	generateNodes(network, _blockCache, NodeType::Miner, _blockchainManagementModel);
+	generateNodes(network, _blockCache, NodeType::Miner, _blockchainManagementModel, _subnet);
 	printGeneratedNetwork(network);
 
 //	initializeRoutingTable(network);

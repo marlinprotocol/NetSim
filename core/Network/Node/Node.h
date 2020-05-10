@@ -14,7 +14,9 @@
 
 class Bandwidth;
 class Event;
+class NetworkLayer;
 class Protocol;
+class Subnet;
 
 class Node {
 private:
@@ -27,11 +29,11 @@ private:
 	std::vector<std::shared_ptr<Protocol>> protocols;
 	std::shared_ptr<Blockchain> blockchain;
 	std::shared_ptr<BlockCache> blockCache;
+	std::shared_ptr<NetworkLayer> networkLayer;
 
 public:
-	Node(int _nodeId, bool _isAlive, int _region, 
-		 std::shared_ptr<BlockCache> _blockCache);
-	Node(int _nodeId, double _maxDownBandwidth, double _upDownBandwidth);
+	Node(int _nodeId, bool _isAlive, int _region, std::shared_ptr<BlockCache> _blockCache, std::shared_ptr<Subnet> _subnet);
+	Node(int _nodeId, double _maxDownBandwidth, double _upDownBandwidth, std::shared_ptr<Subnet> _subnet);
 	int getRegion() const;
 	int getNodeId() const;
 	std::shared_ptr<Blockchain> getBlockchain();
@@ -41,6 +43,7 @@ public:
 	std::shared_ptr<RoutingTable> getRoutingTable();
 	std::shared_ptr<Bandwidth> getCurrentBandwidth();
 	std::shared_ptr<Bandwidth> getMaxBandwidth();
+	std::shared_ptr<NetworkLayer> getNetworkLayer();
 };
 
 #endif /*NODE_H_*/

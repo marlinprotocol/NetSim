@@ -9,10 +9,13 @@
 #include "../../helpers/Logger/easylogging.h"
 #include "../../models/BlockchainManagement/GlobalOrchestration/GlobalOrchestration.h"
 
+class Subnet;
+
 class Simulator {
 private:
 	std::shared_ptr<BlockCache> blockCache;
 	std::shared_ptr<GlobalOrchestration> globalOrchestration;
+	std::shared_ptr<Subnet> subnet;
 	EventManager eventManager;
 	Network network;
 
