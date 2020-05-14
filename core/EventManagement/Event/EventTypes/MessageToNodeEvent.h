@@ -14,10 +14,10 @@ private:
 	int fromNodeId;
 
 public: 
-	MessageToNodeEvent(std::shared_ptr<Message> _message, int _forNodeId, int _fromNodeId,
-					   long long _durationInTicks);
+	MessageToNodeEvent(std::shared_ptr<Message> _message, int _forNodeId, int _fromNodeId, long long _durationInTicks);
 	bool execute(Network& _network, std::shared_ptr<BlockCache> _blockCache,
 				 std::vector<std::shared_ptr<Event>>& _newEvents, uint64_t _currentTick);
+	bool execute(Network& _network, std::vector<std::shared_ptr<Event>>& _newEvents, uint64_t _currentTick);
 };
 
 #endif /*MESSAGETONODEEVENT_H_*/

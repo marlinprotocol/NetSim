@@ -9,7 +9,7 @@ class Message;
 
 class L4Message {
 protected:
-	int messageId;
+	uint64_t messageId;
 	std::shared_ptr<Message> payload;
 	bool isReply;
 	L4Protocol l4Protocol;
@@ -17,7 +17,8 @@ protected:
 	L4Address dest;
 
 public:
-	L4Message(int _messageId, std::shared_ptr<Message> _payload, bool _isReply, L4Protocol _l4Protocol, L4Address _src, L4Address _dest);
+	L4Message(std::shared_ptr<Message> _payload, bool _isReply, L4Protocol _l4Protocol, L4Address _src, L4Address _dest);
+	virtual ~L4Message();
 	std::shared_ptr<Message> getPayload();
 	L4Address getDest() const;
 	void setDest(L4Address dest);

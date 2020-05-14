@@ -25,6 +25,7 @@ public:
 	double getTotalLambda() const;
 	double recaculateTotalLambda();
 	std::vector<double> recaculateCumulativeLambdaVector();
+	double getRandomDouble();
 	std::shared_ptr<Node> pickLambdaWeightedNode();
 };
 

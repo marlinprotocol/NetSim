@@ -30,3 +30,9 @@ bool MessageToNodeEvent::execute(Network& _network, std::shared_ptr<BlockCache> 
 
 	return true;
 }
+
+bool MessageToNodeEvent::execute(Network& _network, std::vector<std::shared_ptr<Event>>& _newEvents, uint64_t _currentTick) {
+	LOG(DEBUG) << "[" << std::setw(35) << std::left << "ScheduleNextBlockEvent::execute]";
+
+	return true;
+}

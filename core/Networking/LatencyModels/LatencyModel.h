@@ -4,7 +4,10 @@
 #include "../../Network/Node/NodeId.h"
 
 class LatencyModel {
-	long long getLatency(NodeId _sender, NodeId _receiver) = 0;
+public:
+	virtual ~LatencyModel();
+	virtual long long getLatency(NodeId _sender, NodeId _receiver) = 0;
+	virtual double getUDPErrorProbability(std::shared_ptr<IPv4Message> msg) = 0;
 };
 
 #endif /* CORE_NETWORKING_LATENCYMODELS_LATENCYMODEL_H_ */

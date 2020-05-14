@@ -1,5 +1,6 @@
 #include "./Node.h"
 #include "../../Networking/Bandwidth.h"
+#include "../../Networking/NetworkLayer/NetworkLayer.h"
 #include "../../../models/Networking/BitcoinRoutingTable.h"
 
 Node::Node(int _nodeId, bool _isAlive, int _region, std::shared_ptr<BlockCache> _blockCache, std::shared_ptr<Subnet> _subnet)
@@ -40,11 +41,11 @@ std::vector<std::shared_ptr<Protocol>> Node::getProtocols() {
 }
 
 std::shared_ptr<Bandwidth> Node::getCurrentBandwidth() {
-	return currentBandwidth;
+	return networkLayer->getCurrentBandwidth();
 }
 
 std::shared_ptr<Bandwidth> Node::getMaxBandwidth() {
-	return maxBandwidth;
+	return networkLayer->getMaxBandwidth();
 }
 
 std::shared_ptr<RoutingTable> Node::getRoutingTable() {
