@@ -97,11 +97,11 @@ void Subnet::send(std::shared_ptr<NetworkMessage> msg, uint64_t _currentTick, st
 		uint64_t propagationTicks = latencyModel->getPropagationDelay(senderId, receiverId);
 		uint64_t transmissionTicks = latencyModel->getTransmissionDelay(msg->getSize(), std::min(sender->getNetworkLayer()->getMaxBandwidth()->getUpBW(),
 																								receiver->getNetworkLayer()->getMaxBandwidth()->getDownBW()));
-		uint64_t transmissionEndTick = std::max(_currentTick, sender->getNetworkLayer()->getNextFreeSendingTime()) + transmissionTicks;
-		sender->getNetworkLayer()->setNextFreeSendingTime(transmissionEndTick);
+		uint64_t transmissionEndTick = std::max(_currentTick, sender->getNetworkLayer()->getNextFreeSendingTick()) + transmissionTicks;
+		sender->getNetworkLayer()->setNextFreeSendingTick(transmissionEndTick);
 
-		uint64_t ticksBeforeReception = (sender->getNetworkLayer()->getNextFreeSendingTime() > _currentTick
-											? sender->getNetworkLayer()->getNextFreeSendingTime() - _currentTick
+		uint64_t ticksBeforeReception = (sender->getNetworkLayer()->getNextFreeSendingTick() > _currentTick
+											? sender->getNetworkLayer()->getNextFreeSendingTick() - _currentTick
 											: 0)
 										+ transmissionTicks + propagationTicks;
 
@@ -181,6 +181,31 @@ void Subnet::onDisconnect(NodeId _nodeId, uint64_t _currentTick, std::vector<std
 	}
 }
 
+void Subnet::forwardToReceiverNetworkLayer(std::shared_ptr<NetworkMessage> msg, std::shared_ptr<Node> sender, std::shared_ptr<Node> receiver) {
+	if(receiver->getNetworkLayer()->isOnline() &&
+			(receiver->getNetworkLayer()->getPartitionGroupId() == sender->getNetworkLayer()->getPartitionGroupId())) {
+		receiver->getNetworkLayer()->receive(msg);
+	}
+}
+
+void Subnet::addToReceiverQueue(std::shared_ptr<NetworkMessage> _message, std::shared_ptr<Node> _sender, std::shared_ptr<Node> _receiver,
+								uint64_t _currentTick, std::vector<std::shared_ptr<Event>>& _newEvents) {
+	uint64_t transmissionTicks = latencyModel->getTransmissionDelay(_message->getSize(), _receiver->getMaxBandwidth()->getDownBW());
+	uint64_t arrivalTick = _receiver->getNetworkLayer()->getNextFreeReceivingTick() + transmissionTicks;
+	if(arrivalTick < _currentTick) {
+		_receiver->getNetworkLayer()->setNextFreeReceivingTick(_currentTick);
+		forwardToReceiverNetworkLayer(_message, _sender, _receiver);
+	}
+	else {
+		_receiver->getNetworkLayer()->setNextFreeReceivingTick(arrivalTick);
+		uint64_t ticksBeforeReception = arrivalTick - _currentTick;
+		_newEvents.push_back(std::make_shared<MessageToNodeEvent>(
+				MessageToNodeEvent(std::shared_ptr<Message>(new SubnetMessage(SubnetMessageType::FWD_TO_RECEIVER, _message)),
+								   -1, -1, ticksBeforeReception)
+		));
+	}
+}
+
 void Subnet::onMessageReceived(std::shared_ptr<TransferProgress> _tp, uint64_t _currentTick, std::vector<std::shared_ptr<Event>>& _newEvents) {
 	std::shared_ptr<NetworkMessage> msg = _tp->getMessage();
 	NodeId senderId = msg->getSender();
@@ -189,7 +214,7 @@ void Subnet::onMessageReceived(std::shared_ptr<TransferProgress> _tp, uint64_t _
 	std::shared_ptr<Node> receiver = network.getNode(receiverId);
 
 	if(msg->getNumFragments() == 1) {
-		// receiver.addToReceiveQueue(msg);
+		addToReceiverQueue(msg, sender, receiver, _currentTick, _newEvents);
 	}
 	else {
 		if(_tp->obsolete || (cancelledTransfers.find(_tp) != cancelledTransfers.end())) {
@@ -197,7 +222,7 @@ void Subnet::onMessageReceived(std::shared_ptr<TransferProgress> _tp, uint64_t _
 			return;
 		}
 		else {
-			// receiver.receive(msg);
+			forwardToReceiverNetworkLayer(msg, sender, receiver);
 			if(nextRescheduleTime < _currentTick + 1) {
 				nextRescheduleTime = _currentTick + 1;
 				_newEvents.push_back(std::make_shared<MessageToNodeEvent>(

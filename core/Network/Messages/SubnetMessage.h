@@ -5,18 +5,21 @@
 
 #include "Message.h"
 
+class NetworkMessage;
 class TransferProgress;
 
-enum class SubnetMessageType {MESSAGE_RECVD, BANDWIDTH_REALLOC};
+enum class SubnetMessageType {MESSAGE_RECVD, BANDWIDTH_REALLOC, FWD_TO_RECEIVER};
 
 class SubnetMessage : public Message {
 private:
 	SubnetMessageType subnetMessageType;
 	std::shared_ptr<TransferProgress> transferProgress;
+	std::shared_ptr<NetworkMessage> message;
 
 public:
 	SubnetMessage(SubnetMessageType _subnetMessageType);
 	SubnetMessage(SubnetMessageType _subnetMessageType, std::shared_ptr<TransferProgress> _transferProgress);
+	SubnetMessage(SubnetMessageType _subnetMessageType, std::shared_ptr<NetworkMessage> _message);
 	std::string getType();
 };
 
