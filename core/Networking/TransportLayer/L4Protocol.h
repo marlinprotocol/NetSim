@@ -18,7 +18,4 @@ public:
 	void setIsReliable(bool isReliable);
 };
 
-L4Protocol l4UDP(L4ProtocolType::UDP, false, false);
-L4Protocol l4TCP(L4ProtocolType::TCP, true, true);
-
 #endif /* CORE_NETWORKING_TRANSPORTLAYER_L4PROTOCOL_H_ */

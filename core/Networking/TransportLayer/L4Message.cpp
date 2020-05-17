@@ -3,42 +3,47 @@
 L4Message::L4Message(std::shared_ptr<Message> _payload, bool _isReply, L4Protocol _l4Protocol, L4Address _src, L4Address _dest) :
 		messageId(-1), payload(_payload), isReply(_isReply), l4Protocol(_l4Protocol), src(_src), dest(_dest) {}
 
-inline L4Address L4Message::getDest() const {
+L4Message::L4Message(std::shared_ptr<Message> _payload, bool _isReply, L4Protocol _l4Protocol, L4Address _src, L4Address _dest, uint64_t _messageId) :
+		messageId(_messageId), payload(_payload), isReply(_isReply), l4Protocol(_l4Protocol), src(_src), dest(_dest) {}
+
+L4Message::~L4Message() {}
+
+L4Address L4Message::getDest() {
 	return dest;
 }
 
-inline void L4Message::setDest(L4Address _dest) {
+void L4Message::setDest(L4Address _dest) {
 	dest = _dest;
 }
 
-inline bool L4Message::isIsReply() const {
+bool L4Message::isIsReply() {
 	return isReply;
 }
 
-inline void L4Message::setIsReply(bool _isReply) {
+void L4Message::setIsReply(bool _isReply) {
 	isReply = _isReply;
 }
 
-inline L4Protocol L4Message::getL4Protocol() const {
+L4Protocol L4Message::getL4Protocol() {
 	return l4Protocol;
 }
 
-inline void L4Message::setL4Protocol(L4Protocol _l4Protocol) {
+void L4Message::setL4Protocol(L4Protocol _l4Protocol) {
 	l4Protocol = _l4Protocol;
 }
 
-inline int L4Message::getMessageId() const {
+int L4Message::getMessageId() {
 	return messageId;
 }
 
-inline void L4Message::setMessageId(int _messageId) {
+void L4Message::setMessageId(int _messageId) {
 	messageId = _messageId;
 }
 
-inline L4Address L4Message::getSrc() const {
+L4Address L4Message::getSrc() {
 	return src;
 }
 
-inline void L4Message::setSrc(L4Address _src) {
+void L4Message::setSrc(L4Address _src) {
 	src = _src;
 }

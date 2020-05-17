@@ -3,16 +3,18 @@
 
 #include "NetworkMessage.h"
 
-class IPv4Message : NetworkMessage {
+class L4Message;
+
+class IPv4Message : public NetworkMessage {
 private:
 	int numFragments = 1;
 	long long size = 0;
 
 public:
-	static int HEADER_SIZE = 20;
-	static int MTU_SIZE = 1500;
+	const static int HEADER_SIZE = 20;
+	const static int MTU_SIZE = 1500;
 
-	IPv4Message(NodeId receiver, NodeId sender, std::shared_ptr<Message> payload);
+	IPv4Message(NodeId receiver, NodeId sender, std::shared_ptr<L4Message> payload);
 	long long getSize();
 	int getNumFragments();
 };

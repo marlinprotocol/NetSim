@@ -3,9 +3,9 @@
 #include <cmath>
 
 #include "./NetworkProtocol.h"
-#include "../../Network/Messages/Message.h"
+#include "../TransportLayer/L4Message.h"
 
-IPv4Message::IPv4Message(NodeId _receiver, NodeId _sender, std::shared_ptr<Message> _payload) :
+IPv4Message::IPv4Message(NodeId _receiver, NodeId _sender, std::shared_ptr<L4Message> _payload) :
 	NetworkMessage(_receiver, _sender, _payload, NetworkProtocol::IPv4) {
 	numFragments = (int) ceil( (double)_payload->getSize() / (double)(MTU_SIZE - HEADER_SIZE) );
 	size = _payload->getSize() + numFragments * HEADER_SIZE;

@@ -19,10 +19,10 @@ void PartitionEvent::turnIsolationOnForAll(Network& _network, std::vector<std::s
 	for(auto partition: isolationManager->getPartitionGroups()) {
 		for(auto nodeId: partition.second) {
 			if(_on) {
-				_network.getNode(nodeId)->networkLayer->setPartitionGroupId(partition.first);
+				_network.getNode(nodeId)->getNetworkLayer()->setPartitionGroupId(partition.first);
 			}
 			else {
-				_network.getNode(nodeId)->networkLayer->setPartitionGroupId(-1);
+				_network.getNode(nodeId)->getNetworkLayer()->setPartitionGroupId(-1);
 			}
 		}
 	}
@@ -30,13 +30,13 @@ void PartitionEvent::turnIsolationOnForAll(Network& _network, std::vector<std::s
 
 bool PartitionEvent::execute(Network& _network, std::vector<std::shared_ptr<Event>>& _newEvents, uint64_t _currentTick) {
 	LOG(DEBUG) << "[" << std::setw(35) << std::left << "PartitionEvent::execute] : " ;
-	if(eventType == EventType::SCHEDULE_ISOLATION_START) {
+	if(getEventType() == EventType::SCHEDULE_ISOLATION_START) {
 //		assert(groupId == -1);
 //		isolationManager->setIsolationActive(true);
 		turnIsolationOnForAll(_network, _newEvents, true);
 		isolationManager->eraseResetGroup();
 	}
-	else if(eventType == EventType::SCHEDULE_ISOLATION_STOP) {
+	else if(getEventType() == EventType::SCHEDULE_ISOLATION_STOP) {
 //		groupId = -1;
 //		isolationManager->setIsolationActive(false);
 		turnIsolationOnForAll(_network, _newEvents, false);

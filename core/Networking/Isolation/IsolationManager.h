@@ -19,7 +19,7 @@ public:
 	void setIsolationActive(bool _isIsolationActive);
 	std::unordered_map<int, std::set<NodeId>>& getPartitionGroups();
 	bool updatePartitionGroup(int _groupId, std::set<NodeId>& _nodes);
-	bool updatePartitionGroups(std::set<NodeId>& _partitionGroups);
+	bool updatePartitionGroups(std::unordered_map<int, std::set<NodeId>>& _partitionGroups);
 	void schedulePartitionStart(EventManager& _eventManager, uint64_t _ticksBeforeExecution);
 	void schedulePartitionStop(EventManager& _eventManager, uint64_t _ticksBeforeExecution);
 	void eraseResetGroup();

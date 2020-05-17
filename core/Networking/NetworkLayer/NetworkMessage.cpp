@@ -3,6 +3,8 @@
 NetworkMessage::NetworkMessage(NodeId _sender, NodeId _receiver, std::shared_ptr<L4Message> _payload, NetworkProtocol _networkProtocol) :
 		sender(_sender), receiver(_receiver), payload(_payload), networkProtocol(_networkProtocol) {}
 
+NetworkMessage::~NetworkMessage() {}
+
 std::shared_ptr<L4Message> NetworkMessage::getPayload() {
 	return payload;
 }

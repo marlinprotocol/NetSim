@@ -21,7 +21,7 @@ bool IsolationManager::updatePartitionGroup(int _groupId, std::set<NodeId>& _nod
 	return true;
 }
 
-bool IsolationManager::updatePartitionGroups(std::set<NodeId>& _partitionGroups) {
+bool IsolationManager::updatePartitionGroups(std::unordered_map<int, std::set<NodeId>>& _partitionGroups) {
 	partitionGroups = _partitionGroups;
 	return true;
 }

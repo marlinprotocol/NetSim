@@ -16,3 +16,7 @@ SubnetMessage::SubnetMessage(SubnetMessageType _subnetMessageType, std::shared_p
 	subnetMessageType(_subnetMessageType), message(_message), Message(MessageType::SUBNET_MSG) {
 	assert(_subnetMessageType != SubnetMessageType::FWD_TO_RECEIVER);
 }
+
+std::string SubnetMessage::getType() {
+	return "SubnetMessage";
+}

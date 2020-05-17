@@ -9,8 +9,8 @@ Node::Node(int _nodeId, bool _isAlive, int _region, std::shared_ptr<BlockCache> 
 	   blockchain(std::make_shared<Blockchain>(Blockchain(std::const_pointer_cast<const BlockCache>(_blockCache)))),
 	   routingTable(std::make_shared<BitcoinRoutingTable>(BitcoinRoutingTable(_nodeId))){}
 
-Node::Node(int _nodeId, double _downloadBandwidth, double _uploadBandwidth, std::shared_ptr<Subnet> _subnet)
-	 : nodeId(_nodeId), isAlive(true), region(0), blockCache(nullptr),
+Node::Node(int _nodeId, double _downloadBandwidth, double _uploadBandwidth, std::shared_ptr<Subnet> _subnet, std::string _countryCode)
+	 : nodeId(_nodeId), isAlive(true), region(0), blockCache(nullptr), countryCode(_countryCode),
 	   networkLayer(std::make_shared<NetworkLayer>(NetworkLayer(_downloadBandwidth, _uploadBandwidth, _subnet))),
 	   blockchain(std::make_shared<Blockchain>(nullptr)),
    	   routingTable(std::make_shared<BitcoinRoutingTable>(BitcoinRoutingTable(_nodeId))){}
@@ -21,6 +21,10 @@ int Node::getRegion() const {
 
 int Node::getNodeId() const {
 	return nodeId;
+}
+
+std::string Node::getCountryCode() {
+	return countryCode;
 }
 
 std::shared_ptr<Blockchain> Node::getBlockchain() {

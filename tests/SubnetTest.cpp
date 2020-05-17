@@ -475,16 +475,16 @@ void SubnetTest::allAtOnce_RestrictedAllocation_MultiStream() {
 int SubnetTest::test() {
 	std::shared_ptr<Subnet> subnet(new Subnet(*network));
 
-	std::shared_ptr<Node> sender0(new Node(0, 0, 10, subnet));
-	std::shared_ptr<Node> sender1(new Node(1, 0, 10, subnet));
-	std::shared_ptr<Node> sender2(new Node(2, 0, 80, subnet));
+	std::shared_ptr<Node> sender0(new Node(0, 0, 10, subnet, "US"));
+	std::shared_ptr<Node> sender1(new Node(1, 0, 10, subnet, "US"));
+	std::shared_ptr<Node> sender2(new Node(2, 0, 80, subnet, "US"));
 
-	std::shared_ptr<Node> receiver0(new Node(3, 40, 0, subnet));
-	std::shared_ptr<Node> receiver1(new Node(4, 30, 0, subnet));
-	std::shared_ptr<Node> receiver2(new Node(5, 10, 0, subnet));
-	std::shared_ptr<Node> receiver3(new Node(6, 10, 0, subnet));
-	std::shared_ptr<Node> receiver4(new Node(7, 10, 0, subnet));
-	std::shared_ptr<Node> receiver5(new Node(8, 40, 0, subnet));
+	std::shared_ptr<Node> receiver0(new Node(3, 40, 0, subnet, "US"));
+	std::shared_ptr<Node> receiver1(new Node(4, 30, 0, subnet, "US"));
+	std::shared_ptr<Node> receiver2(new Node(5, 10, 0, subnet, "US"));
+	std::shared_ptr<Node> receiver3(new Node(6, 10, 0, subnet, "US"));
+	std::shared_ptr<Node> receiver4(new Node(7, 10, 0, subnet, "US"));
+	std::shared_ptr<Node> receiver5(new Node(8, 40, 0, subnet, "US"));
 
 	network->addNode(sender0);
 	network->addNode(sender1);

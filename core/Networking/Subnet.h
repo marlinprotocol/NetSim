@@ -29,11 +29,12 @@ private:
 	std::unordered_map<int, std::shared_ptr<TransferProgress>> messageIdsToTransfersMap;
 	std::set<std::shared_ptr<TransferProgress>> cancelledTransfers;
 
-	bool shouldDropMsg(std::shared_ptr<NetworkMessage> msg);
+	bool shouldDropMsg(NodeId senderId, NodeId receiverId, std::shared_ptr<NetworkMessage> msg);
 	uint64_t setMessageId(std::shared_ptr<NetworkMessage> msg);
 
 public:
-	Subnet(Network& _network, std::shared_ptr<Node> sender, std::shared_ptr<Node> receiver);
+	Subnet(Network& _network);
+	Subnet(Network& _network, std::shared_ptr<GnpLatencyModel> _latencyModel);
 //	static Subnet& getSubnetInstance();
 //	void initializeNetwork(Network& _network);
 	std::shared_ptr<AbstractGnpNetBandwidthManager> getBandwidthManager();

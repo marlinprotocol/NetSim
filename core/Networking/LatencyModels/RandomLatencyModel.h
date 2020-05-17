@@ -9,6 +9,7 @@ private:
 
 public:
 	RandomLatencyModel();
+	int getDistance(NodeId _sender, NodeId _receiver);
 	long long getLatency(NodeId _sender, NodeId _receiver);
 	double calcStaticDelay(NodeId _sender, NodeId _receiver);
 };

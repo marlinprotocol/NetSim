@@ -28,15 +28,27 @@
 #include <memory>
 
 #include "LatencyModel.h"
+#include "PingER.h"
 #include "../../Network/Node/NodeId.h"
 
 class IPv4Message;
+class Network;
 
 class GnpLatencyModel : public LatencyModel {
 private:
+	static int MSS;
+	Network& network;
+	PingER pingER;
 
 public:
-	double getUDPErrorProbability(std::shared_ptr<IPv4Message> _msg);
+	GnpLatencyModel(Network& _network);
+//	void setPingER(PingER& _pingER);
+	PingER& getPingER();
+	double getMinRTT(NodeId sender, NodeId receiver);
+	double getPacketLossProbability(NodeId senderId, NodeId receiverId);
+	double getNextJitter(NodeId senderId, NodeId receiverId);
+	double getAvgJitter(NodeId senderId, NodeId receiverId);
+	double getUDPErrorProbability(NodeId senderId, NodeId receiverId, std::shared_ptr<IPv4Message> _msg);
 	uint64_t getTransmissionDelay(long long _bytes, double _bandwidth);
 	uint64_t getPropagationDelay(NodeId _sender, NodeId _receiver);
 	uint64_t getTCPThroughput(NodeId sender, NodeId receiver);

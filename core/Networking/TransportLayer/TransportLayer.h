@@ -12,7 +12,7 @@ class NetworkLayer;
 class TCPMessage;
 
 struct MessageComparator {
-    bool operator()(const std::shared_ptr<TCPMessage>& lhs, const std::shared_ptr<TCPMessage>& rhs) {
+    bool operator()(const std::shared_ptr<TCPMessage>& lhs, const std::shared_ptr<TCPMessage>& rhs) const {
         return lhs->getSeqNum() < rhs->getSeqNum();
     }
 };
@@ -20,7 +20,7 @@ struct MessageComparator {
 class TransportLayer {
 private:
 	std::unordered_map<long long, long long> connIdSeqNumMap;
-	std::unordered_map<long long, std::set<std::shared_ptr<TCPMessage>>, MessageComparator> queuedMsgsPerConnId;
+	std::unordered_map<long long, std::set<std::shared_ptr<TCPMessage>, MessageComparator>> queuedMsgsPerConnId;
 	std::shared_ptr<NetworkLayer> networkLayer;
 	int lastMsgId;
 

@@ -19,7 +19,7 @@ public:
 				 std::vector<std::shared_ptr<Event>>& _newEvents, uint64_t _currentTick) {return true;}
 	bool execute(Network& _network, std::vector<std::shared_ptr<Event>>& _newEvents, uint64_t _currentTick);
 //	void PartitionEvent::toggleIsolationForGroupId(Network& _network, std::vector<std::shared_ptr<Event>>& _newEvents);
-	void PartitionEvent::turnIsolationOnForAll(Network& _network, std::vector<std::shared_ptr<Event>>& _newEvents, bool _on);
+	void turnIsolationOnForAll(Network& _network, std::vector<std::shared_ptr<Event>>& _newEvents, bool _on);
 };
 
 #endif /* CORE_NETWORKING_ISOLATION_EVENTS_PARTITIONEVENT_H_ */

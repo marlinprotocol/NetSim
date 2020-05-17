@@ -2,13 +2,12 @@
 
 #include "L3Address.h"
 
-namespace std
-{
-    template<> struct hash<L3Address>
-    {
-    	std::size_t operator()(L3Address const& l) const noexcept
-        {
-            return 0; // TODO
-        }
-    };
+L3Address::L3Address() {}
+
+bool L3Address::operator==(const L3Address &other) const {
+	return false;
+}
+
+int L3Address::getSize() {
+	return 0;
 }

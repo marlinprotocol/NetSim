@@ -1,7 +1,8 @@
 #include <cstdio>
 #include <map>
 
-#include "SubnetTest.h"
+#include "GnpLatencyModelTest.h"
+//#include "SubnetTest.h"
 #include "../helpers/Logger/easylogging.h"
 
 using namespace std;
@@ -25,8 +26,13 @@ int main() {
 
 	LOG(INFO) << "[Test started]";
 	
-	SubnetTest st;
-	st.test();
+	// Subnet Test
+	//	SubnetTest st;
+	//	st.test();
+
+	// GnpLatencyModel Test
+	GnpLatencyModelTest gt;
+	gt.test();
 
     LOG(INFO) << "[Test stopped]";
 

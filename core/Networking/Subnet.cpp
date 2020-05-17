@@ -43,15 +43,19 @@
 #include "../Network/Network.h"
 #include "../Network/Node/Node.h"
 
-Subnet::Subnet(Network& _network) : network(_network), lastMsgId(0), latencyModel(std::make_shared<GnpLatencyModel>()),
+Subnet::Subnet(Network& _network) : network(_network), lastMsgId(0), latencyModel(std::make_shared<GnpLatencyModel>(_network)),
 									nextRescheduleTime(-1), bandwidthManager(std::make_shared<GnpNetBandwidthManager>(_network)) {}
+
+Subnet::Subnet(Network& _network, std::shared_ptr<GnpLatencyModel> _latencyModel)
+	   : network(_network), lastMsgId(0), latencyModel(_latencyModel), nextRescheduleTime(-1),
+		 bandwidthManager(std::make_shared<GnpNetBandwidthManager>(_network)) {}
 
 std::shared_ptr<AbstractGnpNetBandwidthManager> Subnet::getBandwidthManager() {
 	return bandwidthManager;
 }
 
-bool Subnet::shouldDropMsg(std::shared_ptr<NetworkMessage> msg) {
-	double packetLossProbability = latencyModel->getUDPErrorProbability(std::static_pointer_cast<IPv4Message>(msg));
+bool Subnet::shouldDropMsg(NodeId senderId, NodeId receiverId, std::shared_ptr<NetworkMessage> msg) {
+	double packetLossProbability = latencyModel->getUDPErrorProbability(senderId, receiverId, std::static_pointer_cast<IPv4Message>(msg));
 
 	double randomNum = network.getRandomDouble();
 
@@ -76,14 +80,14 @@ uint64_t Subnet::setMessageId(std::shared_ptr<NetworkMessage> msg) {
 void Subnet::send(std::shared_ptr<NetworkMessage> msg, uint64_t _currentTick, std::vector<std::shared_ptr<Event>>& _newEvents) {
 	NodeId senderId = msg->getSender();
 	NodeId receiverId = msg->getReceiver();
-	L4ProtocolType l4Protocol = msg->getPayload()->getL4Protocol().l4ProtocolType;
+	L4ProtocolType l4Protocol = msg->getPayload()->getL4Protocol().getL4ProtocolType();
 
 	if(senderId == receiverId) {
 		return;
 	}
 
 	if(l4Protocol == L4ProtocolType::UDP) {
-		if(shouldDropMsg(msg)) {
+		if(shouldDropMsg(senderId, receiverId, msg)) {
 			return;
 		}
 	}
@@ -142,7 +146,7 @@ void Subnet::cancelTransmission(int _msgId, uint64_t _currentTick, std::vector<s
 
 	double maxBandwidthRequired = sender->getNetworkLayer()->getMaxBandwidth()->getUpBW();
 
-	if(msg->getPayload()->getL4Protocol().l4ProtocolType == L4ProtocolType::TCP) {
+	if(msg->getPayload()->getL4Protocol().getL4ProtocolType() == L4ProtocolType::TCP) {
 		double tcpThroughput = latencyModel->getTCPThroughput(senderId, receiverId);
 		maxBandwidthRequired = std::min(maxBandwidthRequired, tcpThroughput);
 	}
@@ -217,7 +221,7 @@ void Subnet::onMessageReceived(std::shared_ptr<TransferProgress> _tp, uint64_t _
 		addToReceiverQueue(msg, sender, receiver, _currentTick, _newEvents);
 	}
 	else {
-		if(_tp->obsolete || (cancelledTransfers.find(_tp) != cancelledTransfers.end())) {
+		if(_tp->isObsolete() || (cancelledTransfers.find(_tp) != cancelledTransfers.end())) {
 			cancelledTransfers.erase(_tp);
 			return;
 		}
@@ -233,7 +237,7 @@ void Subnet::onMessageReceived(std::shared_ptr<TransferProgress> _tp, uint64_t _
 		}
 
 		double maxBandwidthRequired = sender->getNetworkLayer()->getMaxBandwidth()->getUpBW();
-		L4ProtocolType l4Protocol = msg->getPayload()->getL4Protocol().l4ProtocolType;
+		L4ProtocolType l4Protocol = msg->getPayload()->getL4Protocol().getL4ProtocolType();
 		if(l4Protocol == L4ProtocolType::TCP) {
 			double tcpThroughput = latencyModel->getTCPThroughput(senderId, receiverId);
 			maxBandwidthRequired = std::min(maxBandwidthRequired, tcpThroughput);
@@ -281,7 +285,7 @@ void Subnet::rescheduleTransfers(std::shared_ptr<GnpNetBandwidthAllocation> _ba,
 
 		std::shared_ptr<NetworkMessage> msg = tp->getMessage();
 
-		if(msg->getPayload()->getL4Protocol().l4ProtocolType == L4ProtocolType::TCP) {
+		if(msg->getPayload()->getL4Protocol().getL4ProtocolType() == L4ProtocolType::TCP) {
 			double tcpThroughput = latencyModel->getTCPThroughput(senderId, receiverId);
 			bandwidth = std::min(bandwidth, tcpThroughput);
 		}
@@ -305,9 +309,9 @@ void Subnet::rescheduleTransfers(std::shared_ptr<GnpNetBandwidthAllocation> _ba,
 		int msgId = msg->getPayload()->getMessageId();
 		messageIdsToTransfersMap[msgId] = transferProgress;
 
-		transferProgress->firstSchedule = false;
-		if(!tp->firstSchedule) {
-			tp->obsolete = true;
+		transferProgress->setFirstSchedule(false);
+		if(!tp->isFirstSchedule()) {
+			tp->setObsolete(true);
 		}
 	}
 

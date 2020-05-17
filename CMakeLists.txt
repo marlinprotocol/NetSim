@@ -18,27 +18,47 @@ add_executable(simulation
         core/Network/Messages/Message.cpp
         core/Network/Messages/NewBlockIdMessage.cpp
         core/Network/Messages/NewBlockMinedMessage.cpp
+        core/Network/Messages/SubnetMessage.cpp
         core/Network/Node/Node.cpp   
         core/Networking/Bandwidth.cpp
+        core/Networking/RoutingTable.cpp  
+        core/Networking/Subnet.cpp   
+        core/Networking/BandwidthModels/TransferProgress.cpp        
         core/Networking/BandwidthModels/gnp/AbstractGnpNetBandwidthManager.cpp
         core/Networking/BandwidthModels/gnp/GnpNetBandwidthAllocation.cpp
         core/Networking/BandwidthModels/gnp/GnpNetBandwidthManager.cpp
+        core/Networking/Isolation/IsolationManager.cpp
+        core/Networking/Isolation/IsolationModel.cpp
+        core/Networking/Isolation/Events/PartitionEvent.cpp
+        core/Networking/LatencyModels/GnpLatencyModel.cpp
+        core/Networking/LatencyModels/LatencyModel.cpp
+        core/Networking/LatencyModels/LinkMetrics.cpp
+        core/Networking/LatencyModels/PingER.cpp
+        core/Networking/LatencyModels/RandomLatencyModel.cpp
+        core/Networking/LatencyModels/StaticLatencyModel.cpp
         core/Networking/NetworkLayer/IPv4Address.cpp
         core/Networking/NetworkLayer/IPv4Message.cpp
+        core/Networking/NetworkLayer/L3Address.cpp
+        core/Networking/NetworkLayer/NetworkLayer.cpp
         core/Networking/NetworkLayer/NetworkMessage.cpp
-        core/Networking/RoutingTable.cpp  
-        core/Networking/Subnet.cpp        
-        helpers/Logger/easylogging.cpp    
+        core/Networking/TransportLayer/L4Address.cpp
+        core/Networking/TransportLayer/L4Message.cpp
+        core/Networking/TransportLayer/L4Protocol.cpp
+        core/Networking/TransportLayer/TCPMessage.cpp
+        core/Networking/TransportLayer/TransportLayer.cpp
+        core/Networking/TransportLayer/UDPMessage.cpp     
+        helpers/Logger/easylogging.cpp      
+        helpers/Random.cpp
         models/BlockchainManagement/GlobalOrchestration/Bitcoin.cpp
         models/BlockchainManagement/GlobalOrchestration/GlobalOrchestration.cpp
         models/LocalProtocols/BitcoinMiner.cpp
         models/LocalProtocols/Protocol.cpp
-        models/Networking/BitcoinRoutingTable.cpp       
+        models/Networking/BitcoinRoutingTable.cpp        
 )
 
 add_executable(test
         tests/main.cpp
-        tests/SubnetTest.cpp
+        tests/GnpLatencyModelTest.cpp
         core/Blockchain/Blockchain.cpp
         core/Blockchain/Block/PoSBlock.cpp
         core/Blockchain/Block/PoWBlock.cpp
@@ -54,17 +74,37 @@ add_executable(test
         core/Network/Messages/Message.cpp
         core/Network/Messages/NewBlockIdMessage.cpp
         core/Network/Messages/NewBlockMinedMessage.cpp
+        core/Network/Messages/SubnetMessage.cpp
         core/Network/Node/Node.cpp   
         core/Networking/Bandwidth.cpp
+        core/Networking/RoutingTable.cpp  
+        core/Networking/Subnet.cpp   
+        core/Networking/BandwidthModels/TransferProgress.cpp        
         core/Networking/BandwidthModels/gnp/AbstractGnpNetBandwidthManager.cpp
         core/Networking/BandwidthModels/gnp/GnpNetBandwidthAllocation.cpp
         core/Networking/BandwidthModels/gnp/GnpNetBandwidthManager.cpp
+        core/Networking/Isolation/IsolationManager.cpp
+        core/Networking/Isolation/IsolationModel.cpp
+        core/Networking/Isolation/Events/PartitionEvent.cpp
+        core/Networking/LatencyModels/GnpLatencyModel.cpp
+        core/Networking/LatencyModels/LatencyModel.cpp
+        core/Networking/LatencyModels/LinkMetrics.cpp
+        core/Networking/LatencyModels/PingER.cpp
+        core/Networking/LatencyModels/RandomLatencyModel.cpp
+        core/Networking/LatencyModels/StaticLatencyModel.cpp
         core/Networking/NetworkLayer/IPv4Address.cpp
         core/Networking/NetworkLayer/IPv4Message.cpp
+        core/Networking/NetworkLayer/L3Address.cpp
+        core/Networking/NetworkLayer/NetworkLayer.cpp
         core/Networking/NetworkLayer/NetworkMessage.cpp
-        core/Networking/RoutingTable.cpp  
-        core/Networking/Subnet.cpp      
-        helpers/Logger/easylogging.cpp      
+        core/Networking/TransportLayer/L4Address.cpp
+        core/Networking/TransportLayer/L4Message.cpp
+        core/Networking/TransportLayer/L4Protocol.cpp
+        core/Networking/TransportLayer/TCPMessage.cpp
+        core/Networking/TransportLayer/TransportLayer.cpp
+        core/Networking/TransportLayer/UDPMessage.cpp     
+        helpers/Logger/easylogging.cpp   
+        helpers/Random.cpp   
         models/BlockchainManagement/GlobalOrchestration/Bitcoin.cpp
         models/BlockchainManagement/GlobalOrchestration/GlobalOrchestration.cpp
         models/LocalProtocols/BitcoinMiner.cpp

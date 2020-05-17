@@ -15,17 +15,17 @@ int TransportLayer::send(short _srcPort, L4Address _dest, L4Protocol _l4Protocol
 
 	switch(_l4Protocol.getL4ProtocolType()) {
 	case L4ProtocolType::UDP:
-		l4Message = std::make_shared<UDPMessage>(UDPMessage(_msgId, _payload, _isReply, L4Address(_srcPort), _dest));
+		l4Message = std::make_shared<UDPMessage>(UDPMessage(_payload, _isReply, L4Address(_srcPort), _dest, _msgId));
 		break;
 
 	case L4ProtocolType::TCP:
 		L4Address srcL4Address(networkLayer->getL3Address(), _srcPort);
-		long long connId = std::hash<L4Address>{}(srcL4Address) << 32 + std::hash<L4Address>{}(_dest);
+		long long connId = (std::hash<L4Address>{}(srcL4Address) << 32) + std::hash<L4Address>{}(_dest);
 		if(connIdSeqNumMap.find(connId) == connIdSeqNumMap.end()) {
 			connIdSeqNumMap[connId] = 0;
 		}
 		long long seqNum = connIdSeqNumMap[connId];
-		l4Message = std::make_shared<TCPMessage>(TCPMessage(_msgId, _payload, _isReply, L4Address(_srcPort), _dest, seqNum));
+		l4Message = std::make_shared<TCPMessage>(TCPMessage(_payload, _isReply, L4Address(_srcPort), _dest, seqNum, _msgId));
 		connIdSeqNumMap[connId] = ++seqNum;
 		break;
 	}
@@ -53,7 +53,7 @@ void TransportLayer::receive(std::shared_ptr<L4Message> _msg) {
 	case L4ProtocolType::TCP:
 		L4Address src = _msg->getSrc();
 		L4Address dest = _msg->getSrc();
-		long long connId = std::hash<L4Address>{}(src) << 32 + std::hash<L4Address>{}(dest);
+		long long connId = (std::hash<L4Address>{}(src) << 32) + std::hash<L4Address>{}(dest);
 
 		if(connIdSeqNumMap.find(connId) == connIdSeqNumMap.end()) {
 			connIdSeqNumMap[connId] = 0;
@@ -61,7 +61,7 @@ void TransportLayer::receive(std::shared_ptr<L4Message> _msg) {
 
 		long long seqNum = connIdSeqNumMap[connId];
 
-		std::shared_ptr<TCPMessage> msg = std::static_pointer_cast<TCPMessage>(_msg->getPayload());
+		std::shared_ptr<TCPMessage> msg = std::static_pointer_cast<TCPMessage>(_msg);
 
 		if(msg->getSeqNum() == seqNum) {
 			forwardToApplication(_msg);

@@ -3,8 +3,9 @@
 
 #include <memory>
 
-class L4Address;
-class L4Protocol;
+#include "L4Address.h"
+#include "L4Protocol.h"
+
 class Message;
 
 class L4Message {
@@ -18,17 +19,18 @@ protected:
 
 public:
 	L4Message(std::shared_ptr<Message> _payload, bool _isReply, L4Protocol _l4Protocol, L4Address _src, L4Address _dest);
-	virtual ~L4Message();
+	L4Message(std::shared_ptr<Message> _payload, bool _isReply, L4Protocol _l4Protocol, L4Address _src, L4Address _dest, uint64_t _messageId);
+	virtual ~L4Message() = 0;
 	std::shared_ptr<Message> getPayload();
-	L4Address getDest() const;
+	L4Address getDest();
 	void setDest(L4Address dest);
-	bool isIsReply() const;
+	bool isIsReply();
 	void setIsReply(bool isReply);
-	L4Protocol getL4Protocol() const;
+	L4Protocol getL4Protocol();
 	void setL4Protocol(L4Protocol l4Protocol);
-	int getMessageId() const;
+	int getMessageId();
 	void setMessageId(int messageId);
-	L4Address getSrc() const;
+	L4Address getSrc();
 	void setSrc(L4Address src);
 	virtual long long getSize() = 0;
 };

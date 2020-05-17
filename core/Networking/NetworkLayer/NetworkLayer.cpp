@@ -1,4 +1,5 @@
 #include "NetworkLayer.h"
+#include "L3Address.h"
 #include "NetworkMessage.h"
 #include "../Bandwidth.h"
 #include "../LatencyModels/GnpLatencyModel.h"
@@ -12,6 +13,10 @@ NetworkLayer::NetworkLayer(double _downloadBandwidth, double _uploadBandwidth, s
 
 bool NetworkLayer::isOnline() {
 	return online;
+}
+
+L3Address NetworkLayer::getL3Address() {
+	return L3Address();
 }
 
 int NetworkLayer::getPartitionGroupId() const {

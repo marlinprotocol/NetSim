@@ -2,7 +2,7 @@ rm -rf logs
 mkdir -p build
 cd build
 cmake ..
-make -j8
+make 
 chmod 777 test
 cd ..
 

@@ -11,6 +11,7 @@ public:
 	StaticLatencyModel();
 	StaticLatencyModel(int _delayPerUnitDistance);
 	void setLatencyParameter(long _delayPerUnitDistance);
+	int getDistance(NodeId _sender, NodeId _receiver);
 	long long getLatency(NodeId _sender, NodeId _receiver);
 };
 

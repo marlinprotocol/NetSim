@@ -8,7 +8,7 @@ void StaticLatencyModel::setLatencyParameter(long _delayPerUnitDistance) {
 	delayPerUnitDistance = _delayPerUnitDistance;
 }
 
-int getDistance(NodeId _sender, NodeId _receiver) {
+int StaticLatencyModel::getDistance(NodeId _sender, NodeId _receiver) {
 	return 1;
 }
 

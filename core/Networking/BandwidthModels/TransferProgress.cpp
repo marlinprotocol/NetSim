@@ -13,3 +13,19 @@ long long TransferProgress::getRemainingBytes(uint64_t _currentTime) {
 	long long elapsedTime = _currentTime - transferStartTime;
 	return remainingBytes - (elapsedTime * bandwidth);
 }
+
+bool TransferProgress::isFirstSchedule() {
+	return firstSchedule;
+}
+
+void TransferProgress::setFirstSchedule(bool _firstSchedule) {
+	firstSchedule = _firstSchedule;
+}
+
+bool TransferProgress::isObsolete() {
+	return obsolete;
+}
+
+void TransferProgress::setObsolete(bool _obsolete) {
+	obsolete = _obsolete;
+}

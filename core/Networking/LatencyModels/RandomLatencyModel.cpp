@@ -4,7 +4,7 @@
 #include "RandomLatencyModel.h"
 #include "../../../helpers/Random.h"
 
-int getDistance(NodeId _sender, NodeId _receiver) {
+int RandomLatencyModel::getDistance(NodeId _sender, NodeId _receiver) {
 	return 1000;
 }
 

@@ -18,6 +18,10 @@ public:
 	TransferProgress(std::shared_ptr<NetworkMessage> _message, long long _remainingBytes, double _bandwidth, uint64_t _transferStartTime);
 	std::shared_ptr<NetworkMessage> getMessage();
 	long long getRemainingBytes(uint64_t _currentTime);
+	bool isFirstSchedule();
+	void setFirstSchedule(bool _firstSchedule);
+	bool isObsolete();
+	void setObsolete(bool _obsolete);
 };
 
 #endif /* CORE_NETWORKING_BANDWIDTHMODELS_TRANSFERPROGRESS_H_ */

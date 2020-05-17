@@ -23,6 +23,7 @@ private:
 	NodeId nodeId;
 	bool isAlive;
 	int region;
+	std::string countryCode;
 	std::shared_ptr<RoutingTable> routingTable;
 	std::vector<std::shared_ptr<Protocol>> protocols;
 	std::shared_ptr<Blockchain> blockchain;
@@ -31,9 +32,10 @@ private:
 
 public:
 	Node(int _nodeId, bool _isAlive, int _region, std::shared_ptr<BlockCache> _blockCache, std::shared_ptr<Subnet> _subnet);
-	Node(int _nodeId, double _maxDownBandwidth, double _upDownBandwidth, std::shared_ptr<Subnet> _subnet);
+	Node(int _nodeId, double _maxDownBandwidth, double _upDownBandwidth, std::shared_ptr<Subnet> _subnet, std::string _countryCode);
 	int getRegion() const;
 	int getNodeId() const;
+	std::string getCountryCode();
 	std::shared_ptr<Blockchain> getBlockchain();
 	std::shared_ptr<BlockCache> getBlockCache();
 	bool addProtocol(std::shared_ptr<Protocol> protocol);

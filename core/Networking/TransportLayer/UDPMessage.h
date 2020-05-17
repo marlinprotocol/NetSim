@@ -9,6 +9,7 @@ private:
 
 public:
 	UDPMessage(std::shared_ptr<Message> _payload, bool _isReply, L4Address _src, L4Address _dest);
+	UDPMessage(std::shared_ptr<Message> _payload, bool _isReply, L4Address _src, L4Address _dest, uint64_t _messageId);
 	long long getSize();
 };
 
