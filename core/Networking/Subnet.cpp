@@ -119,7 +119,7 @@ void Subnet::send(std::shared_ptr<NetworkMessage> msg, uint64_t _currentTick, st
 	else {
 		double maxBandwidthRequired = sender->getNetworkLayer()->getMaxBandwidth()->getUpBW();
 		if(l4Protocol == L4ProtocolType::TCP) {
-			double tcpThroughput = latencyModel->getTCPThroughput(senderId, receiverId);
+			double tcpThroughput = latencyModel->getTCPThroughput(senderId, receiverId, false);
 			maxBandwidthRequired = std::min(maxBandwidthRequired, tcpThroughput);
 		}
 		std::shared_ptr<GnpNetBandwidthAllocation> ba = bandwidthManager->addConnection(senderId, receiverId, maxBandwidthRequired);
@@ -147,7 +147,7 @@ void Subnet::cancelTransmission(int _msgId, uint64_t _currentTick, std::vector<s
 	double maxBandwidthRequired = sender->getNetworkLayer()->getMaxBandwidth()->getUpBW();
 
 	if(msg->getPayload()->getL4Protocol().getL4ProtocolType() == L4ProtocolType::TCP) {
-		double tcpThroughput = latencyModel->getTCPThroughput(senderId, receiverId);
+		double tcpThroughput = latencyModel->getTCPThroughput(senderId, receiverId, false);
 		maxBandwidthRequired = std::min(maxBandwidthRequired, tcpThroughput);
 	}
 
@@ -239,7 +239,7 @@ void Subnet::onMessageReceived(std::shared_ptr<TransferProgress> _tp, uint64_t _
 		double maxBandwidthRequired = sender->getNetworkLayer()->getMaxBandwidth()->getUpBW();
 		L4ProtocolType l4Protocol = msg->getPayload()->getL4Protocol().getL4ProtocolType();
 		if(l4Protocol == L4ProtocolType::TCP) {
-			double tcpThroughput = latencyModel->getTCPThroughput(senderId, receiverId);
+			double tcpThroughput = latencyModel->getTCPThroughput(senderId, receiverId, false);
 			maxBandwidthRequired = std::min(maxBandwidthRequired, tcpThroughput);
 		}
 
@@ -286,7 +286,7 @@ void Subnet::rescheduleTransfers(std::shared_ptr<GnpNetBandwidthAllocation> _ba,
 		std::shared_ptr<NetworkMessage> msg = tp->getMessage();
 
 		if(msg->getPayload()->getL4Protocol().getL4ProtocolType() == L4ProtocolType::TCP) {
-			double tcpThroughput = latencyModel->getTCPThroughput(senderId, receiverId);
+			double tcpThroughput = latencyModel->getTCPThroughput(senderId, receiverId, false);
 			bandwidth = std::min(bandwidth, tcpThroughput);
 		}
 

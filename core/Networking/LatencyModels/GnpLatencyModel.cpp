@@ -63,7 +63,7 @@ double GnpLatencyModel::getAvgJitter(NodeId senderId, NodeId receiverId) {
 }
 
 double GnpLatencyModel::getUDPErrorProbability(NodeId senderId, NodeId receiverId, std::shared_ptr<IPv4Message> msg) {
-	if(msg->getPayload()->getSize() > 65507) {
+	if(msg->getPayload() != nullptr && msg->getPayload()->getSize() > 65507) {
 		// warn("Message-Size is too big for a UDP-Datagramm (max 65507 byte)");
 	}
 
@@ -74,6 +74,7 @@ double GnpLatencyModel::getUDPErrorProbability(NodeId senderId, NodeId receiverI
 }
 
 uint64_t GnpLatencyModel::getTransmissionDelay(long long bytes, double bandwidth) {
+	if(bandwidth == 0) assert(false);
 	return round(bytes/bandwidth);
 }
 
@@ -81,12 +82,18 @@ uint64_t GnpLatencyModel::getPropagationDelay(NodeId senderId, NodeId receiverId
 	std::shared_ptr<Node> sender = network.getNode(senderId);
 	std::shared_ptr<Node> receiver = network.getNode(receiverId);
 
-	return pingER.getLinkMetrics(sender->getCountryCode(), receiver->getCountryCode()).getAvgRTT() / 2;
+	auto rtt = pingER.getLinkMetrics(sender->getCountryCode(), receiver->getCountryCode()).getAvgRTT();
+
+	if(rtt != 0)
+		return rtt / 2;
+
+	return pingER.getLinkMetrics(receiver->getCountryCode(), sender->getCountryCode()).getAvgRTT() / 2;
 }
 
-uint64_t GnpLatencyModel::getTCPThroughput(NodeId senderId, NodeId receiverId) {
+uint64_t GnpLatencyModel::getTCPThroughput(NodeId senderId, NodeId receiverId, bool _useJitter) {
 	double minRtt = getMinRTT(senderId, receiverId);
 	double avgJitter = getAvgJitter(senderId, receiverId);
+	if(!_useJitter) avgJitter = 0;
 	double packetLossRate = getPacketLossProbability(senderId, receiverId);
 	double mathisBW = ((MSS * 1000) / (minRtt + avgJitter)) * sqrt(1.5 / packetLossRate);
 	return mathisBW;

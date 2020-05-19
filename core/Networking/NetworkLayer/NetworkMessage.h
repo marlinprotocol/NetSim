@@ -16,6 +16,7 @@ private:
 	NetworkProtocol networkProtocol;
 
 public:
+	NetworkMessage();
 	NetworkMessage(NodeId _sender, NodeId _receiver, std::shared_ptr<L4Message> _payload, NetworkProtocol _networkProtocol);
 	virtual ~NetworkMessage();
 	std::shared_ptr<L4Message> getPayload();

@@ -51,7 +51,7 @@ public:
 	double getUDPErrorProbability(NodeId senderId, NodeId receiverId, std::shared_ptr<IPv4Message> _msg);
 	uint64_t getTransmissionDelay(long long _bytes, double _bandwidth);
 	uint64_t getPropagationDelay(NodeId _sender, NodeId _receiver);
-	uint64_t getTCPThroughput(NodeId sender, NodeId receiver);
+	uint64_t getTCPThroughput(NodeId sender, NodeId receiver, bool _useJitter);
 	long long getLatency(NodeId _sender, NodeId _receiver);
 };
 

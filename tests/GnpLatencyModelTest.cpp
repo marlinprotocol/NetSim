@@ -1,3 +1,6 @@
+#include <iostream>
+#include <memory>
+
 #include "GnpLatencyModelTest.h"
 #include "../core/Networking/Subnet.h"
 #include "../core/Networking/LatencyModels/PingER.h"
@@ -23,7 +26,32 @@ std::shared_ptr<GnpLatencyModel> GnpLatencyModelTest::populatePingER() {
 }
 
 void GnpLatencyModelTest::testPingErPropagationDelayGnp(std::shared_ptr<GnpLatencyModel> _pingER) {
-	assert(fabs(_pingER->getPropagationDelay(0, 0) - 15) <= 0.0001);
+	assert(fabs(_pingER->getPropagationDelay(0, 1) - 15) <= 0.0001);
+	assert(fabs(_pingER->getPropagationDelay(5, 1) - 60) <= 0.0001);
+}
+
+void GnpLatencyModelTest::testTransmissionDelay(std::shared_ptr<GnpLatencyModel> _pingER) {
+	assert(fabs(_pingER->getTransmissionDelay(0, 1000) - 0) <= 0.0001);
+	assert(fabs(_pingER->getTransmissionDelay(1000, 0.5) - 2000) <= 0.0001);
+	assert(fabs(_pingER->getTransmissionDelay(1000, 1) - 1000) <= 0.0001);
+//	assert(fabs(_pingER->getTransmissionDelay(0, 0) - 0) <= 0.0001);
+	assert(fabs(_pingER->getTransmissionDelay(500, 1) - 500) <= 0.0001);
+}
+
+void GnpLatencyModelTest::testErrorProbability(std::shared_ptr<GnpLatencyModel> _pingER) {
+	std::shared_ptr<IPv4Message> msg(std::make_shared<IPv4TestMessage>(1));
+	assert(fabs(_pingER->getUDPErrorProbability(4, 4, msg) - 0.005012) <= 0.0001);
+
+	std::shared_ptr<IPv4Message> msg2(std::make_shared<IPv4TestMessage>(2));
+	assert(fabs(_pingER->getUDPErrorProbability(4, 4, msg2) - 0.01) <= 0.0001);
+
+	std::shared_ptr<IPv4Message> msg3(std::make_shared<IPv4TestMessage>(3));
+	assert(fabs(_pingER->getUDPErrorProbability(4, 4, msg3) - 0.014962) <= 0.0001);
+}
+
+void GnpLatencyModelTest::testTcpTroughput(std::shared_ptr<GnpLatencyModel> _pingER) {
+	assert(fabs(_pingER->getTCPThroughput(0, 4, false) - 89181) <= 1);
+	assert(fabs(_pingER->getTCPThroughput(0, 4, true) - 71345) <= 1);
 }
 
 int GnpLatencyModelTest::test() {
@@ -45,6 +73,9 @@ int GnpLatencyModelTest::test() {
 	network->addNode(sender5);
 
 	testPingErPropagationDelayGnp(pingER);
+	testTransmissionDelay(pingER);
+	testErrorProbability(pingER);
+	testTcpTroughput(pingER);
 
 	return 0;
 }

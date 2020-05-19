@@ -14,7 +14,8 @@ public:
 	const static int HEADER_SIZE = 20;
 	const static int MTU_SIZE = 1500;
 
-	IPv4Message(NodeId receiver, NodeId sender, std::shared_ptr<L4Message> payload);
+	IPv4Message();
+	IPv4Message(NodeId _sender, NodeId _receiver, std::shared_ptr<L4Message> payload);
 	long long getSize();
 	int getNumFragments();
 };
