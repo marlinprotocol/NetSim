@@ -28,6 +28,7 @@ private:
 public:
 	NetworkLayer(double _downloadBandwidth, double _uploadBandwidth, std::shared_ptr<Subnet> _subnet, NodeId _myNodeId);
 	bool isOnline();
+	void setOnline(bool _online);
 	L3Address getL3Address();
 	int getPartitionGroupId() const;
 	void setPartitionGroupId(int _partitionGroupId);

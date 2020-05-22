@@ -18,6 +18,10 @@ bool NetworkLayer::isOnline() {
 	return online;
 }
 
+void NetworkLayer::setOnline(bool _online) {
+	online = _online;
+}
+
 L3Address NetworkLayer::getL3Address() {
 	return myL3Address;
 }

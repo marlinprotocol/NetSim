@@ -49,6 +49,7 @@ private:
 	void test1Sender1Receiver2StreamsLtdTCPThroughput();
 	void test1Sender2Receivers2StreamsLtdTCPThroughput();
 	void test2Senders1Receiver2StreamsLtdTCPThroughput();
+	void test1Sender2Receivers2StreamsOffline();
 
 public:
 	class TestMessage : public Message {

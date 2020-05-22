@@ -21,6 +21,10 @@ std::shared_ptr<TransferProgress> SubnetMessage::getTransferProgress() {
 	return transferProgress;
 }
 
+std::shared_ptr<NetworkMessage> SubnetMessage::getNetworkMessage() {
+	return message;
+}
+
 SubnetMessageType SubnetMessage::getSubnetType() {
 	return subnetMessageType;
 }

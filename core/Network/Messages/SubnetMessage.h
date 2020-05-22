@@ -8,7 +8,7 @@
 class NetworkMessage;
 class TransferProgress;
 
-enum class SubnetMessageType {MESSAGE_RECVD, BANDWIDTH_REALLOC, FWD_TO_RECEIVER};
+enum class SubnetMessageType {MESSAGE_RECVD, BANDWIDTH_REALLOC, FWD_TO_RECEIVER, DISCONNECT, RECONNECT};
 
 class SubnetMessage : public Message {
 private:
@@ -21,6 +21,7 @@ public:
 	SubnetMessage(SubnetMessageType _subnetMessageType, std::shared_ptr<TransferProgress> _transferProgress);
 	SubnetMessage(SubnetMessageType _subnetMessageType, std::shared_ptr<NetworkMessage> _message);
 	std::shared_ptr<TransferProgress> getTransferProgress();
+	std::shared_ptr<NetworkMessage> getNetworkMessage();
 	SubnetMessageType getSubnetType();
 	std::string getType();
 };

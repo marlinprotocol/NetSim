@@ -169,6 +169,9 @@ void Subnet::cancelTransmission(int _msgId, uint64_t _currentTick, std::vector<s
 }
 
 void Subnet::onDisconnect(NodeId _nodeId, uint64_t _currentTick, std::vector<std::shared_ptr<Event>>& _newEvents) {
+	std::shared_ptr<Node> node = network.getNode(_nodeId);
+	node->getNetworkLayer()->setOnline(false);
+
 	for(auto ba: bandwidthManager->removeConnections(_nodeId)) {
 		std::set<std::shared_ptr<TransferProgress>> transfers = connectionsToTransfersMap[ba];
 		connectionsToTransfersMap.erase(ba);
@@ -328,19 +331,27 @@ void Subnet::rescheduleTransfers(std::shared_ptr<GnpNetBandwidthAllocation> _ba,
 
 void Subnet::onSubnetMessage(std::shared_ptr<SubnetMessage> msg, uint64_t _currentTick, std::vector<std::shared_ptr<Event>>& _newEvents) {
 	switch(msg->getSubnetType()) {
-	case SubnetMessageType::MESSAGE_RECVD: {
-		std::cout<<"MESSAGE_RECVD: "<<_currentTick<<std::endl;
-		onMessageReceived(msg->getTransferProgress(), _currentTick, _newEvents);
-		break;
-	}
-	case SubnetMessageType::FWD_TO_RECEIVER: {
-		std::cout<<"de2"<<std::endl;
-		break;
-	}
-	case SubnetMessageType::BANDWIDTH_REALLOC: {
-		std::cout<<"BANDWIDTH_REALLOC"<<std::endl;
-		onBandwidthReallocation(_currentTick, _newEvents);
-		break;
-	}
+		case SubnetMessageType::MESSAGE_RECVD: {
+			std::cout<<"MESSAGE_RECVD: "<<_currentTick<<std::endl;
+			onMessageReceived(msg->getTransferProgress(), _currentTick, _newEvents);
+			break;
+		}
+		case SubnetMessageType::FWD_TO_RECEIVER: {
+			std::cout<<"FWD_TO_RECEIVER"<<std::endl;
+			break;
+		}
+		case SubnetMessageType::BANDWIDTH_REALLOC: {
+			std::cout<<"BANDWIDTH_REALLOC"<<std::endl;
+			onBandwidthReallocation(_currentTick, _newEvents);
+			break;
+		}
+		case SubnetMessageType::DISCONNECT: {
+			std::cout<<"DISCONNECT node #"<<msg->getNetworkMessage()->getReceiver()<<std::endl;
+			onDisconnect(msg->getNetworkMessage()->getReceiver(), _currentTick, _newEvents);
+			break;
+		}
+		case SubnetMessageType::RECONNECT: {
+			break;
+		}
 	}
 }
