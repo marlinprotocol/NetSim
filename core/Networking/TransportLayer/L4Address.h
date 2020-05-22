@@ -11,7 +11,7 @@ private:
 	short port;
 
 public:
-	L4Address(short _port);
+	L4Address(NodeId _nodeId, short _port);
 	L4Address(L3Address _l3address, short _port);
 	bool operator==(const L4Address &other) const;
 	L3Address getL3Address() const;

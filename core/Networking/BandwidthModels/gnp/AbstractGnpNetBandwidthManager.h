@@ -40,10 +40,11 @@ class GnpNetBandwidthAllocation;
 class AbstractGnpNetBandwidthManager {
 protected:
 	Network& network;
+public:
 	std::unordered_map<NodeId, std::unordered_map<NodeId, std::shared_ptr<GnpNetBandwidthAllocation>>> connectionsReceiverToSender;
 	std::unordered_map<NodeId, std::unordered_map<NodeId, std::shared_ptr<GnpNetBandwidthAllocation>>> connectionsSenderToReceiver;
 
-public:
+
 	AbstractGnpNetBandwidthManager(Network& _network);
 	virtual ~AbstractGnpNetBandwidthManager() {};
 	std::shared_ptr<GnpNetBandwidthAllocation> addConnection(NodeId _sender, NodeId _receiver, double _bandwidth);

@@ -1,6 +1,8 @@
 #include "./NetworkMessage.h"
 
-NetworkMessage::NetworkMessage() : networkProtocol(NetworkProtocol::IPv4) {}
+NetworkMessage::NetworkMessage() {
+	// nenvbers knowingly left uninitialized to detect errors
+}
 
 NetworkMessage::NetworkMessage(NodeId _sender, NodeId _receiver, std::shared_ptr<L4Message> _payload, NetworkProtocol _networkProtocol) :
 		sender(_sender), receiver(_receiver), payload(_payload), networkProtocol(_networkProtocol) {}

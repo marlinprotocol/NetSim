@@ -18,13 +18,18 @@ private:
 	std::shared_ptr<Subnet> subnet;
 	EventManager eventManager;
 	Network network;
+	bool isScheduleIsolation;
 
 	void sendGenesisBlockToAllNodes(const Network& network, int genesisBlockId);
 
 public:
 	Simulator();
+	void resetSubnet(std::shared_ptr<Subnet> _subnet);
+	Network& getNetwork();
 	bool setup();
 	void start();
+	void scheduleIsolation(bool _schedule);
+	EventManager& getEventManager();
 	std::shared_ptr<GlobalOrchestration> getBlockchainManagementModel();
 };
 

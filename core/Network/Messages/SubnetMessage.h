@@ -20,6 +20,8 @@ public:
 	SubnetMessage(SubnetMessageType _subnetMessageType);
 	SubnetMessage(SubnetMessageType _subnetMessageType, std::shared_ptr<TransferProgress> _transferProgress);
 	SubnetMessage(SubnetMessageType _subnetMessageType, std::shared_ptr<NetworkMessage> _message);
+	std::shared_ptr<TransferProgress> getTransferProgress();
+	SubnetMessageType getSubnetType();
 	std::string getType();
 };
 

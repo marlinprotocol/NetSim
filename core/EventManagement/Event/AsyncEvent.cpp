@@ -26,9 +26,10 @@ long AsyncEvent::getTickToExecOn() const {
 bool AsyncEvent::execute(Network& _network,
 						 std::shared_ptr<BlockCache> _blockCache,
 						 std::vector<std::shared_ptr<Event>>& _newEvents,
-						 uint64_t _currentTick) {
+						 uint64_t _currentTick,
+						 std::shared_ptr<Subnet> _subnet) {
 	LOG(DEBUG) << "[AsyncEvent::execute]";
-	return event->execute(_network, _blockCache, _newEvents, _currentTick);
+	return event->execute(_network, _blockCache, _newEvents, _currentTick, _subnet);
 }
 
 int AsyncEvent::getEventId() const {

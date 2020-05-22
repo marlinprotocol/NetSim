@@ -16,8 +16,8 @@ private:
 public: 
 	MessageToNodeEvent(std::shared_ptr<Message> _message, int _forNodeId, int _fromNodeId, long long _durationInTicks);
 	bool execute(Network& _network, std::shared_ptr<BlockCache> _blockCache,
-				 std::vector<std::shared_ptr<Event>>& _newEvents, uint64_t _currentTick);
-	bool execute(Network& _network, std::vector<std::shared_ptr<Event>>& _newEvents, uint64_t _currentTick);
+				 std::vector<std::shared_ptr<Event>>& _newEvents, uint64_t _currentTick, std::shared_ptr<Subnet> _subnet);
+	bool execute(Network& _network, std::vector<std::shared_ptr<Event>>& _newEvents, uint64_t _currentTick, std::shared_ptr<Subnet> _subnet);
 };
 
 #endif /*MESSAGETONODEEVENT_H_*/

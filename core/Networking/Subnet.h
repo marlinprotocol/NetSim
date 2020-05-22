@@ -12,9 +12,11 @@ class AbstractGnpNetBandwidthManager;
 class Event;
 class GnpNetBandwidthAllocation;
 class GnpLatencyModel;
+class Message;
 class Network;
 class NetworkMessage;
 class Node;
+class SubnetMessage;
 class TransferProgress;
 
 class Subnet {
@@ -38,6 +40,7 @@ public:
 //	static Subnet& getSubnetInstance();
 //	void initializeNetwork(Network& _network);
 	std::shared_ptr<AbstractGnpNetBandwidthManager> getBandwidthManager();
+	std::shared_ptr<GnpLatencyModel> getLatencyModel();
 	void send(std::shared_ptr<NetworkMessage> msg, uint64_t _currentTick, std::vector<std::shared_ptr<Event>>& _newEvents);
 	void cancelTransmission(int _msgId, uint64_t _currentTick, std::vector<std::shared_ptr<Event>>& _newEvents);
 	void onDisconnect(NodeId _nodeId, uint64_t _currentTick, std::vector<std::shared_ptr<Event>>& _newEvents);
@@ -47,6 +50,7 @@ public:
 	void onMessageReceived(std::shared_ptr<TransferProgress> _tp, uint64_t _currentTick, std::vector<std::shared_ptr<Event>>& _newEvents);
 	void onBandwidthReallocation(uint64_t _currentTick, std::vector<std::shared_ptr<Event>>& _newEvents);
 	void rescheduleTransfers(std::shared_ptr<GnpNetBandwidthAllocation>, uint64_t _currentTick, std::vector<std::shared_ptr<Event>>& _newEvents);
+	void onSubnetMessage(std::shared_ptr<SubnetMessage> msg, uint64_t _currentTick, std::vector<std::shared_ptr<Event>>& _newEvents);
 };
 
 #endif /* CORE_NETWORKING_SUBNET_H_ */

@@ -25,7 +25,6 @@ bool checkBlockTimeMean(Simulator &simulator) {
 	long long sum = 0;
 	for (long long i = 0; i < 1000000; i++) {
 		int x = simulator.getBlockchainManagementModel()->getNextBlockTime();
-//		    	cout<<x<<endl;
 		sum += x;
 	}
 

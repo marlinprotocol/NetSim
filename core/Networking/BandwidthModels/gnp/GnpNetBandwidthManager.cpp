@@ -86,7 +86,6 @@ void GnpNetBandwidthManager::allocateBandwidth() {
 
 	std::set<NodeId> deleteSenders, deleteReceivers;
 	std::set<std::shared_ptr<GnpNetBandwidthAllocation>> deleteConnections;
-
 	while (!tempConnections.empty()) {
 		for(auto s: senders) {
 //			std::cout<<"getCurrentBandwidth()->getUpBW(): "<<network.getNode(s)->getCurrentBandwidth()->getUpBW()<<std::endl;
@@ -337,5 +336,6 @@ bool GnpNetBandwidthManager::assignAllocation(std::shared_ptr<GnpNetBandwidthAll
 }
 
 std::set<std::shared_ptr<GnpNetBandwidthAllocation>> GnpNetBandwidthManager::getChangedAllocations() {
+	std::cout<<"changedAllocations size:"<<changedAllocations.size()<<std::endl;
 	return changedAllocations;
 }

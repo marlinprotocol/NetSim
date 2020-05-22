@@ -3,7 +3,7 @@
 
 #include "L4Address.h"
 
-L4Address::L4Address(short _port) : l3Address(L3Address()), port(_port) {}
+L4Address::L4Address(NodeId _nodeId, short _port) : l3Address(L3Address(_nodeId)), port(_port) {}
 
 L4Address::L4Address(L3Address _l3Address, short _port) : l3Address(_l3Address), port(_port) {}
 

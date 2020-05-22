@@ -7,12 +7,14 @@
 class Message {
 private:
 	MessageType messageType;
+	int size;
 
 public:
 	Message(MessageType _messageType);
 	virtual std::string getType() = 0;
 	virtual ~Message() {};
 	MessageType getMessageType();
+	void setSize(int _size);
 	long long getSize(); // TODO: make virtual
 };
 

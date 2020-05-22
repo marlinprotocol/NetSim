@@ -1,11 +1,15 @@
 #include "./Message.h"
 
-Message::Message(MessageType _messageType) : messageType(_messageType) {}
+Message::Message(MessageType _messageType) : messageType(_messageType), size(0) {}
 
 MessageType Message::getMessageType() {
 	return messageType;
 }
 
-long long Message::getSize() { // TODO:temporary
-	return 0;
+void Message::setSize(int _size) {
+	size = _size;
+}
+
+long long Message::getSize() {
+	return size;
 }

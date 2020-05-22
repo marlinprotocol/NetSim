@@ -1,7 +1,8 @@
 #include <cstdio>
 #include <map>
 
-#include "GnpLatencyModelTest.h"
+#include "NetworkLayerTest.h"
+//#include "GnpLatencyModelTest.h"
 //#include "SubnetTest.h"
 #include "../helpers/Logger/easylogging.h"
 
@@ -31,8 +32,12 @@ int main() {
 	//	st.test();
 
 	// GnpLatencyModel Test
-	GnpLatencyModelTest gt;
-	gt.test();
+//	GnpLatencyModelTest gt;
+//	gt.test();
+
+	// NetworkLayer Test
+	NetworkLayerTest nt;
+	nt.test();
 
     LOG(INFO) << "[Test stopped]";
 

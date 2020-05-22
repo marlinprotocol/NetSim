@@ -28,7 +28,7 @@ void PartitionEvent::turnIsolationOnForAll(Network& _network, std::vector<std::s
 	}
 }
 
-bool PartitionEvent::execute(Network& _network, std::vector<std::shared_ptr<Event>>& _newEvents, uint64_t _currentTick) {
+bool PartitionEvent::execute(Network& _network, std::vector<std::shared_ptr<Event>>& _newEvents, uint64_t _currentTick, std::shared_ptr<Subnet> _subnet) {
 	LOG(DEBUG) << "[" << std::setw(35) << std::left << "PartitionEvent::execute] : " ;
 	if(getEventType() == EventType::SCHEDULE_ISOLATION_START) {
 //		assert(groupId == -1);

@@ -44,14 +44,18 @@
 #include "../Network/Node/Node.h"
 
 Subnet::Subnet(Network& _network) : network(_network), lastMsgId(0), latencyModel(std::make_shared<GnpLatencyModel>(_network)),
-									nextRescheduleTime(-1), bandwidthManager(std::make_shared<GnpNetBandwidthManager>(_network)) {}
+									nextRescheduleTime(0), bandwidthManager(std::make_shared<GnpNetBandwidthManager>(_network)) {}
 
 Subnet::Subnet(Network& _network, std::shared_ptr<GnpLatencyModel> _latencyModel)
-	   : network(_network), lastMsgId(0), latencyModel(_latencyModel), nextRescheduleTime(-1),
+	   : network(_network), lastMsgId(0), latencyModel(_latencyModel), nextRescheduleTime(0),
 		 bandwidthManager(std::make_shared<GnpNetBandwidthManager>(_network)) {}
 
 std::shared_ptr<AbstractGnpNetBandwidthManager> Subnet::getBandwidthManager() {
 	return bandwidthManager;
+}
+
+std::shared_ptr<GnpLatencyModel> Subnet::getLatencyModel() {
+	return latencyModel;
 }
 
 bool Subnet::shouldDropMsg(NodeId senderId, NodeId receiverId, std::shared_ptr<NetworkMessage> msg) {
@@ -126,7 +130,6 @@ void Subnet::send(std::shared_ptr<NetworkMessage> msg, uint64_t _currentTick, st
 		std::shared_ptr<TransferProgress> transferProgress(new TransferProgress(msg, msg->getSize(), 0, _currentTick));
 		connectionsToTransfersMap[ba].insert(transferProgress);
 		messageIdsToTransfersMap[msgId] = transferProgress;
-
 		if(nextRescheduleTime < _currentTick + 1) {
 			nextRescheduleTime = _currentTick + 1;
 			_newEvents.push_back(std::make_shared<MessageToNodeEvent>(
@@ -186,6 +189,7 @@ void Subnet::onDisconnect(NodeId _nodeId, uint64_t _currentTick, std::vector<std
 }
 
 void Subnet::forwardToReceiverNetworkLayer(std::shared_ptr<NetworkMessage> msg, std::shared_ptr<Node> sender, std::shared_ptr<Node> receiver) {
+	std::cout<<"MESSAGE_FINALLY_RECEIVED by nodeId "<<receiver->getNodeId()<<std::endl;
 	if(receiver->getNetworkLayer()->isOnline() &&
 			(receiver->getNetworkLayer()->getPartitionGroupId() == sender->getNetworkLayer()->getPartitionGroupId())) {
 		receiver->getNetworkLayer()->receive(msg);
@@ -216,13 +220,13 @@ void Subnet::onMessageReceived(std::shared_ptr<TransferProgress> _tp, uint64_t _
 	NodeId receiverId = msg->getReceiver();
 	std::shared_ptr<Node> sender = network.getNode(senderId);
 	std::shared_ptr<Node> receiver = network.getNode(receiverId);
-
 	if(msg->getNumFragments() == 1) {
 		addToReceiverQueue(msg, sender, receiver, _currentTick, _newEvents);
 	}
 	else {
 		if(_tp->isObsolete() || (cancelledTransfers.find(_tp) != cancelledTransfers.end())) {
 			cancelledTransfers.erase(_tp);
+			std::cout<<"*obsolete* "<<_currentTick<<std::endl;
 			return;
 		}
 		else {
@@ -230,12 +234,11 @@ void Subnet::onMessageReceived(std::shared_ptr<TransferProgress> _tp, uint64_t _
 			if(nextRescheduleTime < _currentTick + 1) {
 				nextRescheduleTime = _currentTick + 1;
 				_newEvents.push_back(std::make_shared<MessageToNodeEvent>(
-					MessageToNodeEvent(std::shared_ptr<Message>(new SubnetMessage(SubnetMessageType::BANDWIDTH_REALLOC)),
-									   -1, -1, 1)
+					MessageToNodeEvent(std::shared_ptr<Message>(new SubnetMessage(SubnetMessageType::BANDWIDTH_REALLOC)), -1, -1, 1)
 				));
 			}
 		}
-
+		std::cout<<"currentTick: "<<_currentTick<<std::endl;
 		double maxBandwidthRequired = sender->getNetworkLayer()->getMaxBandwidth()->getUpBW();
 		L4ProtocolType l4Protocol = msg->getPayload()->getL4Protocol().getL4ProtocolType();
 		if(l4Protocol == L4ProtocolType::TCP) {
@@ -259,6 +262,7 @@ void Subnet::onMessageReceived(std::shared_ptr<TransferProgress> _tp, uint64_t _
 }
 
 void Subnet::onBandwidthReallocation(uint64_t _currentTick, std::vector<std::shared_ptr<Event>>& _newEvents) {
+	std::cout<<"Subnet::onBandwidthReallocation: "<<_currentTick<<std::endl;
 	bandwidthManager->allocateBandwidth();
 	for(auto ba: bandwidthManager->getChangedAllocations()) {
 		rescheduleTransfers(ba, _currentTick, _newEvents);
@@ -266,9 +270,10 @@ void Subnet::onBandwidthReallocation(uint64_t _currentTick, std::vector<std::sha
 }
 
 void Subnet::rescheduleTransfers(std::shared_ptr<GnpNetBandwidthAllocation> _ba, uint64_t _currentTick, std::vector<std::shared_ptr<Event>>& _newEvents) {
+	std::cout<<"Subnet::rescheduleTransfers: "<<_currentTick<<std::endl;
+
 	std::set<std::shared_ptr<TransferProgress>> transfers = connectionsToTransfersMap[_ba];
 	if(transfers.empty()) return;
-
 	std::set<std::shared_ptr<TransferProgress>> updatedTransfers;
 
 	NodeId senderId = _ba->getSender();
@@ -282,6 +287,9 @@ void Subnet::rescheduleTransfers(std::shared_ptr<GnpNetBandwidthAllocation> _ba,
 	for(std::shared_ptr<TransferProgress> tp: transfers) {
 		double remainingBytes = tp->getRemainingBytes(_currentTick);
 		double bandwidth = remainingBandwidth/remainingTransfers;
+
+//		std::cout<<"transfers/remainingBytes: "<<remainingBytes<<std::endl;
+//		std::cout<<"transfers/bandwidth: "<<bandwidth<<std::endl;
 
 		std::shared_ptr<NetworkMessage> msg = tp->getMessage();
 
@@ -297,7 +305,7 @@ void Subnet::rescheduleTransfers(std::shared_ptr<GnpNetBandwidthAllocation> _ba,
 		uint64_t transmissionTicks = latencyModel->getTransmissionDelay(remainingBytes, bandwidth);
 		uint64_t ticksBeforeReception = transmissionTicks + propagationTicks;
 
-		std::shared_ptr<TransferProgress> transferProgress(new TransferProgress(msg, bandwidth, remainingBytes, _currentTick));
+		std::shared_ptr<TransferProgress> transferProgress(new TransferProgress(msg, remainingBytes, bandwidth, _currentTick));
 
 		_newEvents.push_back(std::make_shared<MessageToNodeEvent>(
 			MessageToNodeEvent(std::shared_ptr<Message>(new SubnetMessage(SubnetMessageType::MESSAGE_RECVD, transferProgress)),
@@ -316,4 +324,23 @@ void Subnet::rescheduleTransfers(std::shared_ptr<GnpNetBandwidthAllocation> _ba,
 	}
 
 	connectionsToTransfersMap[_ba] = updatedTransfers;
+}
+
+void Subnet::onSubnetMessage(std::shared_ptr<SubnetMessage> msg, uint64_t _currentTick, std::vector<std::shared_ptr<Event>>& _newEvents) {
+	switch(msg->getSubnetType()) {
+	case SubnetMessageType::MESSAGE_RECVD: {
+		std::cout<<"MESSAGE_RECVD: "<<_currentTick<<std::endl;
+		onMessageReceived(msg->getTransferProgress(), _currentTick, _newEvents);
+		break;
+	}
+	case SubnetMessageType::FWD_TO_RECEIVER: {
+		std::cout<<"de2"<<std::endl;
+		break;
+	}
+	case SubnetMessageType::BANDWIDTH_REALLOC: {
+		std::cout<<"BANDWIDTH_REALLOC"<<std::endl;
+		onBandwidthReallocation(_currentTick, _newEvents);
+		break;
+	}
+	}
 }

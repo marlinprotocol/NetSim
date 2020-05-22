@@ -16,8 +16,8 @@ private:
 public:
 	PartitionEvent(EventType _eventType, uint64_t _ticksBeforeExecution, std::shared_ptr<IsolationManager> _isolationManager);
 	bool execute(Network& _network, std::shared_ptr<BlockCache> _blockCache,
-				 std::vector<std::shared_ptr<Event>>& _newEvents, uint64_t _currentTick) {return true;}
-	bool execute(Network& _network, std::vector<std::shared_ptr<Event>>& _newEvents, uint64_t _currentTick);
+				 std::vector<std::shared_ptr<Event>>& _newEvents, uint64_t _currentTick, std::shared_ptr<Subnet> _subnet) {return true;}
+	bool execute(Network& _network, std::vector<std::shared_ptr<Event>>& _newEvents, uint64_t _currentTick, std::shared_ptr<Subnet> _subnet);
 //	void PartitionEvent::toggleIsolationForGroupId(Network& _network, std::vector<std::shared_ptr<Event>>& _newEvents);
 	void turnIsolationOnForAll(Network& _network, std::vector<std::shared_ptr<Event>>& _newEvents, bool _on);
 };

@@ -17,10 +17,13 @@ private:
 	static uint64_t currentTick;
     EventQueue eventQueue; 
     Network& network;
+    std::shared_ptr<Subnet> subnet;
     std::shared_ptr<BlockCache> blockCache;
 
 public:
-	EventManager(Network& _network, std::shared_ptr<BlockCache> _blockCache);
+	EventManager(Network& _network, std::shared_ptr<BlockCache> _blockCache, std::shared_ptr<Subnet> _subnet);
+	void resetSubnet(std::shared_ptr<Subnet> _subnet);
+	EventQueue& getEventQueue();
 	int addEvent(std::shared_ptr<Event> _event);
 	// AsyncEvent getNextEvent() const;
 	bool removeEvent(int _id);

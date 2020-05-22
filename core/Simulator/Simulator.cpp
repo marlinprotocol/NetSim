@@ -13,9 +13,19 @@
 #include "../../models/BlockchainManagement/GlobalOrchestration/Bitcoin.h"
 #include "../../models/NodePlacement/RandomNodeLocations.h"
 
-Simulator::Simulator() : blockCache(std::make_shared<BlockCache>()), eventManager(network, blockCache) {
+Simulator::Simulator() : blockCache(std::make_shared<BlockCache>()), subnet(new Subnet(network)),
+						 eventManager(network, blockCache, subnet) {
 	globalOrchestration = std::shared_ptr<GlobalOrchestration>(new BitcoinModel(network));
-	subnet = std::shared_ptr<Subnet>(new Subnet(network));
+	isScheduleIsolation = false;
+}
+
+void Simulator::resetSubnet(std::shared_ptr<Subnet> _subnet) {
+	subnet = _subnet;
+	eventManager.resetSubnet(_subnet);
+}
+
+Network& Simulator::getNetwork() {
+	return network;
 }
 
 bool Simulator::setup() {
@@ -23,8 +33,10 @@ bool Simulator::setup() {
 
 	globalOrchestration->scheduleBlockProduction(network, blockCache, eventManager);
 
-	IsolationManager isolationManager;
-	isolationManager.schedulePartitionStart(eventManager, 1000);
+	if(isScheduleIsolation) {
+		IsolationManager isolationManager;
+		isolationManager.schedulePartitionStart(eventManager, 1000);
+	}
 
 	return true;
 }
@@ -38,6 +50,14 @@ void Simulator::start() {
 	}
 
 	LOG(INFO) << "[Simulator stopped]"; 
+}
+
+void Simulator::scheduleIsolation(bool _schedule) {
+	isScheduleIsolation = _schedule;
+}
+
+EventManager& Simulator::getEventManager() {
+	return eventManager;
 }
 
 std::shared_ptr<GlobalOrchestration> Simulator::getBlockchainManagementModel() {

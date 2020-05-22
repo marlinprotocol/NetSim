@@ -3,7 +3,8 @@
 
 enum class EventType {MESSAGE_TO_NODE, //messaging
 					  SCHEDULE_NEXT_BLOCK, // mining
-					  SCHEDULE_ISOLATION_START, SCHEDULE_ISOLATION_STOP //, TOGGLE_ISOLATION
+					  SCHEDULE_ISOLATION_START, SCHEDULE_ISOLATION_STOP, //, TOGGLE_ISOLATION
+					  TEST
 					  }; // isolation
 
 #endif /*EVENTTYPE_H_*/

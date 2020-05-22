@@ -8,6 +8,10 @@ L4Message::L4Message(std::shared_ptr<Message> _payload, bool _isReply, L4Protoco
 
 L4Message::~L4Message() {}
 
+std::shared_ptr<Message> L4Message::getPayload() {
+	return payload;
+}
+
 L4Address L4Message::getDest() {
 	return dest;
 }
