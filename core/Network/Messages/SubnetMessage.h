@@ -8,7 +8,7 @@
 class NetworkMessage;
 class TransferProgress;
 
-enum class SubnetMessageType {MESSAGE_RECVD, BANDWIDTH_REALLOC, FWD_TO_RECEIVER, DISCONNECT, RECONNECT};
+enum class SubnetMessageType {MESSAGE_RECVD, BANDWIDTH_REALLOC, FWD_TO_RECEIVER, DISCONNECT, RECONNECT, CANCEL_TRANSMISSION};
 
 class SubnetMessage : public Message {
 private:

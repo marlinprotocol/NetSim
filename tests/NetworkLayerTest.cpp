@@ -57,31 +57,6 @@ public:
 	}
 };
 
-//class TestEvent3 : public Event {
-//private:
-//	std::shared_ptr<TCPMessage> tcpMessage;
-//
-//public:
-//	TestEvent3(std::shared_ptr<TCPMessage> _tcpMessage) : Event(0, EventType::TEST) {
-//		tcpMessage = _tcpMessage;
-//	};
-//
-//	bool execute(Network& _network, std::shared_ptr<BlockCache> _blockCache,
-//				 std::vector<std::shared_ptr<Event>>& _newEvents, uint64_t _currentTick, std::shared_ptr<Subnet> _subnet) {
-//		LOG(DEBUG) << "[" << std::setw(35) << std::left << "TestEvent::execute]";
-//
-//		_network.getNode(2)->getNetworkLayer()->send(L3Address(2), L3Protocol::IPv4, tcpMessage, _currentTick, _newEvents);
-//
-//		return true;
-//	};
-//
-//	bool execute(Network& _network, std::vector<std::shared_ptr<Event>>& _newEvents, uint64_t _currentTick, std::shared_ptr<Subnet> _subnet) {
-//		LOG(FATAL) << "[" << std::setw(35) << std::left << "TestEvent::execute][call without block cache not allowed]";
-//		return true;
-//	}
-//};
-
-
 NetworkLayerTest::NetworkLayerTest() : network(simulator.getNetwork()) {
 	std::shared_ptr<TestLatencyModel> pingER = populatePingER();
 	subnet = std::make_shared<Subnet>(network, pingER);
@@ -352,7 +327,7 @@ void NetworkLayerTest::test1Sender2Receivers2StreamsOffline() {
 	std::vector<std::shared_ptr<Event>> newEvents;
 
 	network.getNode(0)->getNetworkLayer()->send(L3Address(2), L3Protocol::IPv4, tcpMessage, currentTick, newEvents);
-	network.getNode(0)->getNetworkLayer()->send(L3Address(3), L3Protocol::IPv4, tcpMessage, currentTick, newEvents);
+	network.getNode(0)->getNetworkLayer()->send(L3Address(3), L3Protocol::IPv4, tcpMessage2, currentTick, newEvents);
 
 	for(auto event: newEvents) {
 		simulator.getEventManager().getEventQueue().addEvent(AsyncEvent(event, currentTick + event->getTicksBeforeExecution()));
@@ -370,6 +345,50 @@ void NetworkLayerTest::test1Sender2Receivers2StreamsOffline() {
 						std::shared_ptr<Message>(
 							 new SubnetMessage(SubnetMessageType::DISCONNECT,
 								 std::make_shared<IPv4Message>(-1, 2, tcpMessage3))),
+						-1, -1, 300)
+				 );
+	simulator.getEventManager().getEventQueue().addEvent(AsyncEvent(event, currentTick + 300));
+
+	simulator.start();
+}
+
+void NetworkLayerTest::test1Sender2Receivers2StreamsCancelTransmission() {
+	std::shared_ptr<TestMessage> message(std::make_shared<TestMessage>());
+	message->setSize(58400);
+
+	std::shared_ptr<TestMessage> message2(std::make_shared<TestMessage>());
+	message2->setSize(58400);
+
+	std::shared_ptr<TCPMessage> tcpMessage(std::make_shared<TCPMessage>(
+			message, false, L4Address(L3Address(0), 0), L4Address(L3Address(2), 0), 0,22
+	));
+
+	std::shared_ptr<TCPMessage> tcpMessage2(std::make_shared<TCPMessage>(
+			message2, false, L4Address(L3Address(0), 0), L4Address(L3Address(2), 0), 0,23
+	));
+
+	uint64_t currentTick = 0;
+	std::vector<std::shared_ptr<Event>> newEvents;
+
+	network.getNode(0)->getNetworkLayer()->send(L3Address(2), L3Protocol::IPv4, tcpMessage, currentTick, newEvents);
+	network.getNode(0)->getNetworkLayer()->send(L3Address(3), L3Protocol::IPv4, tcpMessage2, currentTick, newEvents);
+
+	for(auto event: newEvents) {
+		simulator.getEventManager().getEventQueue().addEvent(AsyncEvent(event, currentTick + event->getTicksBeforeExecution()));
+	}
+
+	std::shared_ptr<TestMessage> message3(std::make_shared<TestMessage>());
+	message3->setSize(0);
+
+	std::shared_ptr<TCPMessage> tcpMessage3(std::make_shared<TCPMessage>(
+			message3, false, L4Address(L3Address(0), 0), L4Address(L3Address(2), 0), 0, tcpMessage->getMessageId()
+	));
+
+	auto event = std::make_shared<MessageToNodeEvent>(
+					 MessageToNodeEvent(
+						std::shared_ptr<Message>(
+							 new SubnetMessage(SubnetMessageType::CANCEL_TRANSMISSION,
+								 std::make_shared<IPv4Message>(-1, -1, tcpMessage3))),
 						-1, -1, 300)
 				 );
 	simulator.getEventManager().getEventQueue().addEvent(AsyncEvent(event, currentTick + 300));
@@ -395,8 +414,9 @@ int NetworkLayerTest::test() {
 //	test1Sender1Receiver1StreamLtdTCPThroughput(); // works - no automated testing - view logs to verify
 //	test1Sender1Receiver2StreamsLtdTCPThroughput(); // works - no automated testing - view logs to verify
 //	test1Sender2Receivers2StreamsLtdTCPThroughput(); // works - no automated testing - view logs to verify
-//	test2Senders1Receiver2StreamsLtdTCPThroughput();
-	test1Sender2Receivers2StreamsOffline();
+//	test2Senders1Receiver2StreamsLtdTCPThroughput(); // works - no automated testing - view logs to verify
+	test1Sender2Receivers2StreamsOffline(); // works - no automated testing - view logs to verify
+//	test1Sender2Receivers2StreamsCancelTransmission();
 
 	return 0;
 }

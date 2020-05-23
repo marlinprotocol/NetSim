@@ -130,6 +130,7 @@ void Subnet::send(std::shared_ptr<NetworkMessage> msg, uint64_t _currentTick, st
 		std::shared_ptr<TransferProgress> transferProgress(new TransferProgress(msg, msg->getSize(), 0, _currentTick));
 		connectionsToTransfersMap[ba].insert(transferProgress);
 		messageIdsToTransfersMap[msgId] = transferProgress;
+
 		if(nextRescheduleTime < _currentTick + 1) {
 			nextRescheduleTime = _currentTick + 1;
 			_newEvents.push_back(std::make_shared<MessageToNodeEvent>(
@@ -351,6 +352,10 @@ void Subnet::onSubnetMessage(std::shared_ptr<SubnetMessage> msg, uint64_t _curre
 			break;
 		}
 		case SubnetMessageType::RECONNECT: {
+			break;
+		}
+		case SubnetMessageType::CANCEL_TRANSMISSION: {
+			cancelTransmission(msg->getNetworkMessage()->getPayload()->getMessageId(), _currentTick, _newEvents);
 			break;
 		}
 	}
