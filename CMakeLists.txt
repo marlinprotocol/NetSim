@@ -58,7 +58,7 @@ add_executable(simulation
 
 add_executable(test
         tests/main.cpp
-        tests/NetworkLayerTest.cpp
+        tests/TransportLayerTest.cpp
         core/Blockchain/Blockchain.cpp
         core/Blockchain/Block/PoSBlock.cpp
         core/Blockchain/Block/PoWBlock.cpp

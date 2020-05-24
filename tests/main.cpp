@@ -1,9 +1,10 @@
 #include <cstdio>
 #include <map>
 
-#include "NetworkLayerTest.h"
-//#include "GnpLatencyModelTest.h"
 //#include "SubnetTest.h"
+//#include "GnpLatencyModelTest.h"
+//#include "NetworkLayerTest.h"
+#include "TransportLayerTest.h"
 #include "../helpers/Logger/easylogging.h"
 
 using namespace std;
@@ -36,8 +37,12 @@ int main() {
 //	gt.test();
 
 	// NetworkLayer Test
-	NetworkLayerTest nt;
-	nt.test();
+//	NetworkLayerTest nt;
+//	nt.test();
+
+	// TransportLayer Test
+	TransportLayerTest tt;
+	tt.test();
 
     LOG(INFO) << "[Test stopped]";
 

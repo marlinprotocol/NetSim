@@ -26,6 +26,7 @@ public:
 	Simulator();
 	void resetSubnet(std::shared_ptr<Subnet> _subnet);
 	Network& getNetwork();
+	std::shared_ptr<Subnet> getSubnet();
 	bool setup();
 	void start();
 	void scheduleIsolation(bool _schedule);

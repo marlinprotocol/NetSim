@@ -65,14 +65,6 @@ NetworkLayerTest::NetworkLayerTest() : network(simulator.getNetwork()) {
 
 std::shared_ptr<TestLatencyModel> NetworkLayerTest::populatePingER() {
 	std::unordered_map<std::string, std::unordered_map<std::string, LinkMetrics>> linkMetrics;
-//	linkMetrics["DE"]["DE"] = LinkMetrics(10, 12.5, 1);
-//	linkMetrics["US"]["DE"] = LinkMetrics(200, 250, 2);
-//	linkMetrics["JP"]["JP"] = LinkMetrics(20, 25, 3);
-//	linkMetrics["EU"]["JP"] = LinkMetrics(300, 375, 4);
-//	linkMetrics["US"]["CA"] = LinkMetrics(30, 30, 5);
-//	linkMetrics["JP"]["CA"] = LinkMetrics(250, 275, 6);
-//	linkMetrics["BR"]["BR"] = LinkMetrics(40, 45, 7);
-//	linkMetrics["CA"]["BR"] = LinkMetrics(100, 120, 8);
 
 	std::shared_ptr<TestLatencyModel> gnpLatencyModel(new TestLatencyModel(network));
 	gnpLatencyModel->getPingER().setLinkMetrics(linkMetrics);
@@ -416,7 +408,7 @@ int NetworkLayerTest::test() {
 //	test1Sender2Receivers2StreamsLtdTCPThroughput(); // works - no automated testing - view logs to verify
 //	test2Senders1Receiver2StreamsLtdTCPThroughput(); // works - no automated testing - view logs to verify
 	test1Sender2Receivers2StreamsOffline(); // works - no automated testing - view logs to verify
-//	test1Sender2Receivers2StreamsCancelTransmission();
+//	test1Sender2Receivers2StreamsCancelTransmission(); // works - no automated testing - view logs to verify
 
 	return 0;
 }

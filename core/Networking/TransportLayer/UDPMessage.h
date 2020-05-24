@@ -1,7 +1,13 @@
 #ifndef CORE_NETWORKING_TRANSPORTLAYER_UDPMESSAGE_H_
 #define CORE_NETWORKING_TRANSPORTLAYER_UDPMESSAGE_H_
 
+#include <memory>
+
 #include "L4Message.h"
+
+class L4Protocol;
+
+extern std::shared_ptr<L4Protocol> l4UDP;
 
 class UDPMessage : public L4Message {
 private:

@@ -13,21 +13,21 @@ protected:
 	uint64_t messageId;
 	std::shared_ptr<Message> payload;
 	bool isReply;
-	L4Protocol l4Protocol;
+	std::shared_ptr<L4Protocol> l4Protocol;
 	L4Address src;
 	L4Address dest;
 
 public:
-	L4Message(std::shared_ptr<Message> _payload, bool _isReply, L4Protocol _l4Protocol, L4Address _src, L4Address _dest);
-	L4Message(std::shared_ptr<Message> _payload, bool _isReply, L4Protocol _l4Protocol, L4Address _src, L4Address _dest, uint64_t _messageId);
+	L4Message(std::shared_ptr<Message> _payload, bool _isReply, std::shared_ptr<L4Protocol> _l4Protocol, L4Address _src, L4Address _dest);
+	L4Message(std::shared_ptr<Message> _payload, bool _isReply, std::shared_ptr<L4Protocol> _l4Protocol, L4Address _src, L4Address _dest, uint64_t _messageId);
 	virtual ~L4Message() = 0;
 	std::shared_ptr<Message> getPayload();
 	L4Address getDest();
 	void setDest(L4Address dest);
 	bool isIsReply();
 	void setIsReply(bool isReply);
-	L4Protocol getL4Protocol();
-	void setL4Protocol(L4Protocol l4Protocol);
+	std::shared_ptr<L4Protocol> getL4Protocol();
+	void setL4Protocol(std::shared_ptr<L4Protocol> l4Protocol);
 	int getMessageId();
 	void setMessageId(int messageId);
 	L4Address getSrc();

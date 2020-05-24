@@ -84,7 +84,7 @@ uint64_t Subnet::setMessageId(std::shared_ptr<NetworkMessage> msg) {
 void Subnet::send(std::shared_ptr<NetworkMessage> msg, uint64_t _currentTick, std::vector<std::shared_ptr<Event>>& _newEvents) {
 	NodeId senderId = msg->getSender();
 	NodeId receiverId = msg->getReceiver();
-	L4ProtocolType l4Protocol = msg->getPayload()->getL4Protocol().getL4ProtocolType();
+	L4ProtocolType l4Protocol = msg->getPayload()->getL4Protocol()->getL4ProtocolType();
 
 	if(senderId == receiverId) {
 		return;
@@ -121,8 +121,10 @@ void Subnet::send(std::shared_ptr<NetworkMessage> msg, uint64_t _currentTick, st
 		));
 	}
 	else {
+//		std::cout<<"a1"<<std::endl;
 		double maxBandwidthRequired = sender->getNetworkLayer()->getMaxBandwidth()->getUpBW();
 		if(l4Protocol == L4ProtocolType::TCP) {
+//			std::cout<<"a2"<<std::endl;
 			double tcpThroughput = latencyModel->getTCPThroughput(senderId, receiverId, false);
 			maxBandwidthRequired = std::min(maxBandwidthRequired, tcpThroughput);
 		}
@@ -130,8 +132,9 @@ void Subnet::send(std::shared_ptr<NetworkMessage> msg, uint64_t _currentTick, st
 		std::shared_ptr<TransferProgress> transferProgress(new TransferProgress(msg, msg->getSize(), 0, _currentTick));
 		connectionsToTransfersMap[ba].insert(transferProgress);
 		messageIdsToTransfersMap[msgId] = transferProgress;
-
+//		std::cout<<"a3"<<std::endl;
 		if(nextRescheduleTime < _currentTick + 1) {
+//			std::cout<<"a4"<<std::endl;
 			nextRescheduleTime = _currentTick + 1;
 			_newEvents.push_back(std::make_shared<MessageToNodeEvent>(
 				MessageToNodeEvent(std::shared_ptr<Message>(new SubnetMessage(SubnetMessageType::BANDWIDTH_REALLOC)),
@@ -150,7 +153,7 @@ void Subnet::cancelTransmission(int _msgId, uint64_t _currentTick, std::vector<s
 
 	double maxBandwidthRequired = sender->getNetworkLayer()->getMaxBandwidth()->getUpBW();
 
-	if(msg->getPayload()->getL4Protocol().getL4ProtocolType() == L4ProtocolType::TCP) {
+	if(msg->getPayload()->getL4Protocol()->getL4ProtocolType() == L4ProtocolType::TCP) {
 		double tcpThroughput = latencyModel->getTCPThroughput(senderId, receiverId, false);
 		maxBandwidthRequired = std::min(maxBandwidthRequired, tcpThroughput);
 	}
@@ -244,7 +247,7 @@ void Subnet::onMessageReceived(std::shared_ptr<TransferProgress> _tp, uint64_t _
 		}
 		std::cout<<"currentTick: "<<_currentTick<<std::endl;
 		double maxBandwidthRequired = sender->getNetworkLayer()->getMaxBandwidth()->getUpBW();
-		L4ProtocolType l4Protocol = msg->getPayload()->getL4Protocol().getL4ProtocolType();
+		L4ProtocolType l4Protocol = msg->getPayload()->getL4Protocol()->getL4ProtocolType();
 		if(l4Protocol == L4ProtocolType::TCP) {
 			double tcpThroughput = latencyModel->getTCPThroughput(senderId, receiverId, false);
 			maxBandwidthRequired = std::min(maxBandwidthRequired, tcpThroughput);
@@ -297,7 +300,7 @@ void Subnet::rescheduleTransfers(std::shared_ptr<GnpNetBandwidthAllocation> _ba,
 
 		std::shared_ptr<NetworkMessage> msg = tp->getMessage();
 
-		if(msg->getPayload()->getL4Protocol().getL4ProtocolType() == L4ProtocolType::TCP) {
+		if(msg->getPayload()->getL4Protocol()->getL4ProtocolType() == L4ProtocolType::TCP) {
 			double tcpThroughput = latencyModel->getTCPThroughput(senderId, receiverId, false);
 			bandwidth = std::min(bandwidth, tcpThroughput);
 		}

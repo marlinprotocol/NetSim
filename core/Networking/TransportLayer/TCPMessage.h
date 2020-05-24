@@ -3,6 +3,10 @@
 
 #include "L4Message.h"
 
+class L4Protocol;
+
+extern std::shared_ptr<L4Protocol> l4TCP;
+
 class TCPMessage : public L4Message {
 private:
 	long long seqNum;

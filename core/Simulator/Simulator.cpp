@@ -28,6 +28,10 @@ Network& Simulator::getNetwork() {
 	return network;
 }
 
+std::shared_ptr<Subnet> Simulator::getSubnet() {
+	return subnet;
+}
+
 bool Simulator::setup() {
 	network = getRandomNetwork(blockCache, globalOrchestration, subnet);
 
