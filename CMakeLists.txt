@@ -30,12 +30,14 @@ add_executable(simulation
         core/Networking/Isolation/IsolationManager.cpp
         core/Networking/Isolation/IsolationModel.cpp
         core/Networking/Isolation/Events/PartitionEvent.cpp
+        core/Networking/LatencyModels/City.cpp
         core/Networking/LatencyModels/GnpLatencyModel.cpp
         core/Networking/LatencyModels/LatencyModel.cpp
         core/Networking/LatencyModels/LinkMetrics.cpp
         core/Networking/LatencyModels/PingER.cpp
         core/Networking/LatencyModels/RandomLatencyModel.cpp
         core/Networking/LatencyModels/StaticLatencyModel.cpp
+        core/Networking/LatencyModels/WonderNetwork.cpp
         core/Networking/NetworkLayer/IPv4Address.cpp
         core/Networking/NetworkLayer/IPv4Message.cpp
         core/Networking/NetworkLayer/L3Address.cpp
@@ -49,6 +51,7 @@ add_executable(simulation
         core/Networking/TransportLayer/UDPMessage.cpp     
         helpers/Logger/easylogging.cpp      
         helpers/Random.cpp
+        lib/jsoncpp/jsoncpp.cpp
         models/BlockchainManagement/GlobalOrchestration/Bitcoin.cpp
         models/BlockchainManagement/GlobalOrchestration/GlobalOrchestration.cpp
         models/LocalProtocols/BitcoinMiner.cpp
@@ -86,12 +89,14 @@ add_executable(test
         core/Networking/Isolation/IsolationManager.cpp
         core/Networking/Isolation/IsolationModel.cpp
         core/Networking/Isolation/Events/PartitionEvent.cpp
+        core/Networking/LatencyModels/City.cpp
         core/Networking/LatencyModels/GnpLatencyModel.cpp
         core/Networking/LatencyModels/LatencyModel.cpp
         core/Networking/LatencyModels/LinkMetrics.cpp
         core/Networking/LatencyModels/PingER.cpp
         core/Networking/LatencyModels/RandomLatencyModel.cpp
         core/Networking/LatencyModels/StaticLatencyModel.cpp
+        core/Networking/LatencyModels/WonderNetwork.cpp
         core/Networking/NetworkLayer/IPv4Address.cpp
         core/Networking/NetworkLayer/IPv4Message.cpp
         core/Networking/NetworkLayer/L3Address.cpp
@@ -105,6 +110,7 @@ add_executable(test
         core/Networking/TransportLayer/UDPMessage.cpp     
         helpers/Logger/easylogging.cpp   
         helpers/Random.cpp   
+        lib/jsoncpp/jsoncpp.cpp
         models/BlockchainManagement/GlobalOrchestration/Bitcoin.cpp
         models/BlockchainManagement/GlobalOrchestration/GlobalOrchestration.cpp
         models/LocalProtocols/BitcoinMiner.cpp

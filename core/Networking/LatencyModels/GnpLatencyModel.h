@@ -29,6 +29,7 @@
 
 #include "LatencyModel.h"
 #include "PingER.h"
+#include "WonderNetwork.h"
 #include "../../Network/Node/NodeId.h"
 
 class IPv4Message;
@@ -39,6 +40,7 @@ private:
 	static int MSS;
 	Network& network;
 	PingER pingER;
+	WonderNetwork wonderNetwork;
 
 public:
 	GnpLatencyModel(Network& _network);

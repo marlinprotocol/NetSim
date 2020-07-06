@@ -4,14 +4,17 @@
 class LinkMetrics {
 private:
 	double minRTT;
+	double maxRTT;
 	double avgRTT;
 	double packetLoss;
 
 public:
 	LinkMetrics();
 	LinkMetrics(double _minRTT, double _avgRTT, double _packetLoss);
+	LinkMetrics(double _minRTT, double _avgRTT, double _maxRTT, double _packetLoss);
 	LinkMetrics(const LinkMetrics& _linkMetrics);
 	double getMinRTT();
+	double getMaxRTT();
 	double getAvgRTT();
 	double getPacketLoss();
 };
