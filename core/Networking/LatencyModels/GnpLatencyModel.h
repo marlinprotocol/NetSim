@@ -40,7 +40,7 @@ private:
 	static int MSS;
 	Network& network;
 	PingER pingER;
-	WonderNetwork wonderNetwork;
+//	WonderNetwork wonderNetwork;
 
 public:
 	GnpLatencyModel(Network& _network);

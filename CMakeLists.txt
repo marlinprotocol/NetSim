@@ -56,7 +56,8 @@ add_executable(simulation
         models/BlockchainManagement/GlobalOrchestration/GlobalOrchestration.cpp
         models/LocalProtocols/BitcoinMiner.cpp
         models/LocalProtocols/Protocol.cpp
-        models/Networking/BitcoinRoutingTable.cpp        
+        models/Networking/BitcoinRoutingTable.cpp
+        models/Networking/FlexibleRoutingTable.cpp        
 )
 
 add_executable(test
@@ -115,7 +116,8 @@ add_executable(test
         models/BlockchainManagement/GlobalOrchestration/GlobalOrchestration.cpp
         models/LocalProtocols/BitcoinMiner.cpp
         models/LocalProtocols/Protocol.cpp
-        models/Networking/BitcoinRoutingTable.cpp                       
+        models/Networking/BitcoinRoutingTable.cpp
+		models/Networking/FlexibleRoutingTable.cpp                      
 )
 
 add_definitions(-DELPP_DEFAULT_LOG_FILE="./logs/default.log")

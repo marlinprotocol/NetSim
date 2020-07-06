@@ -31,8 +31,10 @@ private:
 	std::shared_ptr<NetworkLayer> networkLayer;
 
 public:
-	Node(int _nodeId, bool _isAlive, int _region, std::shared_ptr<BlockCache> _blockCache, std::shared_ptr<Subnet> _subnet);
-	Node(int _nodeId, double _maxDownBandwidth, double _upDownBandwidth, std::shared_ptr<Subnet> _subnet, std::string _countryCode);
+	Node(int _nodeId, bool _isAlive, int _region, std::shared_ptr<BlockCache> _blockCache,
+		 std::shared_ptr<Subnet> _subnet, std::string _routingTable);
+	Node(int _nodeId, double _maxDownBandwidth, double _upDownBandwidth, std::shared_ptr<Subnet> _subnet,
+		 std::string _countryCode, std::string _routingTable);
 	int getRegion() const;
 	int getNodeId() const;
 	std::string getCountryCode();

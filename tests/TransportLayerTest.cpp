@@ -47,9 +47,9 @@ void TransportLayerTest::test1Sender1Receiver1Stream() {
 }
 
 int TransportLayerTest::test() {
-	std::shared_ptr<Node> node0(new Node(0, 1000, 100, subnet, "US"));
-	std::shared_ptr<Node> node1(new Node(1, 1000, 100, subnet, "CA"));
-	std::shared_ptr<Node> node2(new Node(2, 1000, 100, subnet, "JP"));
+	std::shared_ptr<Node> node0(new Node(0, 1000, 100, subnet, "US", "BitcoinRoutingTable"));
+	std::shared_ptr<Node> node1(new Node(1, 1000, 100, subnet, "CA", "BitcoinRoutingTable"));
+	std::shared_ptr<Node> node2(new Node(2, 1000, 100, subnet, "JP", "BitcoinRoutingTable"));
 
 	network.addNode(node0);
 	network.addNode(node1);

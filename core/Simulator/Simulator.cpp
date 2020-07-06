@@ -11,7 +11,7 @@
 #include "../Networking/Isolation/IsolationManager.h"
 #include "../../config/Config.h"
 #include "../../models/BlockchainManagement/GlobalOrchestration/Bitcoin.h"
-#include "../../models/NodePlacement/RandomNodeLocations.h"
+#include "../../models/NodePlacement/ClusterBased.h"
 
 Simulator::Simulator() : blockCache(std::make_shared<BlockCache>()), subnet(new Subnet(network)),
 						 eventManager(network, blockCache, subnet) {
