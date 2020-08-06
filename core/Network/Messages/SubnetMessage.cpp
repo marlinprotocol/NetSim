@@ -1,6 +1,7 @@
 #include "SubnetMessage.h"
 #include "MessageType.h"
 #include "../../Networking/NetworkLayer/NetworkMessage.h"
+#include <cassert>
 
 SubnetMessage::SubnetMessage(SubnetMessageType _subnetMessageType) :
 	subnetMessageType(_subnetMessageType), transferProgress(nullptr), Message(MessageType::SUBNET_MSG) {

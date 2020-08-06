@@ -31,6 +31,7 @@
 #define CORE_NETWORKING_BANDWIDTHMODELS_GNP_ABSTRACTGNPNETBANDWIDTHMANAGER_H_
 
 #include <unordered_map>
+#include <memory>
 
 #include "../../../Network/Node/NodeId.h"
 

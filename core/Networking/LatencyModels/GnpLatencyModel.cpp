@@ -6,6 +6,7 @@
 #include "../TransportLayer/TCPMessage.h"
 #include "../../Network/Network.h"
 #include "../../Network/Node/Node.h"
+#include <cassert>
 
 int GnpLatencyModel::MSS;
 
