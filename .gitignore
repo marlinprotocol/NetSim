@@ -4,3 +4,4 @@ a.out
 logs
 **/.DS_Store
 build
+/.vscode

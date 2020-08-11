@@ -18,9 +18,15 @@ const long long INTER_REGION_LATENCY[NUM_REGIONS][NUM_REGIONS] = {
 	{1, 1, 1, 1, 1, 1}	
 };
 
-const int NUM_NODES = 15;
+const int NUM_NODES = 14;
+
+const int NUM_CLUSTERS = 3;
+
+const int CLUSTER_SIZE = 3;
 
 const std::string CONSENSUS_TYPE = "PoW";
+
+const int NUM_MINERS = 5;
 
 const int BLOCK_TIME = 600;
 
