@@ -126,6 +126,7 @@ bool printGeneratedNetwork(const Network& network) {
 								  	  << std::setw(20) << centered(std::to_string(REGION_DISTRIBUTION_OF_NODES[i] * NUM_NODES))
 								 	  << std::setw(20) << centered(std::to_string(numNodesPerRegion[i]));
 	}
+	
 
 	// printing adjacency list.
 	for(auto node: nodes) {
