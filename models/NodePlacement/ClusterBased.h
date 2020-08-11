@@ -15,6 +15,7 @@
 #include "../../core/Network/Node/NodeType.h"
 #include "../../core/Networking/RoutingTable.h"
 #include "../BlockchainManagement/GlobalOrchestration/GlobalOrchestration.h"
+#include "../../core/Networking/LatencyModels/WonderNetwork.h"
 
 bool generateNodes(Network& network, std::shared_ptr<BlockCache> blockCache, NodeType nodeType,
 				   std::shared_ptr<GlobalOrchestration> _blockchainManagementModel,
@@ -53,8 +54,10 @@ bool generateNodes(Network& network, std::shared_ptr<BlockCache> blockCache, Nod
 			for(int k = 0; k < NUM_REGIONS; k++) {
 				if(cumulativeProbabilities[k] >= randomNumber) {
 					int regionIdx = k; // TODO
+					int cityIdx;
+
 					int nodeIdx = i * CLUSTER_SIZE + j;
-					std::shared_ptr<Node> node(new Node(nodeIdx, true, regionIdx, blockCache, _subnet, "FlexibleRoutingTable"));
+					std::shared_ptr<Node> node(new Node(nodeIdx, true, regionIdx, cityIdx, blockCache, _subnet, "FlexibleRoutingTable"));
 					for(int l = 0; l < CLUSTER_SIZE; l++) {
 						if(j != l) {
 							node->getRoutingTable()->addOutConnection(i * CLUSTER_SIZE + l);
@@ -75,8 +78,9 @@ bool generateNodes(Network& network, std::shared_ptr<BlockCache> blockCache, Nod
 		for(int j = 0; j < NUM_REGIONS; j++) {
 			if(cumulativeProbabilities[j] >= randomNumber) {
 				int regionIdx = j; // TODO
+				int cityIdx;
 				int nodeIdx = MINER_OFFSET + i;
-				std::shared_ptr<Node> node(new Node(nodeIdx, true, regionIdx, blockCache, _subnet, "FlexibleRoutingTable"));
+				std::shared_ptr<Node> node(new Node(nodeIdx, true, regionIdx, cityIdx, blockCache, _subnet, "FlexibleRoutingTable"));
 				std::shared_ptr<BitcoinMiner> bitcoinMinerProtocol(new BitcoinMiner(node, i%2==0?1:2, (NUM_MINERS/2*2 + (NUM_MINERS/2)) * BLOCK_TIME));
 				node->addProtocol(std::static_pointer_cast<Protocol>(bitcoinMinerProtocol));
 
@@ -126,7 +130,7 @@ bool printGeneratedNetwork(const Network& network) {
 								  	  << std::setw(20) << centered(std::to_string(REGION_DISTRIBUTION_OF_NODES[i] * NUM_NODES))
 								 	  << std::setw(20) << centered(std::to_string(numNodesPerRegion[i]));
 	}
-	
+
 
 	// printing adjacency list.
 	for(auto node: nodes) {
@@ -163,6 +167,7 @@ Network getRandomNetwork(std::shared_ptr<BlockCache> _blockCache,
 	LOG(INFO) << "[Something something]";
 	Network network;
 	LOG(INFO) << "[Something something]";
+	WonderNetwork wonderNetwork = WonderNetwork();
 
 	generateNodes(network, _blockCache, NodeType::Miner, _blockchainManagementModel, _subnet);
 	printGeneratedNetwork(network);
@@ -171,10 +176,5 @@ Network getRandomNetwork(std::shared_ptr<BlockCache> _blockCache,
 
 	return network;
 }
-
-std::shared_ptr<BlockCache> a;
-std::shared_ptr<GlobalOrchestration> b;
-std::shared_ptr<Subnet> c;
-Network shit = getRandomNetwork(a, b, c);
 
 #endif /*RANDOMNODELOCATIONS_H_*/

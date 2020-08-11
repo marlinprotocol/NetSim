@@ -23,6 +23,7 @@ private:
 	NodeId nodeId;
 	bool isAlive;
 	int region;
+	int cityIdx;
 	std::string countryCode;
 	std::shared_ptr<RoutingTable> routingTable;
 	std::vector<std::shared_ptr<Protocol>> protocols;
@@ -31,12 +32,13 @@ private:
 	std::shared_ptr<NetworkLayer> networkLayer;
 
 public:
-	Node(int _nodeId, bool _isAlive, int _region, std::shared_ptr<BlockCache> _blockCache,
+	Node(int _nodeId, bool _isAlive, int _region, int _cityIdx, std::shared_ptr<BlockCache> _blockCache,
 		 std::shared_ptr<Subnet> _subnet, std::string _routingTable);
 	Node(int _nodeId, double _maxDownBandwidth, double _upDownBandwidth, std::shared_ptr<Subnet> _subnet,
 		 std::string _countryCode, std::string _routingTable);
 	int getRegion() const;
 	int getNodeId() const;
+	int getCityIdx();
 	std::string getCountryCode();
 	std::shared_ptr<Blockchain> getBlockchain();
 	std::shared_ptr<BlockCache> getBlockCache();

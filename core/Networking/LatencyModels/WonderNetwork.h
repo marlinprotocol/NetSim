@@ -7,12 +7,12 @@
 #include "LinkMetrics.h"
 #include "../../../lib/jsoncpp/json.h"
 
-const std::string SOURCE_WONDER_NETWORK_DATA = "./data/pingLatency/data.json";
+const std::string SOURCE_WONDER_NETWORK_DATA = "../data/pingLatency/pingDataByRegion.json";
 
 class WonderNetwork {
 private:
 	std::unordered_map<std::string, City> citiesMap;
-	std::unordered_map<std::string, std::unordered_map<std::string, LinkMetrics>> linkMetrics;
+	std::unordered_map<std::string, std::unordered_map<std::string, LinkMetrics>> cityPairLinkMetrics;
 
 public:
 	WonderNetwork();

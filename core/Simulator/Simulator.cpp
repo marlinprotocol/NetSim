@@ -12,6 +12,7 @@
 #include "../../config/Config.h"
 #include "../../models/BlockchainManagement/GlobalOrchestration/Bitcoin.h"
 #include "../../models/NodePlacement/ClusterBased.h"
+#include "../Networking/LatencyModels/WonderNetwork.h"
 
 Simulator::Simulator() : blockCache(std::make_shared<BlockCache>()), subnet(new Subnet(network)),
 						 eventManager(network, blockCache, subnet) {
@@ -33,6 +34,8 @@ std::shared_ptr<Subnet> Simulator::getSubnet() {
 }
 
 bool Simulator::setup() {
+	// std::cout << "simulator setup" << std::endl;
+
 	network = getRandomNetwork(blockCache, globalOrchestration, subnet);
 
 	globalOrchestration->scheduleBlockProduction(network, blockCache, eventManager);

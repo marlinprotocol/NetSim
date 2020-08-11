@@ -5,9 +5,9 @@
 #include "../../../models/Networking/BitcoinRoutingTable.h"
 #include "../../../models/Networking/FlexibleRoutingTable.h"
 
-Node::Node(int _nodeId, bool _isAlive, int _region, std::shared_ptr<BlockCache> _blockCache,
+Node::Node(int _nodeId, bool _isAlive, int _region, int _cityIdx, std::shared_ptr<BlockCache> _blockCache,
 		   std::shared_ptr<Subnet> _subnet, std::string _routingTable)
-	 : nodeId(_nodeId), isAlive(_isAlive), region(_region), blockCache(_blockCache),
+	 : nodeId(_nodeId), isAlive(_isAlive), region(_region), cityIdx(_cityIdx), blockCache(_blockCache),
 	   networkLayer(std::make_shared<NetworkLayer>(NetworkLayer(5000, 5000, _subnet, _nodeId))),
 	   blockchain(std::make_shared<Blockchain>(Blockchain(std::const_pointer_cast<const BlockCache>(_blockCache))))
 {
@@ -49,6 +49,10 @@ int Node::getRegion() const {
 
 int Node::getNodeId() const {
 	return nodeId;
+}
+
+int Node::getCityIdx() {
+	return cityIdx;
 }
 
 std::string Node::getCountryCode() {
