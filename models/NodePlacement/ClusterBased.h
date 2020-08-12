@@ -37,6 +37,8 @@ bool generateNodes(Network& network, std::shared_ptr<BlockCache> blockCache, Nod
 		return false;
 	}
 
+	WonderNetwork wonderNetwork = WonderNetwork();
+
 	// initiaze random number generator, seed fixed to 2121 to make it deterministic across runs
 	// else make it time-dependent for randomness
 	std::mt19937_64 rng;
@@ -54,7 +56,12 @@ bool generateNodes(Network& network, std::shared_ptr<BlockCache> blockCache, Nod
 			for(int k = 0; k < NUM_REGIONS; k++) {
 				if(cumulativeProbabilities[k] >= randomNumber) {
 					int regionIdx = k; // TODO
-					int cityIdx;
+					std::string regionName = REGIONS[regionIdx];
+					std::vector <int> regionCities = wonderNetwork.getCitiesInRegion(regionName);
+					int idx = int(unif(rng) * regionCities.size());
+					int cityIdx = regionCities[idx];
+					City city = wonderNetwork.getCityByIndex(cityIdx);
+					std::cout << "DAS " << cityIdx << ' ' << idx << ' ' << city.getName() << ' ' << city.getRegion() << std::endl;
 
 					int nodeIdx = i * CLUSTER_SIZE + j;
 					std::shared_ptr<Node> node(new Node(nodeIdx, true, regionIdx, cityIdx, blockCache, _subnet, "FlexibleRoutingTable"));
@@ -78,7 +85,11 @@ bool generateNodes(Network& network, std::shared_ptr<BlockCache> blockCache, Nod
 		for(int j = 0; j < NUM_REGIONS; j++) {
 			if(cumulativeProbabilities[j] >= randomNumber) {
 				int regionIdx = j; // TODO
-				int cityIdx;
+				std::string regionName = REGIONS[regionIdx];
+				std::vector <int> regionCities = wonderNetwork.getCitiesInRegion(regionName);
+				int idx = unif(rng) * regionCities.size();
+				int cityIdx = regionCities[idx];
+
 				int nodeIdx = MINER_OFFSET + i;
 				std::shared_ptr<Node> node(new Node(nodeIdx, true, regionIdx, cityIdx, blockCache, _subnet, "FlexibleRoutingTable"));
 				std::shared_ptr<BitcoinMiner> bitcoinMinerProtocol(new BitcoinMiner(node, i%2==0?1:2, (NUM_MINERS/2*2 + (NUM_MINERS/2)) * BLOCK_TIME));
@@ -167,14 +178,14 @@ Network getRandomNetwork(std::shared_ptr<BlockCache> _blockCache,
 	LOG(INFO) << "[Something something]";
 	Network network;
 	LOG(INFO) << "[Something something]";
-	WonderNetwork wonderNetwork = WonderNetwork();
 
 	generateNodes(network, _blockCache, NodeType::Miner, _blockchainManagementModel, _subnet);
 	printGeneratedNetwork(network);
 
-//	initializeRoutingTable(network);
+	// initializeRoutingTable(network);
 
 	return network;
 }
+
 
 #endif /*RANDOMNODELOCATIONS_H_*/

@@ -1,11 +1,11 @@
 #include "City.h"
 
-City::City() : code("-1"), name(""), country("") {};
+City::City() : code(-1), name(""), country("") {};
 
-City::City(std::string _code, std::string _name, std::string _country) :
+City::City(int _code, std::string _name, std::string _country) :
 	code(_code), name(_name), country(_country) {};
 
-City::City(std::string _code, std::string _name) :
+City::City(int _code, std::string _name) :
 	code(_code), name(_name) {};
 
 
@@ -24,4 +24,8 @@ std::string City::getName() {
 
 std::string City::getCountry() {
 	return country;
+}
+
+std::string City::getRegion() {
+	return region;
 }

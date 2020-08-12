@@ -34,7 +34,7 @@ std::shared_ptr<Subnet> Simulator::getSubnet() {
 }
 
 bool Simulator::setup() {
-	// std::cout << "simulator setup" << std::endl;
+	std::cout << "simulator setup" << std::endl;
 
 	network = getRandomNetwork(blockCache, globalOrchestration, subnet);
 
