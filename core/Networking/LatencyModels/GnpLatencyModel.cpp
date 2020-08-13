@@ -12,23 +12,23 @@ int GnpLatencyModel::MSS;
 
 GnpLatencyModel::GnpLatencyModel(Network& _network) : network(_network) {
 	MSS = IPv4Message::MTU_SIZE - IPv4Message::HEADER_SIZE - TCPMessage::HEADER_SIZE;
+	wonderNetwork = wonderNetwork->getInstance();
 }
 
 //void GnpLatencyModel::setPingER(PingER& _pingER) {
 //	pingER = _pingER;
 //}
 
-PingER& GnpLatencyModel::getPingER() {
-	return pingER;
-}
+// PingER& GnpLatencyModel::getPingER() {
+// 	return pingER;
+// }
 
 double GnpLatencyModel::getMinRTT(NodeId senderId, NodeId receiverId) {
 	std::shared_ptr<Node> sender = network.getNode(senderId);
 	std::shared_ptr<Node> receiver = network.getNode(receiverId);
 
 	double rtt = 0;
-
-	rtt = pingER.getLinkMetrics(sender->getCountryCode(), receiver->getCountryCode()).getMinRTT();
+	rtt = wonderNetwork->getLinkMetricsBetweenCities(sender->getCityIdx(), receiver->getCityIdx()).getMinRTT();
 
 	return rtt;
 }
@@ -39,7 +39,7 @@ double GnpLatencyModel::getPacketLossProbability(NodeId senderId, NodeId receive
 
 	double oneWayLossRate = 0;
 
-	double twoWayLossRate = pingER.getLinkMetrics(sender->getCountryCode(), receiver->getCountryCode()).getPacketLoss();
+	double twoWayLossRate = wonderNetwork->getLinkMetricsBetweenCities(sender->getCityIdx(), receiver->getCityIdx()).getPacketLoss();
 	twoWayLossRate /= 100;
 	oneWayLossRate = 1 - sqrt(1 - twoWayLossRate);
 
@@ -57,8 +57,8 @@ double GnpLatencyModel::getAvgJitter(NodeId senderId, NodeId receiverId) {
 	std::shared_ptr<Node> sender = network.getNode(senderId);
 	std::shared_ptr<Node> receiver = network.getNode(receiverId);
 
-	double minRTT = pingER.getLinkMetrics(sender->getCountryCode(), receiver->getCountryCode()).getMinRTT();
-	double avgRTT = pingER.getLinkMetrics(sender->getCountryCode(), receiver->getCountryCode()).getAvgRTT();
+	double minRTT = wonderNetwork->getLinkMetricsBetweenCities(sender->getCityIdx(), receiver->getCityIdx()).getMinRTT();
+	double avgRTT = wonderNetwork->getLinkMetricsBetweenCities(sender->getCityIdx(), receiver->getCityIdx()).getAvgRTT();
 
 	return avgRTT - minRTT;
 }
@@ -83,12 +83,8 @@ uint64_t GnpLatencyModel::getPropagationDelay(NodeId senderId, NodeId receiverId
 	std::shared_ptr<Node> sender = network.getNode(senderId);
 	std::shared_ptr<Node> receiver = network.getNode(receiverId);
 
-	auto rtt = pingER.getLinkMetrics(sender->getCountryCode(), receiver->getCountryCode()).getAvgRTT();
-
-	if(rtt != 0)
-		return rtt / 2;
-
-	return pingER.getLinkMetrics(receiver->getCountryCode(), sender->getCountryCode()).getAvgRTT() / 2;
+	auto rtt = wonderNetwork->getLinkMetricsBetweenCities(sender->getCityIdx(), receiver->getCityIdx()).getAvgRTT();
+	return rtt / 2;
 }
 
 uint64_t GnpLatencyModel::getTCPThroughput(NodeId senderId, NodeId receiverId, bool _useJitter) {

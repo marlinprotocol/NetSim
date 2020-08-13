@@ -14,8 +14,10 @@ private:
 	std::vector <City> citiesMap;
 	std::vector <std::vector <LinkMetrics> > cityPairLinkMetrics;
 	std::unordered_map <std::string, std::vector <int> > regionCities;
-public:
+	static WonderNetwork *wonderNetworkInstance;
 	WonderNetwork();
+public:
+	static WonderNetwork *getInstance();
 	std::vector <City> getCitiesMap();
 	City getCityByIndex(int i);
 	LinkMetrics getLinkMetricsBetweenCities(int sourceCityIdx, int destinationCityIdx);

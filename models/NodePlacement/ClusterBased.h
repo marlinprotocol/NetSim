@@ -37,7 +37,7 @@ bool generateNodes(Network& network, std::shared_ptr<BlockCache> blockCache, Nod
 		return false;
 	}
 
-	WonderNetwork wonderNetwork = WonderNetwork();
+	WonderNetwork *wonderNetwork = wonderNetwork->getInstance();
 
 	// initiaze random number generator, seed fixed to 2121 to make it deterministic across runs
 	// else make it time-dependent for randomness
@@ -57,11 +57,11 @@ bool generateNodes(Network& network, std::shared_ptr<BlockCache> blockCache, Nod
 				if(cumulativeProbabilities[k] >= randomNumber) {
 					int regionIdx = k; // TODO
 					std::string regionName = REGIONS[regionIdx];
-					std::vector <int> regionCities = wonderNetwork.getCitiesInRegion(regionName);
+					std::vector <int> regionCities = wonderNetwork->getCitiesInRegion(regionName);
 					int idx = int(unif(rng) * regionCities.size());
 					int cityIdx = regionCities[idx];
-					City city = wonderNetwork.getCityByIndex(cityIdx);
-					std::cout << "DAS " << cityIdx << ' ' << idx << ' ' << city.getName() << ' ' << city.getRegion() << std::endl;
+					City city = wonderNetwork->getCityByIndex(cityIdx);
+
 
 					int nodeIdx = i * CLUSTER_SIZE + j;
 					std::shared_ptr<Node> node(new Node(nodeIdx, true, regionIdx, cityIdx, blockCache, _subnet, "FlexibleRoutingTable"));
@@ -86,8 +86,8 @@ bool generateNodes(Network& network, std::shared_ptr<BlockCache> blockCache, Nod
 			if(cumulativeProbabilities[j] >= randomNumber) {
 				int regionIdx = j; // TODO
 				std::string regionName = REGIONS[regionIdx];
-				std::vector <int> regionCities = wonderNetwork.getCitiesInRegion(regionName);
-				int idx = unif(rng) * regionCities.size();
+				std::vector <int> regionCities = wonderNetwork->getCitiesInRegion(regionName);
+				int idx = int(unif(rng) * regionCities.size());
 				int cityIdx = regionCities[idx];
 
 				int nodeIdx = MINER_OFFSET + i;
@@ -119,7 +119,6 @@ bool generateNodes(Network& network, std::shared_ptr<BlockCache> blockCache, Nod
 
 bool printGeneratedNetwork(const Network& network) {
 	LOG(INFO) << "[PRINT_GENERATED_NETWORK_START]";
-
 	int numNodesPerRegion[NUM_REGIONS] = {0};
 
 	const std::vector<std::shared_ptr<Node>> nodes = network.getNodes();

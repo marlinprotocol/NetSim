@@ -12,6 +12,11 @@
 #include "../../../config/Config.h"
 
 
+
+
+WonderNetwork* WonderNetwork::wonderNetworkInstance = 0;
+
+
 WonderNetwork::WonderNetwork() {
 	std::ifstream ifs("../data/pingLatency/pingDataByRegion.json");
 	if(!ifs) {
@@ -168,4 +173,13 @@ std::vector <int> WonderNetwork::getCitiesInRegion(std::string region) {
 
 City WonderNetwork::getCityByIndex(int i) {
 	return citiesMap[i];
+}
+
+
+WonderNetwork* WonderNetwork::getInstance() {
+	if(!wonderNetworkInstance) {
+		wonderNetworkInstance = new WonderNetwork();
+	}
+	return wonderNetworkInstance;
+	// return new WonderNetwork();
 }

@@ -21,7 +21,7 @@ std::shared_ptr<TestLatencyModel> TransportLayerTest::populatePingER() {
 	std::unordered_map<std::string, std::unordered_map<std::string, LinkMetrics>> linkMetrics;
 
 	std::shared_ptr<TestLatencyModel> gnpLatencyModel(new TestLatencyModel(network));
-	gnpLatencyModel->getPingER().setLinkMetrics(linkMetrics);
+	// gnpLatencyModel->getPingER().setLinkMetrics(linkMetrics);
 
 	return gnpLatencyModel;
 }

@@ -39,12 +39,10 @@ class GnpLatencyModel : public LatencyModel {
 private:
 	static int MSS;
 	Network& network;
-	PingER pingER;
-//	WonderNetwork wonderNetwork;
+	WonderNetwork *wonderNetwork;
 
 public:
 	GnpLatencyModel(Network& _network);
-//	void setPingER(PingER& _pingER);
 	PingER& getPingER();
 	double getMinRTT(NodeId sender, NodeId receiver);
 	double getPacketLossProbability(NodeId senderId, NodeId receiverId);
