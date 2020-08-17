@@ -55,6 +55,7 @@ add_executable(simulation
         models/BlockchainManagement/GlobalOrchestration/Bitcoin.cpp
         models/BlockchainManagement/GlobalOrchestration/GlobalOrchestration.cpp
         models/LocalProtocols/BitcoinMiner.cpp
+        models/LocalProtocols/DummyProtocol.cpp
         models/LocalProtocols/Protocol.cpp
         models/Networking/BitcoinRoutingTable.cpp
         models/Networking/FlexibleRoutingTable.cpp        
@@ -115,6 +116,7 @@ add_executable(test
         models/BlockchainManagement/GlobalOrchestration/Bitcoin.cpp
         models/BlockchainManagement/GlobalOrchestration/GlobalOrchestration.cpp
         models/LocalProtocols/BitcoinMiner.cpp
+        models/LocalProtocols/DummyProtocol.cpp
         models/LocalProtocols/Protocol.cpp
         models/Networking/BitcoinRoutingTable.cpp
 		models/Networking/FlexibleRoutingTable.cpp                      

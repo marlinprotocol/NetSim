@@ -60,7 +60,7 @@ WonderNetwork::WonderNetwork() {
 	for(auto &v: cityPairLinkMetrics) {
 		v.resize(NUMBER_OF_CITIES);
 	}
-	std::cout << NUMBER_OF_CITIES << ' ' << citiesMap.size() << std::endl;
+	std::cout << "[WonderNetwork.cpp]	" << NUMBER_OF_CITIES << ' ' << citiesMap.size() << std::endl;
 
 	for(auto cityName: cityToIdMap.getMemberNames()) {
 		int cityCode = std::stoi(cityToIdMap[cityName].asString());

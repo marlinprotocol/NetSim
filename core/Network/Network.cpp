@@ -38,7 +38,7 @@ double Network::recaculateTotalLambda() {
 			if(node->getProtocols().empty()) {
 				continue;
 			}
-			auto n = std::static_pointer_cast<BitcoinMiner>(node->getProtocols()[0]);
+			auto n = std::static_pointer_cast<Protocol>(node->getProtocols()[0]);
 			sum += n->getLambda();
 		}
 	}
@@ -56,7 +56,7 @@ std::vector<double> Network::recaculateCumulativeLambdaVector() {
 			if(nodes[i]->getProtocols().empty()) {
 				continue;
 			}
-			auto miner = std::static_pointer_cast<BitcoinMiner>(nodes[i]->getProtocols()[0]);
+			auto miner = std::static_pointer_cast<Protocol>(nodes[i]->getProtocols()[0]);
 			// LOG(INFO) << "debug here";
 			if(v.empty())
 				v.push_back(miner->getLambda());
@@ -81,11 +81,15 @@ std::shared_ptr<Node> Network::pickLambdaWeightedNode() {
 	std::shared_ptr<Node> node;
 
 	double randomNumber = getRandomDouble() * totalLambda;
+	std::cout << randomNumber << ' ' << totalLambda << ' ' << std::endl;
+	for(double x: cumulativeLambdaVector) {
+		std::cout << x << ' '<< std::endl;
+	}
 
 	auto it = std::upper_bound(cumulativeLambdaVector.begin(),
 							   cumulativeLambdaVector.end(), randomNumber);
 
 	int index = it - cumulativeLambdaVector.begin();
-
+	std::cout << nodes.size() << ' ' << index << std::endl;
 	return nodes[index];
 }

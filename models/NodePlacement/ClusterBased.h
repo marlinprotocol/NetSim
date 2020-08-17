@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "../LocalProtocols/BitcoinMiner.h"
+#include "../LocalProtocols/DummyProtocol.h"
 #include "../../helpers/Center.h"
 #include "../../helpers/Logger/easylogging.h"
 #include "../../config/Config.h"
@@ -62,9 +63,11 @@ bool generateNodes(Network& network, std::shared_ptr<BlockCache> blockCache, Nod
 					int cityIdx = regionCities[idx];
 					City city = wonderNetwork->getCityByIndex(cityIdx);
 
-
 					int nodeIdx = i * CLUSTER_SIZE + j;
 					std::shared_ptr<Node> node(new Node(nodeIdx, true, regionIdx, cityIdx, blockCache, _subnet, "FlexibleRoutingTable"));
+					std::shared_ptr<DummyProtocol> dummyProtocol(new DummyProtocol());
+
+					node->addProtocol(std::static_pointer_cast<Protocol>(dummyProtocol));
 					for(int l = 0; l < CLUSTER_SIZE; l++) {
 						if(j != l) {
 							node->getRoutingTable()->addOutConnection(i * CLUSTER_SIZE + l);
