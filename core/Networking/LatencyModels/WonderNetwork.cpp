@@ -18,7 +18,7 @@ WonderNetwork* WonderNetwork::wonderNetworkInstance = 0;
 
 
 WonderNetwork::WonderNetwork() {
-	std::ifstream ifs("../data/pingLatency/pingDataByRegion.json");
+	std::ifstream ifs("data/pingLatency/pingDataByRegion.json");
 	if(!ifs) {
 		std::cout << "not opening" << std::endl;
 		return;
