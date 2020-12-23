@@ -8,6 +8,8 @@
 #include "../../../Networking/Subnet.h"
 #include "../../../Networking/NetworkLayer/NetworkLayer.h"
 #include "../../../../models/LocalProtocols/BitcoinMiner.h"
+#include "../../../../models/LocalProtocols/Protocol.h"
+
 
 MessageToNodeEvent::MessageToNodeEvent(std::shared_ptr<Message> _message, int _forNodeId, int _fromNodeId, long long _durationInTicks)
 				   : message(_message), forNodeId(_forNodeId), fromNodeId(_fromNodeId), Event(_durationInTicks, EventType::MESSAGE_TO_NODE) {}
@@ -18,22 +20,24 @@ bool MessageToNodeEvent::execute(Network& _network, std::shared_ptr<BlockCache> 
 			   << "[From:" << std::setw(8) << std::right << std::to_string(fromNodeId) << "]"
 			   << "[To:" << std::setw(8) << std::right << std::to_string(forNodeId) << "]"
 			   << "[Type:" << std::setw(15) << std::right << message->getType() << "]";
-
 	switch(message->getMessageType()) {
 		case MessageType::NEW_BLOCK_ID: {
+			// std::cout << 1 << std::endl;
 			auto node = _network.getNodes()[forNodeId];
-			std::static_pointer_cast<BitcoinMiner>(node->getProtocols()[0])->onNewBlockIdMessage(std::dynamic_pointer_cast<NewBlockIdMessage>(message), _blockCache, _newEvents);
+			std::static_pointer_cast<Protocol>(node->getProtocols()[0])->onNewBlockIdMessage(std::dynamic_pointer_cast<NewBlockIdMessage>(message), _blockCache, _newEvents);
 			break;
 		}
 		case MessageType::NEW_BLOCK_MINED: {
+			std::cout << 2 << std::endl;
 			auto node = _network.getNodes()[forNodeId];
-			std::static_pointer_cast<BitcoinMiner>(node->getProtocols()[0])->onNewBlockMinedMessage(std::dynamic_pointer_cast<NewBlockMinedMessage>(message), _blockCache, _newEvents, _currentTick);
+			std::static_pointer_cast<Protocol>(node->getProtocols()[0])->onNewBlockMinedMessage(std::dynamic_pointer_cast<NewBlockMinedMessage>(message), _blockCache, _newEvents, _currentTick);
 			break;	
 		}
 		case MessageType::NEW_BLOCK_BODY: {
 			break;
 		}
 		case MessageType::SUBNET_MSG: {
+			std::cout << 3 << std::endl;
 			_subnet->onSubnetMessage(std::static_pointer_cast<SubnetMessage>(message), _currentTick, _newEvents);
 			break;
 		}

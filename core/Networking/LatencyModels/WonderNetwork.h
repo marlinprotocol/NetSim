@@ -7,15 +7,21 @@
 #include "LinkMetrics.h"
 #include "../../../lib/jsoncpp/json.h"
 
-const std::string SOURCE_WONDER_NETWORK_DATA = "./data/pingLatency/data.json";
+const std::string SOURCE_WONDER_NETWORK_DATA = "../data/pingLatency/pingDataByRegion.json";
 
 class WonderNetwork {
 private:
-	std::unordered_map<std::string, City> citiesMap;
-	std::unordered_map<std::string, std::unordered_map<std::string, LinkMetrics>> linkMetrics;
-
-public:
+	std::vector <City> citiesMap;
+	std::vector <std::vector <LinkMetrics> > cityPairLinkMetrics;
+	std::unordered_map <std::string, std::vector <int> > regionCities;
+	static WonderNetwork *wonderNetworkInstance;
 	WonderNetwork();
+public:
+	static WonderNetwork *getInstance();
+	std::vector <City> getCitiesMap();
+	City getCityByIndex(int i);
+	LinkMetrics getLinkMetricsBetweenCities(int sourceCityIdx, int destinationCityIdx);
+	std::vector <int> getCitiesInRegion(std::string region);
 };
 
 #endif /* CORE_NETWORKING_LATENCYMODELS_WONDERNETWORK_H_ */

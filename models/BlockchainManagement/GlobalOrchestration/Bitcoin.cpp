@@ -25,7 +25,7 @@ uint64_t BitcoinModel::getNextBlockTime() {
 
 std::shared_ptr<Node> BitcoinModel::getNextBlockProducer() {
 	LOG(INFO) << "[BitcoinModel::getNextBlockProducer start]";
-
+	std::cout << "HERE" << std::endl;
 	std::shared_ptr<Node> blockProducer = network.pickLambdaWeightedNode();
 
 	LOG(INFO) << "[BitcoinModel::getNextBlockProducer end]";
@@ -58,7 +58,7 @@ void BitcoinModel::scheduleNextBlock(EventManager* eventManager) {
 	std::shared_ptr<Node> blockProducer = getNextBlockProducer();
 
 	int nodeId = blockProducer->getNodeId();
-
+	std::cout << "NODEID: " << nodeId << "	" << blockProducer->getProtocols().size() << std::endl;
 	eventManager->addEvent(std::shared_ptr<Event>(
 								new MessageToNodeEvent(
 									std::shared_ptr<Message>(new NewBlockMinedMessage(std::static_pointer_cast<BitcoinMiner>(blockProducer->getProtocols()[0])->getDifficulty())),

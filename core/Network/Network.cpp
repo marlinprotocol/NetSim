@@ -33,10 +33,12 @@ double Network::getTotalLambda() const {
 
 double Network::recaculateTotalLambda() {
 	double sum = 0.0;
-
 	if (nodes.size() != 0 && nodes[0] != nullptr) { // TODO: make getLambda a function of Node if required for other subclasses as well
 		for(std::shared_ptr<Node> node: nodes) {
-			auto n = std::static_pointer_cast<BitcoinMiner>(node->getProtocols()[0]);
+			if(node->getProtocols().empty()) {
+				continue;
+			}
+			auto n = std::static_pointer_cast<Protocol>(node->getProtocols()[0]);
 			sum += n->getLambda();
 		}
 	}
@@ -51,12 +53,15 @@ std::vector<double> Network::recaculateCumulativeLambdaVector() {
 
 	if (nodes.size() != 0 && nodes[0] != nullptr) { // TODO: make getLambda a function of Node if required for other subclasses as well
 		for(int i=0; i<nodes.size(); i++) {
-			auto miner = std::static_pointer_cast<BitcoinMiner>(nodes[i]->getProtocols()[0]);
-
-			if(i==0)
+			if(nodes[i]->getProtocols().empty()) {
+				continue;
+			}
+			auto miner = std::static_pointer_cast<Protocol>(nodes[i]->getProtocols()[0]);
+			// LOG(INFO) << "debug here";
+			if(v.empty())
 				v.push_back(miner->getLambda());
 			else
-				v.push_back(v[i-1] + miner->getLambda());
+				v.push_back(v.back() + miner->getLambda());
 
 			// LOG(DEBUG) << "[" << std::setw(35) << std::left << "BitcoinModel::getNextBlockProducer]"
 			// 	       << "[NodeId: " << i << ", CumulativeHash: "  << hashpowerFraction[i] << "]";
@@ -76,11 +81,15 @@ std::shared_ptr<Node> Network::pickLambdaWeightedNode() {
 	std::shared_ptr<Node> node;
 
 	double randomNumber = getRandomDouble() * totalLambda;
+	std::cout << randomNumber << ' ' << totalLambda << ' ' << std::endl;
+	for(double x: cumulativeLambdaVector) {
+		std::cout << x << ' '<< std::endl;
+	}
 
 	auto it = std::upper_bound(cumulativeLambdaVector.begin(),
 							   cumulativeLambdaVector.end(), randomNumber);
 
 	int index = it - cumulativeLambdaVector.begin();
-
+	std::cout << nodes.size() << ' ' << index << std::endl;
 	return nodes[index];
 }
